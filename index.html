@@ -1291,6 +1291,11 @@ function migrate3(d){
   if(!d.loja) d.loja=LOJA();
   if(!d.pedidos) d.pedidos=[];
   if(!d.config) d.config={pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"};
+  /* Firestore proíbe array dentro de array: pares do associar viram objetos {a,b} */
+  Object.values(d.materias||{}).forEach(mm=>(mm.unidades||[]).forEach(un=>(un.licoes||[]).forEach(l=>(l.ex||[]).forEach(e=>{
+    if(e&&e.t==="associar"&&Array.isArray(e.pares))
+      e.pares=e.pares.map(p=>Array.isArray(p)?{a:p[0],b:p[1]}:p);
+  }))));
   Object.values(d.users).forEach(hidrataAluno);
   const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
   if(br&&!d.pedidos.length)
@@ -1641,7 +1646,7 @@ function telaCadastro(err,keep){
     <div class="fld"><label>Área de interesse</label><div class="picks" id="picks">
       ${cursos.map(c=>`<button class="pick" data-c="${c.id}"><div class="r"></div><div><b>${esc(c.nome)}</b><small>${c.materias.length} matéria(s) no pacote</small></div></button>`).join("")}
     </div></div>
-    ${cursos.length?"":'<div class="errbox">Não consegui carregar as áreas. Confira sua internet e recarregue a página.</div>'}
+    ${cursos.length?"":'<div class="errbox">As áreas ainda não foram publicadas pelo gestor, ou a página abriu sem conexão. Se você é o gestor, publique o conteúdo no painel e recarregue.</div>'}
     <button class="btn" id="bCad">Solicitar inscrição</button>
     <div class="swap">Já tem conta? <b id="sw2">Entrar</b></div>`;
   let cid=k.cursoId||null;
@@ -2149,8 +2154,8 @@ R.classificar=b=>{
 R.associar=b=>{
   st={links:0}; let sel=null,n=0;
   const g=el("div","pairs"),L1=el("div","pcol"),L2=el("div","pcol");
-  cur.pares.map((p,i)=>({t:p[0],i})).sort(()=>Math.random()-.5).forEach(a=>{const e=el("button","pit",esc(a.t));e.dataset.i=a.i;e.onclick=()=>pick(e,"a");L1.appendChild(e);});
-  cur.pares.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-.5).forEach(a=>{const e=el("button","pit",esc(a.t));e.dataset.i=a.i;e.onclick=()=>pick(e,"b");L2.appendChild(e);});
+  cur.pares.map((p,i)=>({t:p.a,i})).sort(()=>Math.random()-.5).forEach(a=>{const e=el("button","pit",esc(a.t));e.dataset.i=a.i;e.onclick=()=>pick(e,"a");L1.appendChild(e);});
+  cur.pares.map((p,i)=>({t:p.b,i})).sort(()=>Math.random()-.5).forEach(a=>{const e=el("button","pit",esc(a.t));e.dataset.i=a.i;e.onclick=()=>pick(e,"b");L2.appendChild(e);});
   g.append(L1,L2); b.appendChild(g);
   function pick(e,side){
     if(checked||e.classList.contains("linked"))return;
