@@ -511,6 +511,9 @@ input{font:inherit}
 
 <div id="modal"><div class="mbox"><h3 id="mT"></h3><p id="mP"></p><div class="mbtns" id="mB"></div></div></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 /* ============================================================================
    MODUS EDU — NÚCLEO DE DADOS
@@ -1288,20 +1291,25 @@ function migrate3(d){
   if(!d.loja) d.loja=LOJA();
   if(!d.pedidos) d.pedidos=[];
   if(!d.config) d.config={pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"};
-  Object.values(d.users).forEach(u=>{
-    if(u.role!=="aluno") return;
-    if(u.brasas==null) u.brasas=0;
-    if(u.ambar==null) u.ambar=0;
-    if(!u.inv) u.inv=[];
-    if(!u.equip) u.equip={moldura:null,flair:null,titulo:null};
-    if(u.lastCheckin===undefined) u.lastCheckin=null;
-    if(u.vidaDia===undefined) u.vidaDia=null;
-    if(u.heartsAt===undefined) u.heartsAt=null;
-  });
+  Object.values(d.users).forEach(hidrataAluno);
   const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
   if(br&&!d.pedidos.length)
     d.pedidos.push({ id:"px_demo1", uid:br.id, pacoteId:"p120", ambar:120, valor:19.90,
       txid:"PXDEMO1", status:"pendente", criadoEm:Date.now()-36e5 });
+}
+
+function hidrataAluno(u){
+  if(u.role&&u.role!=="aluno") return u;
+  if(u.brasas==null) u.brasas=0;
+  if(u.ambar==null) u.ambar=0;
+  if(!u.inv) u.inv=[];
+  if(!u.equip) u.equip={};
+  ["moldura","flair","titulo","nome","aura"].forEach(k=>{ if(u.equip[k]===undefined) u.equip[k]=null; });
+  if(u.lastCheckin===undefined) u.lastCheckin=null;
+  if(u.vidaDia===undefined) u.vidaDia=null;
+  if(u.heartsAt===undefined) u.heartsAt=null;
+  if(!u.done) u.done={};
+  return u;
 }
 
 /* v4: catálogo de insígnias no lugar dos emojis. Quem tinha item
@@ -1336,15 +1344,169 @@ function migrate4(d){
   if(br&&!br.inv.length){ br.brasas=br.brasas||180; br.inv=["in_livro"]; br.equip.flair="in_livro"; }
 }
 
+/* ---------- FIREBASE: o app na nuvem ---------- */
+const FB_CONFIG={ apiKey:"AIzaSyCSyAYCHqzJiEk6UYW88YZ7ZhSvE_HAhzM",
+  authDomain:"modus-edu.firebaseapp.com", projectId:"modus-edu",
+  storageBucket:"modus-edu.firebasestorage.app",
+  messagingSenderId:"186251529638", appId:"1:186251529638:web:774aeb1d9c158826c45367" };
+const GESTOR_EMAIL="gestor@modus.edu";
+const NUVEM = typeof firebase!=="undefined";
+let FS=null, AU=null, CACHE=null, SNAP={};
+
+function fbInit(){
+  if(!NUVEM) return false;
+  if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
+  AU=firebase.auth(); FS=firebase.firestore();
+  return true;
+}
+const onAuth=cb=>AU.onAuthStateChanged(cb);
+const login=(e,s2)=>AU.signInWithEmailAndPassword(e,s2);
+const logout=()=>AU.signOut();
+const authUser=()=>AU?AU.currentUser:null;
+function fbErro(e){
+  const c=(e&&e.code)||"";
+  if(/invalid-credential|wrong-password|user-not-found/.test(c)) return "E-mail ou senha incorretos.";
+  if(/email-already-in-use/.test(c)) return "Já existe uma conta com esse e-mail.";
+  if(/invalid-email/.test(c)) return "E-mail inválido.";
+  if(/weak-password/.test(c)) return "A senha precisa de pelo menos 6 caracteres.";
+  if(/network/.test(c)) return "Sem conexão. Verifique a internet e tente de novo.";
+  if(/too-many-requests/.test(c)) return "Muitas tentativas seguidas. Espere um pouco e tente de novo.";
+  return "Não deu: "+((e&&e.message)||c||"erro desconhecido");
+}
+function baseCache(){
+  return { v:4, users:{}, cursos:{}, materias:{}, pedidos:[],
+    config:{pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"},
+    loja:LOJA(), rank:null };
+}
+const snapPut=(k,o)=>{ SNAP[k]=JSON.stringify(o); };
+
+/* cursos são públicos: a tela de cadastro mostra as áreas antes do login */
+async function preCursos(){
+  if(!CACHE) CACHE=baseCache();
+  const cs=await FS.collection("cursos").get();
+  CACHE.cursos={};
+  cs.forEach(d2=>{ CACHE.cursos[d2.id]=d2.data(); snapPut("c:"+d2.id,CACHE.cursos[d2.id]); });
+  return CACHE;
+}
+async function bootAluno(uid){
+  CACHE=baseCache(); SNAP={};
+  const ud=await FS.collection("users").doc(uid).get();
+  if(!ud.exists) return null;
+  const eu=hidrataAluno(Object.assign(ud.data(),{id:uid}));
+  CACHE.users[uid]=eu; snapPut("u:"+uid,eu);
+  const [cs,cg,cl]=await Promise.all([
+    FS.collection("cursos").get(),
+    FS.collection("config").doc("geral").get(),
+    FS.collection("config").doc("loja").get()
+  ]);
+  cs.forEach(d2=>{ CACHE.cursos[d2.id]=d2.data(); snapPut("c:"+d2.id,CACHE.cursos[d2.id]); });
+  if(cg.exists) CACHE.config=cg.data();
+  snapPut("cfg",CACHE.config);
+  if(cl.exists&&cl.data().itens) CACHE.loja=cl.data().itens;
+  snapPut("loja",{itens:CACHE.loja});
+  if(eu.status==="aprovado"){
+    const mats=await Promise.all((eu.acesso||[]).map(id=>FS.collection("materias").doc(id).get().catch(()=>null)));
+    mats.forEach(d2=>{ if(d2&&d2.exists){ CACHE.materias[d2.id]=d2.data(); snapPut("m:"+d2.id,CACHE.materias[d2.id]); } });
+    const [pd,rk]=await Promise.all([
+      FS.collection("pedidos").where("uid","==",uid).get(),
+      FS.collection("ranking").get()
+    ]);
+    pd.forEach(d2=>{ CACHE.pedidos.push(d2.data()); snapPut("p:"+d2.id,d2.data()); });
+    CACHE.rank=[]; rk.forEach(d2=>CACHE.rank.push(d2.data()));
+  }
+  return eu;
+}
+async function bootGestor(){
+  CACHE=baseCache(); SNAP={};
+  const [us,cs,ms,ps,rk,cg,cl]=await Promise.all([
+    FS.collection("users").get(), FS.collection("cursos").get(),
+    FS.collection("materias").get(), FS.collection("pedidos").get(),
+    FS.collection("ranking").get(),
+    FS.collection("config").doc("geral").get(),
+    FS.collection("config").doc("loja").get()
+  ]);
+  us.forEach(d2=>{ const u=hidrataAluno(Object.assign(d2.data(),{id:d2.id}));
+    CACHE.users[d2.id]=u; snapPut("u:"+d2.id,u); });
+  cs.forEach(d2=>{ CACHE.cursos[d2.id]=d2.data(); snapPut("c:"+d2.id,CACHE.cursos[d2.id]); });
+  ms.forEach(d2=>{ CACHE.materias[d2.id]=d2.data(); snapPut("m:"+d2.id,CACHE.materias[d2.id]); });
+  ps.forEach(d2=>{ CACHE.pedidos.push(d2.data()); snapPut("p:"+d2.id,d2.data()); });
+  rk.forEach(d2=>snapPut("r:"+d2.id,d2.data()));
+  if(cg.exists) CACHE.config=cg.data();
+  snapPut("cfg",CACHE.config);
+  if(cl.exists&&cl.data().itens) CACHE.loja=cl.data().itens;
+  snapPut("loja",{itens:CACHE.loja});
+  return CACHE;
+}
+/* cadastro real: conta no Authentication + documento pendente */
+async function cadastrarNuvem({nome,email,senha,cursoId}){
+  const cred=await AU.createUserWithEmailAndPassword(email,senha);
+  const uid=cred.user.uid;
+  const c=(CACHE&&CACHE.cursos)?CACHE.cursos[cursoId]:null;
+  const u={ id:uid, role:"aluno", nome, email, cursoId:cursoId||null, status:"pendente",
+    acesso:c?c.materias.slice():[], foto:null,
+    brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
+    lastCheckin:null, vidaDia:null, heartsAt:null,
+    pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
+    resp:0, certo:0, melhor:0, criadoEm:Date.now() };
+  await FS.collection("users").doc(uid).set(u);
+  if(CACHE){ CACHE.users[uid]=u; snapPut("u:"+uid,u); }
+  return u;
+}
+/* primeira publicação: manda cursos, matérias e catálogo para a nuvem */
+async function publicarConteudo(){
+  const d=DEFAULT_DB(); migrate3(d); migrate4(d);
+  const jobs=[];
+  Object.values(d.cursos).forEach(c=>jobs.push(FS.collection("cursos").doc(c.id).set(JSON.parse(JSON.stringify(c)))));
+  Object.values(d.materias).forEach(mm=>jobs.push(FS.collection("materias").doc(mm.id).set(JSON.parse(JSON.stringify(mm)))));
+  jobs.push(FS.collection("config").doc("loja").set({itens:LOJA()}));
+  jobs.push(FS.collection("config").doc("geral").set((CACHE&&CACHE.config)||{pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"}));
+  await Promise.all(jobs);
+  return bootGestor();
+}
+
 /* ---------- persistência (o único ponto a trocar por Firebase) ---------- */
 function load(){
+  if(NUVEM&&FS){ if(!CACHE) CACHE=baseCache(); return CACHE; }
   let d=null;
   try{ d=JSON.parse(localStorage.getItem(K_DB)||"null"); }catch(e){}
   if(!d||(d.v!==2&&d.v!==3&&d.v!==4)){ d=DEFAULT_DB(); }
   migrate3(d); migrate4(d); localStorage.setItem(K_DB,JSON.stringify(d));
   return d;
 }
-function save(d){ localStorage.setItem(K_DB,JSON.stringify(d)); }
+function save(d){
+  if(!NUVEM||!FS){ localStorage.setItem(K_DB,JSON.stringify(d)); return; }
+  const jobs=[]; const seen=new Set();
+  const put=(key,ref,obj)=>{
+    seen.add(key);
+    const j=JSON.stringify(obj);
+    if(SNAP[key]!==j){ SNAP[key]=j; jobs.push(ref.set(JSON.parse(j))); }
+  };
+  Object.values(d.users||{}).forEach(u=>put("u:"+u.id,FS.collection("users").doc(u.id),u));
+  Object.values(d.cursos||{}).forEach(c=>put("c:"+c.id,FS.collection("cursos").doc(c.id),c));
+  Object.values(d.materias||{}).forEach(mm=>put("m:"+mm.id,FS.collection("materias").doc(mm.id),mm));
+  (d.pedidos||[]).forEach(pd=>put("p:"+pd.id,FS.collection("pedidos").doc(pd.id),pd));
+  put("cfg",FS.collection("config").doc("geral"),d.config||{});
+  put("loja",FS.collection("config").doc("loja"),{itens:d.loja||[]});
+  /* projeção pública do ranking: nome, foto, xp, curso e cosméticos.
+     Nunca e-mail nem progresso. Aluno escreve só a própria; gestor, todas. */
+  const au=authUser();
+  const souGestor=!!(au&&(au.email||"").toLowerCase()===GESTOR_EMAIL);
+  Object.values(d.users||{}).forEach(u=>{
+    if(u.role!=="aluno") return;
+    if(!souGestor&&(!au||au.uid!==u.id)) return;
+    if(u.status!=="aprovado") return;
+    put("r:"+u.id,FS.collection("ranking").doc(u.id),
+      { id:u.id, nome:u.nome, foto:u.foto||null, xp:u.xp||0,
+        cursoId:u.cursoId||null, pro:!!u.pro, equip:u.equip||{} });
+  });
+  /* o que sumiu do cache é apagado da nuvem (exclusões do gestor) */
+  Object.keys(SNAP).slice().forEach(k=>{
+    if(seen.has(k)||k==="cfg"||k==="loja") return;
+    const col={u:"users",c:"cursos",m:"materias",p:"pedidos",r:"ranking"}[k[0]];
+    if(col){ jobs.push(FS.collection(col).doc(k.slice(2)).delete()); delete SNAP[k]; }
+  });
+  if(jobs.length) Promise.all(jobs).catch(e=>console.warn("[modus] sync",e));
+}
 function wipe(){ localStorage.removeItem(K_DB); localStorage.removeItem(K_SESS); }
 
 /* ---------- sessão ---------- */
@@ -1377,6 +1539,9 @@ function materiasDe(db,u){
 }
 
 function ranking(db,cursoId){
+  if(db&&db.rank) return db.rank
+    .filter(u=>(!cursoId||u.cursoId===cursoId)&&(u.xp||0)>0)
+    .sort((a,b)=>(b.xp||0)-(a.xp||0)||String(a.nome).localeCompare(String(b.nome)));
   return alunos(db)
     .filter(u=>u.status==="aprovado" && (!cursoId||u.cursoId===cursoId) && u.xp>0)
     .sort((a,b)=>b.xp-a.xp || a.nome.localeCompare(b.nome));
@@ -1412,7 +1577,9 @@ return { load,save,wipe,getSession,setSession,clearSession,byEmail,alunos,novoAl
          materiasDe,ranking,tickStreak,licoesDe,contaEx,aplicarPacote,uid,DEFAULT_DB,
          hojeStr,checkin,regenVidas,perderVida,proximaVidaEm,
          comprarItem,equipar,pedirAmbar,confirmarPedido,recusarPedido,creditarAmbar,
-         pixPayload,PACOTES,MAX_VIDAS,INSIG,checarMeritos };
+         pixPayload,PACOTES,MAX_VIDAS,INSIG,checarMeritos,
+         fbInit,onAuth,login,logout,authUser,fbErro,GESTOR_EMAIL,
+         preCursos,bootAluno,bootGestor,cadastrarNuvem,publicarConteudo };
 })();
 
 </script>
@@ -1450,13 +1617,13 @@ function telaLogin(err){
     <div class="fld"><label>Senha</label><input id="iSenha" type="password" autocomplete="current-password" placeholder="••••••"></div>
     <button class="btn" id="bGo">Entrar</button>
     <div class="swap">Não tem conta? <b id="sw">Criar agora</b></div>`;
-  $("#bGo").onclick=()=>{
+  $("#bGo").onclick=async()=>{
     const e=$("#iEmail").value.trim().toLowerCase(), s=$("#iSenha").value;
     if(!e||!s) return telaLogin("Preencha e-mail e senha.");
-    const u=CORE.byEmail(db,e);
-    if(!u||u.senha!==s) return telaLogin("E-mail ou senha incorretos.");
-    if(u.role==="gestor") return telaLogin("Esta conta é de gestor. Use o painel administrativo.");
-    CORE.setSession(u.id); entrar(u.id);
+    if(e===CORE.GESTOR_EMAIL) return telaLogin("Esta conta é de gestor. Use o painel administrativo.");
+    $("#bGo").disabled=true; $("#bGo").textContent="Entrando…";
+    try{ await CORE.login(e,s); }
+    catch(err){ telaLogin(CORE.fbErro(err)); }
   };
   $("#sw").onclick=()=>telaCadastro();
   $("#iSenha").onkeydown=ev=>{if(ev.key==="Enter")$("#bGo").click()};
@@ -1470,10 +1637,11 @@ function telaCadastro(err,keep){
     ${err?`<div class="errbox">${esc(err)}</div>`:""}
     <div class="fld"><label>Nome</label><input id="cNome" value="${esc(k.nome||"")}" placeholder="Seu nome"></div>
     <div class="fld"><label>E-mail</label><input id="cEmail" type="email" value="${esc(k.email||"")}" placeholder="voce@email.com"></div>
-    <div class="fld"><label>Senha</label><input id="cSenha" type="password" placeholder="mínimo 4 caracteres"></div>
+    <div class="fld"><label>Senha</label><input id="cSenha" type="password" placeholder="mínimo 6 caracteres"></div>
     <div class="fld"><label>Área de interesse</label><div class="picks" id="picks">
       ${cursos.map(c=>`<button class="pick" data-c="${c.id}"><div class="r"></div><div><b>${esc(c.nome)}</b><small>${c.materias.length} matéria(s) no pacote</small></div></button>`).join("")}
     </div></div>
+    ${cursos.length?"":'<div class="errbox">Não consegui carregar as áreas. Confira sua internet e recarregue a página.</div>'}
     <button class="btn" id="bCad">Solicitar inscrição</button>
     <div class="swap">Já tem conta? <b id="sw2">Entrar</b></div>`;
   let cid=k.cursoId||null;
@@ -1483,16 +1651,16 @@ function telaCadastro(err,keep){
   });
   if(cid){const p=pk.querySelector('[data-c="'+cid+'"]'); if(p)p.classList.add("on");}
   $("#sw2").onclick=()=>telaLogin();
-  $("#bCad").onclick=()=>{
+  $("#bCad").onclick=async()=>{
     const nome=$("#cNome").value.trim(), email=$("#cEmail").value.trim().toLowerCase(), senha=$("#cSenha").value;
     const st={nome,email,cursoId:cid};
     if(!nome) return telaCadastro("Informe seu nome.",st);
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return telaCadastro("E-mail inválido.",st);
-    if(senha.length<4) return telaCadastro("A senha precisa de pelo menos 4 caracteres.",st);
+    if(senha.length<6) return telaCadastro("A senha precisa de pelo menos 6 caracteres.",st);
     if(!cid) return telaCadastro("Escolha sua área de interesse.",st);
-    if(CORE.byEmail(db,email)) return telaCadastro("Já existe uma conta com esse e-mail.",st);
-    const u=CORE.novoAluno(db,{nome,email,senha,cursoId:cid});
-    CORE.save(db); CORE.setSession(u.id); entrar(u.id);
+    $("#bCad").disabled=true; $("#bCad").textContent="Enviando…";
+    try{ await CORE.cadastrarNuvem({nome,email,senha,cursoId:cid}); }
+    catch(err){ telaCadastro(CORE.fbErro(err),st); }
   };
 }
 function telaEspera(u){
@@ -1517,8 +1685,11 @@ function telaEspera(u){
       <button class="btn ghost" id="bChk">Verificar novamente</button>
       <button class="btn ghost" id="bOut">Sair</button>
     </div>`;
-  $("#bChk").onclick=()=>{db=CORE.load();const f=db.users[u.id];if(f&&f.status==="aprovado")entrar(u.id);else telaEspera(f||u);};
-  $("#bOut").onclick=()=>{CORE.clearSession();goAuth();};
+  $("#bChk").onclick=async()=>{ $("#bChk").textContent="Verificando…";
+    try{ const f=await CORE.bootAluno(u.id); db=CORE.load();
+      if(f&&f.status==="aprovado") entrar(u.id); else telaEspera(f||u);
+    }catch(e){ telaEspera(u); } };
+  $("#bOut").onclick=()=>CORE.logout();
 }
 
 /* ============ ENTRAR ============ */
@@ -1896,7 +2067,7 @@ function vPerfil(){
   };
   if(me.foto&&$("#bFotoDel")) $("#bFotoDel").onclick=()=>{ me.foto=null; CORE.save(db); vPerfil(); };
   $("#bOut2").onclick=()=>modal("Sair da conta?","Você vai precisar entrar de novo.",
-    [{t:"Sair",c:"warn",f:()=>{closeModal();CORE.clearSession();goAuth();}},{t:"Cancelar",c:"ghost",f:closeModal}]);
+    [{t:"Sair",c:"warn",f:()=>{closeModal();CORE.logout();}},{t:"Cancelar",c:"ghost",f:closeModal}]);
   rail();
 }
 
@@ -2135,16 +2306,26 @@ $("#dBtn").onclick=()=>{ $("#done").classList.remove("on"); document.body.style.
     } };
 
 /* ============ BOOT ============ */
-(function(){
-  db=CORE.load();
-  const uid=CORE.getSession();
-  if(uid&&db.users[uid]){ const u=db.users[uid];
-    if(u.role==="gestor"){CORE.clearSession();return goAuth();}
-    if(u.status!=="aprovado")return telaEspera(u);
-    return entrar(uid);
+CORE.fbInit();
+CORE.onAuth(async user=>{
+  if(!user){
+    db=CORE.load();
+    try{ await CORE.preCursos(); }catch(e){}
+    return goAuth();
   }
-  goAuth();
-})();
+  if((user.email||"").toLowerCase()===CORE.GESTOR_EMAIL){ CORE.logout(); return; }
+  try{
+    const u=await CORE.bootAluno(user.uid);
+    db=CORE.load();
+    if(!u){
+      modal("Conta sem cadastro","Sua conta de acesso existe, mas o cadastro no Modus não foi encontrado. Fale com o gestor.",
+        [{t:"Ok",c:"ghost",f:()=>{closeModal();CORE.logout();}}]);
+      return goAuth();
+    }
+    if(u.status!=="aprovado") return telaEspera(u);
+    entrar(user.uid);
+  }catch(e){ console.warn("[modus] boot",e); db=CORE.load(); goAuth(); }
+});
 </script>
 </body>
 </html>
