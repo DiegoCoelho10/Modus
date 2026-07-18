@@ -975,6 +975,11 @@ function migrate3(d){
   if(!d.loja) d.loja=LOJA();
   if(!d.pedidos) d.pedidos=[];
   if(!d.config) d.config={pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"};
+  /* Firestore proíbe array dentro de array: pares do associar viram objetos {a,b} */
+  Object.values(d.materias||{}).forEach(mm=>(mm.unidades||[]).forEach(un=>(un.licoes||[]).forEach(l=>(l.ex||[]).forEach(e=>{
+    if(e&&e.t==="associar"&&Array.isArray(e.pares))
+      e.pares=e.pares.map(p=>Array.isArray(p)?{a:p[0],b:p[1]}:p);
+  }))));
   Object.values(d.users).forEach(hidrataAluno);
   const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
   if(br&&!d.pedidos.length)
@@ -1408,10 +1413,10 @@ async function entrar(){
   $("#login").classList.add("hide"); $("#panel").classList.add("on");
   $("#whoami").textContent="Gestor";
   navs(); paint();
-  if(!Object.keys(db.materias||{}).length) avisoPublicar();
+  if(Object.keys(db.materias||{}).length<4) avisoPublicar();
 }
 function avisoPublicar(){
-  modal(`<h3>Publicar conteúdo inicial</h3><div class="mp">O banco na nuvem está vazio. Publique os cursos, as 4 matérias com os 97 exercícios e o catálogo da loja que já vivem neste painel. Sem isso, nenhum aluno vê conteúdo.</div>
+  modal(`<h3>Publicar conteúdo inicial</h3><div class="mp">O banco na nuvem está sem parte do conteúdo. Publique (ou republique) os cursos, as 4 matérias com os 97 exercícios e o catálogo da loja que já vivem neste painel. Atenção: republicar restaura o conteúdo embutido aqui, sobrescrevendo edições de matéria feitas direto na nuvem.</div>
     <div class="mbtns"><button class="mb2" id="pubY">Publicar tudo</button><button class="mb2 ghost" id="pubN">Depois</button></div>`);
   $("#pubY").onclick=async()=>{
     $("#pubY").disabled=true; $("#pubY").textContent="Publicando…";
@@ -1858,8 +1863,10 @@ function validar(arr){
         }
         break;
       case "associar":
+        if(Array.isArray(e.pares)) e.pares=e.pares.map(p=>Array.isArray(p)?{a:p[0],b:p[1]}:p);
         if(!Array.isArray(e.pares)||e.pares.length<2) E.push(T+"precisa de 2+ pares");
-        else if(new Set(e.pares.map(p=>p[1])).size!==e.pares.length) E.push(T+"lados direitos duplicados");
+        else if(e.pares.some(p=>!p||typeof p.a!=="string"||typeof p.b!=="string")) E.push(T+"cada par precisa de {a,b} ou [a,b]");
+        else if(new Set(e.pares.map(p=>p.b)).size!==e.pares.length) E.push(T+"lados direitos duplicados");
         break;
       case "lacuna": {
         if(!e.frase||!Array.isArray(e.gab)||!Array.isArray(e.banco)) { E.push(T+"precisa de frase, gab e banco"); break; }
