@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0F0D0C">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Modus Edu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
@@ -1358,10 +1362,17 @@ const GESTOR_EMAIL="gestor@modus.edu";
 const NUVEM = typeof firebase!=="undefined";
 let FS=null, AU=null, CACHE=null, SNAP={};
 
-function fbInit(){
+function fbInit(nomeApp){
   if(!NUVEM) return false;
-  if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
-  AU=firebase.auth(); FS=firebase.firestore();
+  /* app nomeado tem sessão PRÓPRIA no Firebase: o painel vive em "gestor",
+     o app do aluno no padrão. Um login não derruba mais o outro. */
+  let app=null;
+  try{
+    if(nomeApp) app=(firebase.apps||[]).find(a=>a&&a.name===nomeApp)||firebase.initializeApp(FB_CONFIG,nomeApp);
+    else app=(firebase.apps||[]).find(a=>a&&a.name==="[DEFAULT]")||firebase.initializeApp(FB_CONFIG);
+  }catch(e){ app=null; }
+  AU=(app&&app.auth)?app.auth():firebase.auth();
+  FS=(app&&app.firestore)?app.firestore():firebase.firestore();
   return true;
 }
 const onAuth=cb=>AU.onAuthStateChanged(cb);
@@ -2312,13 +2323,17 @@ $("#dBtn").onclick=()=>{ $("#done").classList.remove("on"); document.body.style.
 
 /* ============ BOOT ============ */
 CORE.fbInit();
+$("#authSlot").innerHTML='<div class="auth-p" style="text-align:center;padding:34px 0">Conectando…</div>';
 CORE.onAuth(async user=>{
   if(!user){
     db=CORE.load();
     try{ await CORE.preCursos(); }catch(e){}
     return goAuth();
   }
-  if((user.email||"").toLowerCase()===CORE.GESTOR_EMAIL){ CORE.logout(); return; }
+  if((user.email||"").toLowerCase()===CORE.GESTOR_EMAIL){
+    CORE.logout();
+    return goAuth(()=>telaLogin("Conta de gestor detectada. O painel usa sessão própria: entre por ele."));
+  }
   try{
     const u=await CORE.bootAluno(user.uid);
     db=CORE.load();
