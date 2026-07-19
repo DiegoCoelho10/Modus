@@ -1232,8 +1232,12 @@ async function publicarConteudo(){
   const jobs=[];
   Object.values(d.cursos).forEach(c=>jobs.push(FS.collection("cursos").doc(c.id).set(JSON.parse(JSON.stringify(c)))));
   Object.values(d.materias).forEach(mm=>jobs.push(FS.collection("materias").doc(mm.id).set(JSON.parse(JSON.stringify(mm)))));
-  jobs.push(FS.collection("config").doc("loja").set({itens:LOJA()}));
-  jobs.push(FS.collection("config").doc("geral").set((CACHE&&CACHE.config)||{pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"}));
+  /* só semeia o catálogo da loja se ainda não existir; nunca sobrescreve preços já editados */
+  const lojaAtual=(CACHE&&Array.isArray(CACHE.loja)&&CACHE.loja.length)?CACHE.loja:LOJA();
+  jobs.push(FS.collection("config").doc("loja").set({itens:lojaAtual}));
+  /* preserva a config do gestor (chave Pix, preços); só preenche o que falta */
+  const cfg=Object.assign({pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"},(CACHE&&CACHE.config)||{});
+  jobs.push(FS.collection("config").doc("geral").set(cfg));
   await Promise.all(jobs);
   return bootGestor();
 }
@@ -1388,6 +1392,11 @@ function vLojaAdm(){
       <label class="flb">Cidade</label><input class="finp" id="pxC" value="${esc(db.config.pixCidade||"")}">
       <div class="acts" style="margin-top:10px"><button class="act a" id="pxS">Salvar Pix</button></div>
     </div>
+    <div class="sec">Conteúdo</div>
+    <div class="card">
+      <div class="prow"><span>Republicar matérias, cursos e catálogo na nuvem</span><button class="act a" id="rePub">Republicar</button></div>
+      <div class="subh" style="margin-top:8px">Use após atualizar os arquivos do app. Reescreve o conteúdo com a versão embutida no painel. Preserva alunos, pedidos, sua chave Pix e os preços já salvos.</div>
+    </div>
     <div class="sec">Preços do sistema</div>
     <div class="card">
       <div class="prow"><span>Recarga de vidas (Brasas)</span><input class="sinp" id="sVida" type="number" min="1" step="1" value="${(db.config.vidaPreco||60)}"></div>
@@ -1440,6 +1449,14 @@ function vLojaAdm(){
     db.config.pixNome=$("#pxN").value.trim();
     db.config.pixCidade=$("#pxC").value.trim();
     CORE.save(db); toast("Pix salvo");
+  };
+  $("#rePub").onclick=()=>{
+    modal(`<h3>Republicar conteúdo?</h3><div class="mp">Reescreve as 4 matérias, os cursos e o catálogo na nuvem com a versão atual do painel. Alunos, XP, fotos, pedidos, sua chave Pix e os preços salvos são preservados. Bom para trazer novidades do app (como as introduções do Lume) para a nuvem.</div>
+      <div class="mbtns"><button class="mb2" id="rpY">Republicar</button><button class="mb2 ghost" id="rpN">Cancelar</button></div>`);
+    $("#rpY").onclick=async()=>{ $("#rpY").disabled=true; $("#rpY").textContent="Publicando…";
+      try{ db=await CORE.publicarConteudo(); closeModal(); refresh(); toast("Conteúdo republicado"); }
+      catch(e){ closeModal(); toast("Falhou: "+((e&&e.message)||e)); } };
+    $("#rpN").onclick=closeModal;
   };
   $("#sSys").onclick=()=>{
     const num=v=>{ const n=Number(String(v).replace(",",".")); return isFinite(n)?n:null; };
