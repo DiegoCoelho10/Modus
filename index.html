@@ -487,6 +487,13 @@ input{font:inherit}
 .in-dest{font-family:var(--ff-m);font-size:13px;color:var(--amber);background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-top:11px}
 .in-next{margin-top:16px;width:100%}
 .in-skip{margin-top:8px}
+.in-tag{font-family:var(--ff-m);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--warn);margin-bottom:12px}
+.in-ex{margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:12px;text-align:left}
+.in-ex-q{font-size:13px;color:var(--text);margin-bottom:8px;font-style:italic}
+.in-ex-s{font-family:var(--ff-m);font-size:12.5px;color:var(--text-2);padding:2px 0 2px 12px;border-left:2px solid var(--border);margin:2px 0}
+.in-ex-r{font-family:var(--ff-m);font-size:13.5px;color:var(--amber);margin-top:8px;font-weight:600}
+.study-chip{display:block;margin:6px auto 0;font-family:var(--ff-m);font-size:10px;letter-spacing:.04em;color:var(--text-2);border:1px solid var(--border);border-radius:7px;padding:3px 9px;background:var(--surface)}
+.node-wrap.done .study-chip,.node-wrap.cur .study-chip{color:var(--warn);border-color:rgba(217,164,65,.4)}
 </style>
 </head>
 <body>
@@ -580,7 +587,7 @@ const uid=p=>p+"_"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)
    Este é exatamente o formato que o importador de JSON do painel consome.
    --------------------------------------------------------------------------- */
 const ECONOMIA_F1 = [
-  { id:"f1l1", titulo:"Oferta, Demanda e Equilíbrio", plano:"free", ex:[
+  { id:"f1l1", titulo:"Oferta, Demanda e Equilíbrio", estudo:[{"t": "Bem-vindo à microeconomia: o estudo de como pessoas, empresas e mercados tomam decisões, um a um, de pertinho."}, {"t": "Tudo gira em torno de duas forças opostas. A demanda é o desejo de comprar; a oferta é a disposição de vender.", "d": "Demanda = comprar · Oferta = vender"}, {"t": "Lei da demanda: quando o preço sobe, a quantidade que as pessoas querem comprar cai. Caro demais, a fila diminui."}, {"t": "Lei da oferta: quando o preço sobe, a quantidade que as empresas querem vender aumenta. Preço bom, mais gente quer produzir."}, {"t": "As duas forças se cruzam num ponto. Ali, a quantidade que se quer comprar é exatamente a que se quer vender. Nasce o preço de equilíbrio.", "d": "Oferta = Demanda → preço de equilíbrio"}, {"t": "Fora do equilíbrio o mercado se corrige sozinho: sobra de produto empurra o preço para baixo, falta empurra para cima, até reencontrar o ponto."}, {"t": "Guarde a imagem do cabo de guerra: comprador puxa o preço para baixo, vendedor para cima, e o equilíbrio é onde a corda para de se mexer."}], plano:"free", ex:[
     { t:"escolha", p:"O que a <b>demanda</b> representa em um mercado?",
       o:["A quantidade que os compradores estão dispostos e capazes de adquirir a determinados preços, num dado período",
          "A quantidade que os produtores colocam no mercado a diferentes níveis de preço",
@@ -609,7 +616,7 @@ const ECONOMIA_F1 = [
       claim:"Um avanço tecnológico tende a <b>reduzir</b> os custos de produção e <b>aumentar</b> a oferta de bens.",
       r:true, e:"Exatamente. Tecnologia é um determinante da oferta, e ela empurra a curva para a direita." }
   ]},
-  { id:"f1l2", titulo:"Elasticidade", plano:"free", ex:[
+  { id:"f1l2", titulo:"Elasticidade", estudo:[{"t": "Elasticidade responde a uma pergunta prática: quando o preço muda, o quanto as pessoas realmente reagem?"}, {"t": "É a sensibilidade da quantidade ao preço. Muito sensível, chamamos de elástico. Pouco sensível, inelástico.", "d": "Elasticidade = o tamanho da reação ao preço"}, {"t": "Bem elástico: um docinho supérfluo. Subiu o preço, todo mundo abre mão. A quantidade despenca mais que o preço subiu."}, {"t": "Bem inelástico: remédio essencial, sal, combustível. O preço sobe e a pessoa continua comprando quase igual, porque não dá para largar."}, {"t": "O que torna algo elástico? Ter substituto fácil, ser supérfluo, pesar muito no bolso. Sem substituto e essencial, vira inelástico."}, {"t": "Isso muda estratégia de preço: baixar preço de bem inelástico não aumenta muito a venda, é dinheiro jogado fora. Em bem elástico, uma promoção lota a loja."}, {"t": "Guarde: elasticidade é o termômetro da reação. Ela decide se mexer no preço vale a pena ou não."}], plano:"free", ex:[
     { t:"escolha", p:"Para que serve a <b>elasticidade</b>?",
       o:["Medir a sensibilidade da demanda ou da oferta a variações de preço ou renda",
          "Calcular o lucro total de uma empresa no período",
@@ -640,7 +647,7 @@ const ECONOMIA_F1 = [
          "Obriga o mercado a virar concorrência perfeita"],
       r:0, e:"Justamente porque a pessoa continua comprando, o imposto arrecada sem derrubar a base." }
   ]},
-  { id:"f1l3", titulo:"Estruturas de Mercado", plano:"free", ex:[
+  { id:"f1l3", titulo:"Estruturas de Mercado", estudo:[{"t": "Nem todo mercado funciona igual. A estrutura dele depende de quantos vendem e do poder que cada um tem sobre o preço."}, {"t": "No extremo saudável está a concorrência perfeita: muitos vendedores, produto igual, ninguém manda no preço. Todos aceitam o preço do mercado.", "d": "Concorrência = muitos vendem, ninguém domina"}, {"t": "No extremo oposto, o monopólio: um único vendedor, sem substituto. Ele define o preço, porque não tem para onde o cliente fugir.", "d": "Monopólio = um só vende, ele manda no preço"}, {"t": "No meio vive o oligopólio: poucos vendedores grandes que dominam o setor. Pense em companhias aéreas ou operadoras de celular."}, {"t": "O oligopólio tem uma tensão especial: interdependência. Cada empresa decide olhando o que as outras vão fazer, porque uma reage à outra."}, {"t": "Há ainda a concorrência monopolística: muitos vendedores, mas cada um com um diferencial (marca, sabor, atendimento) que dá um pouquinho de poder sobre o preço."}, {"t": "Guarde a régua: quanto menos vendedores e menos substitutos, mais poder de preço. Concorrência de um lado, monopólio do outro."}], plano:"free", ex:[
     { t:"escolha", p:"Quais são as <b>três características</b> que definem uma estrutura de mercado?",
       o:["Número de empresas, tipo do produto e existência de barreiras à entrada",
          "Preço, quantidade e lucro","Renda, tecnologia e tributação","Oferta, demanda e equilíbrio"],
@@ -669,7 +676,7 @@ const ECONOMIA_F1 = [
       seq:["Concorrência perfeita","Oligopólio","Monopólio"],
       e:"Quanto menos concorrente e maior a barreira, maior o poder de fixar preço." }
   ]},
-  { id:"f1l4", titulo:"Comportamento dos Consumidores", plano:"free", ex:[
+  { id:"f1l4", titulo:"Comportamento dos Consumidores", estudo:[{"t": "Por trás de cada compra existe uma lógica. A teoria do consumidor estuda como as pessoas gastam um dinheiro que é sempre limitado."}, {"t": "A régua é a utilidade: a satisfação que um bem entrega. A pessoa busca o máximo de satisfação com o dinheiro que tem.", "d": "Utilidade = satisfação que o consumo entrega"}, {"t": "Mas existe uma armadilha: a utilidade marginal decrescente. Cada unidade a mais satisfaz menos que a anterior.", "d": "Cada unidade extra satisfaz um pouco menos"}, {"t": "A primeira fatia de pizza com fome é divina. A quarta é ok. A sétima quase enjoa. O bem é o mesmo; a satisfação extra encolhe."}, {"t": "Por isso a pessoa distribui o gasto: em vez de despejar tudo num bem só, espalha entre vários, buscando o melhor equilíbrio de satisfação."}, {"t": "A restrição orçamentária é o muro: você escolhe dentro do que cabe no bolso. Economia é, no fundo, a ciência da escolha sob limite."}, {"t": "Guarde: o consumidor racional gasta até onde cada real gasto rende a mesma satisfação em qualquer bem. Aí ele otimizou."}], plano:"free", ex:[
     { t:"escolha", p:"De que pressuposto parte a <b>teoria do consumidor</b>?",
       o:["As pessoas buscam maximizar sua utilidade, ou satisfação, ao consumir",
          "As pessoas compram sempre o mais barato disponível",
@@ -699,7 +706,7 @@ const ECONOMIA_F1 = [
       banco:["renda","preços","diminui","aumenta","tecnologia","custos"],
       e:"Isso é a Lei da Demanda, e ela fecha o ciclo com a primeira lição." }
   ]},
-  { id:"f1l5", titulo:"Teoria dos Jogos e Equilíbrio", plano:"pro", ex:[
+  { id:"f1l5", titulo:"Teoria dos Jogos e Equilíbrio", estudo:[{"t": "Quando poucos players dominam, decidir preço vira xadrez: cada jogada depende da resposta do adversário. Isso é teoria dos jogos."}, {"t": "A ideia central: o resultado de cada empresa não depende só dela, mas da combinação das decisões de todas. Interdependência estratégica.", "d": "Meu resultado depende da jogada do outro"}, {"t": "O conceito-chave é o equilíbrio: um ponto em que nenhuma empresa consegue melhorar sozinha, mudando só a própria decisão.", "d": "Equilíbrio = ninguém ganha agindo sozinho"}, {"t": "Exemplo clássico: se você baixa o preço para roubar clientes, os concorrentes baixam também. No fim, todo mundo lucra menos. Ninguém saiu na frente."}, {"t": "Por isso oligopólios vivem a tentação de combinar preços (cartel), que é ilegal, justamente porque a guerra de preços machuca todos."}, {"t": "O equilíbrio de Nash formaliza isso: dadas as decisões dos outros, nenhum jogador tem incentivo para mudar a sua. Ficou todo mundo travado no ponto."}, {"t": "Guarde: em mercado concentrado, decisão inteligente é a que já prevê a reação do adversário. Você nunca joga sozinho."}], plano:"pro", ex:[
     { t:"escolha", p:"Qual estrutura de mercado deu a base para a <b>Teoria dos Jogos</b>?",
       o:["O duopólio, com duas empresas concorrentes","A concorrência perfeita, com muitas empresas",
          "O monopólio, com uma única empresa","O mercado agrícola de commodities"],
@@ -744,7 +751,7 @@ const DEFAULT_DB = () => {
       matfin:{ id:"matfin", nome:"Matemática Financeira", projeto:"Avaliar a viabilidade financeira de um projeto",
         unidades:[
           { id:"mf_f1", nome:"Fase 1", sub:"Fundamentos e capitalização", intro:INTRO_MF1, licoes:[
-            { id:"mf_f1l1", titulo:"Valor do dinheiro no tempo", plano:"free", ex:[
+            { id:"mf_f1l1", titulo:"Valor do dinheiro no tempo", estudo:[{"t": "Toda a matemática financeira nasce de uma frase: dinheiro tem hora. R$ 1 hoje vale mais que R$ 1 amanhã."}, {"t": "Por quê? Inflação corrói o poder de compra, e dinheiro parado poderia estar rendendo juros. O tempo cobra pedágio.", "d": "R$ 1 hoje > R$ 1 no futuro"}, {"t": "Então todo valor tem um endereço no tempo. O de hoje chama Valor Presente (PV). O lá na frente chama Valor Futuro (VF)."}, {"t": "Quatro letras resolvem quase tudo: PV (valor hoje), VF (valor no futuro), i (a taxa de juros) e n (o número de períodos).", "d": "VF = PV × (1 + i)ⁿ"}, {"t": "Essa fórmula é a sua espada. Ela leva um valor de hoje para o futuro, aplicando a taxa período a período.", "ex": {"q": "R$ 4.000 rendendo 5% ao mês, por 4 meses. Quanto vira?", "s": ["VF = 4.000 × (1,05)⁴", "(1,05)⁴ = 1,21550", "VF = 4.000 × 1,21550"], "r": "VF = R$ 4.862,02"}}, {"t": "Repare: 5% ao mês por 4 meses NÃO é 20%. Os juros incidem sobre o que já rendeu, e por isso o número final é maior. Isso é capitalização."}, {"t": "E cuidado com a pegadinha de ouro: o n anda sempre na mesma unidade do i. Taxa ao mês pede n em meses. Trocar dá desastre.", "ex": {"q": "O mesmo problema com 120 dias no lugar de 4 meses (que é a mesma coisa)", "s": ["errado: VF = 4.000 × (1,05)¹²⁰", "dá R$ 1.395.647 — impossível"], "r": "120 dias = 4 meses, mas o expoente conta PERÍODOS, não dias"}}, {"t": "Guarde a ideia: identificar PV, i, n e a unidade certa já resolve metade das questões. Bora praticar."}], plano:"free", ex:[
               { t:"escolha", p:"Toda operação financeira começa com um valor no <b>momento zero</b>. Como a apostila chama esse valor?",
                 o:["Principal, Capital, Valor Presente ou PV: todos são o mesmo valor inicial",
                    "Montante, também chamado de Valor de Resgate",
@@ -778,7 +785,7 @@ const DEFAULT_DB = () => {
                 banco:["prazo","remuneração","taxa","montante","inflação","risco"],
                 e:"Prazo e taxa. Esses dois fatores são o motivo de a Matemática Financeira existir." }
             ]},
-            { id:"mf_f1l2", titulo:"Taxa nominal e taxa efetiva", plano:"free", ex:[
+            { id:"mf_f1l2", titulo:"Taxa nominal e taxa efetiva", estudo:[{"t": "Nem toda taxa é o que parece. Existe a que está escrita no contrato e a que sai do seu bolso. Elas quase nunca são iguais."}, {"t": "A taxa NOMINAL é a de fachada: a que o banco anuncia. Ela é referencial, e serve de base para o cálculo.", "d": "Nominal = a taxa anunciada"}, {"t": "A taxa EFETIVA é a verdade: o que realmente incidiu depois de todas as capitalizações do período.", "d": "Efetiva = a taxa que você paga de fato"}, {"t": "Quando a capitalização acontece mais de uma vez, as duas se separam. Veja a mágica:", "ex": {"q": "R$ 10.000 a 10% ao ano, capitalizando 2 vezes (a cada 6 meses)", "s": ["viram 5% por semestre, 2 vezes", "S = 10.000 × (1 + 0,05)²", "S = 10.000 × 1,1025"], "r": "S = R$ 11.025 — juros de R$ 1.025"}}, {"t": "A nominal dizia 10%. Mas R$ 1.025 sobre R$ 10.000 é 10,25%. Essa é a efetiva. A diferença toda nasceu da capitalização.", "d": "Efetiva = 10,25% ao ano (nominal era 10%)"}, {"t": "Se capitalizasse uma vez só, as duas seriam iguais: R$ 11.000, 10% e 10%. É da segunda capitalização em diante que elas divergem."}, {"t": "Moral: quando alguém te oferece uma taxa, pergunte quantas vezes ela capitaliza. A efetiva é a que decide."}], plano:"free", ex:[
               { t:"classificar", p:"Segundo Samanez (2002), classifique cada afirmação.",
                 b:["Taxa nominal","Taxa efetiva"],
                 i:[{x:"Aplica-se em operações com juros simples",b:0},
@@ -804,7 +811,7 @@ const DEFAULT_DB = () => {
                    "Porque ela já inclui todas as capitalizações do período"],
                 r:0, e:"Ela é o ponto de partida escrito no papel. O resultado real vem da efetiva." }
             ]},
-            { id:"mf_f1l3", titulo:"Taxas equivalentes", plano:"free", ex:[
+            { id:"mf_f1l3", titulo:"Taxas equivalentes", estudo:[{"t": "Duas taxas são equivalentes quando levam o mesmo dinheiro ao mesmo lugar, mesmo tendo números diferentes e períodos diferentes."}, {"t": "O erro clássico: achar que 10% ao mês vira 120% ao ano (10 × 12). Não vira. Em juros compostos, a conta é outra.", "d": "NÃO multiplique a taxa pelo número de períodos"}, {"t": "Para subir de período (menor para maior), você eleva o fator ao número de períodos que cabem dentro.", "d": "i_maior = [(1 + i_menor)ⁿ − 1] × 100"}, {"t": "Veja o susto do cheque especial:", "ex": {"q": "10% ao mês equivale a quanto ao ano?", "s": ["i = [(1 + 0,10)¹² − 1] × 100", "(1,10)¹² = 3,1384", "[3,1384 − 1] × 100"], "r": "213,84% ao ano — não 120%"}}, {"t": "O n é quantos períodos menores cabem no maior: dia→mês é 12? Não: 30. Mês→ano é 12. Trimestre→ano é 4. Bimestre→semestre é 3."}, {"t": "Para descer de período (maior para menor), o expoente vira fração: ano→mês é 1/12, ano→trimestre é 1/4. É radiciação."}, {"t": "Confirmação de que equivalência funciona: 2,5% ao mês por 12 meses e 34,48% ao ano de uma vez dão o mesmíssimo R$ 13.448,88 sobre R$ 10.000."}, {"t": "Fixe: taxas equivalentes são caminhos diferentes para o mesmo destino. O elo entre elas é sempre o fator (1 + i)."}], plano:"free", ex:[
               { t:"calculo", p:"Seu banco cobra <b>10% ao mês</b> no cheque especial. Muita gente acha que dá 120% ao ano.<br>Qual a taxa <b>equivalente</b> ao ano, em capitalização composta?",
                 dica:"I maior = [(1 + i menor)^n - 1] x 100", r:213.84, tol:0.05, un:"% ao ano",
                 e:"[(1,10)^12 - 1] x 100 = [3,1384 - 1] x 100 = 213,84% ao ano. Não é 120%, e essa diferença é a lição inteira." },
@@ -830,7 +837,7 @@ const DEFAULT_DB = () => {
                 banco:["12","1","34,48","2","0","120"],
                 e:"O fator de acumulação menos 1 é a taxa. Simples assim." }
             ]},
-            { id:"mf_f1l4", titulo:"Juros simples", plano:"free", ex:[
+            { id:"mf_f1l4", titulo:"Juros simples", estudo:[{"t": "Juros simples é o regime mais inocente: os juros incidem sempre sobre o valor inicial, e nunca sobre os juros já ganhos."}, {"t": "Como o principal nunca muda, cada período rende exatamente a mesma parcela. O crescimento é uma linha reta.", "d": "J = P × i × n"}, {"t": "Veja com R$ 20.000 a 15% ao ano:", "ex": {"q": "Quanto rende em 1 ano? E em 5 anos?", "s": ["1 ano: J = 20.000 × 0,15 = 3.000", "5 anos: J = 20.000 × 0,15 × 5"], "r": "5 anos = R$ 15.000 (cinco parcelas iguais de 3.000)"}}, {"t": "O valor futuro é só somar os juros ao principal. Colocando P em evidência, nasce a fórmula limpa.", "d": "VF = P × (1 + i × n)"}, {"t": "Com os mesmos números: 20.000 × (1 + 0,15 × 5) = 20.000 × 1,75 = R$ 35.000. Reta perfeita: 23 mil, 26, 29, 32, 35."}, {"t": "Na prática, juros simples quase não existe no mundo real. Samanez avisa: só faz sentido no curtíssimo prazo. Seu cartão de crédito não é assim."}, {"t": "Guarde juros simples como o contraste: é o 'antes' que faz você enxergar a força dos juros compostos, que vêm agora."}], plano:"free", ex:[
               { t:"calculo", p:"Aplicação de <b>R$ 20.000,00</b> a <b>15% ao ano</b>, em juros simples.<br>Qual o valor dos juros em 1 ano?",
                 dica:"J = P x i", r:3000, tol:0.05, un:"R$",
                 e:"20.000 x 0,15 = R$ 3.000,00. O montante seria 20.000 + 3.000 = R$ 23.000,00." },
@@ -853,7 +860,7 @@ const DEFAULT_DB = () => {
                    "É obrigatória em contratos acima de 12 meses"],
                 r:0, e:"A apostila é direta: no seu cartão de crédito não é assim. O mundo real roda em juros compostos." }
             ]},
-            { id:"mf_f1l5", titulo:"Juros compostos", plano:"free", ex:[
+            { id:"mf_f1l5", titulo:"Juros compostos", estudo:[{"t": "Juros compostos é o regime do mundo real: os juros de cada período entram no bolo e passam a render também. Juros sobre juros."}, {"t": "A diferença com o simples é só uma: aqui a taxa incide sobre o montante ATUALIZADO, não sobre o valor inicial.", "d": "VF = P × (1 + i)ⁿ"}, {"t": "Veja o ano 2 se separando do simples:", "ex": {"q": "R$ 20.000 a 15% ao ano, composto", "s": ["ano 1: juros de 3.000, vira 23.000", "ano 2: 15% sobre 23.000 (não sobre 20.000)", "= 3.450 de juros"], "r": "no simples, o ano 2 daria 3.000 de novo"}}, {"t": "Ao longo de 5 anos essa diferença explode:", "ex": {"q": "Os mesmos R$ 20.000 a 15%, em 5 anos", "s": ["composto: 20.000 × (1,15)⁵", "simples daria 35.000"], "r": "composto = R$ 40.227 — R$ 5.227 a mais só pelo regime"}}, {"t": "O (1 + i) é o fator que atualiza o valor a cada período. Repetir n vezes é elevar a n. É daí que sai o expoente.", "d": "crescimento exponencial, não linear"}, {"t": "Essa é a diferença que constrói e destrói fortunas: no simples o capital sobe em reta, no composto sobe em curva que acelera."}, {"t": "Toda a matemática financeira séria roda em juros compostos. Guarde a curva na cabeça e bora às missões."}], plano:"free", ex:[
               { t:"calculo", p:"R$ 20.000,00 a <b>15% ao ano</b> em juros <b>compostos</b>. No ano 1 os juros foram R$ 3.000 e o montante virou R$ 23.000.<br>Qual o valor dos juros no <b>ano 2</b>?",
                 dica:"Os juros incidem sobre o capital ATUALIZADO", r:3450, tol:0.05, un:"R$",
                 e:"23.000 x 0,15 = R$ 3.450,00. Aqui mora a diferença: em juros simples o ano 2 daria R$ 3.000 de novo, porque o principal não muda." },
@@ -882,7 +889,7 @@ const DEFAULT_DB = () => {
                    {x:"Montante de R$ 40.227,13 em 5 anos no mesmo exemplo",b:1}],
                 e:"Mesmo capital, mesma taxa, mesmo prazo. Só muda sobre o que os juros incidem." }
             ]},
-            { id:"mf_f1l6", titulo:"Taxa real e Fórmula de Fisher", plano:"pro", ex:[
+            { id:"mf_f1l6", titulo:"Taxa real e Fórmula de Fisher", estudo:[{"t": "Ganhar 10% num ano com 6% de inflação não é ganhar 10%, nem ganhar 4%. O ganho real tem uma fórmula própria, e ela não é subtração."}, {"t": "A inflação come o poder de compra do seu dinheiro. Para saber o que sobrou de verdade, você precisa expurgar ela do ganho.", "d": "taxa real = o ganho depois da inflação"}, {"t": "A ferramenta é a Fórmula de Fisher: divide o fator de juros pelo fator de inflação e subtrai 1.", "d": "real = [(1 + juros) ÷ (1 + inflação)] − 1"}, {"t": "Veja por que subtrair engana:", "ex": {"q": "Juros de 10%, inflação de 6%", "s": ["real = (1,10 ÷ 1,06) − 1", "= 1,037736 − 1"], "r": "3,77% — não os 4% da subtração"}}, {"t": "No Brasil o índice oficial de inflação é o IPCA, medido pelo IBGE sobre uma cesta de consumo das famílias."}, {"t": "Fixe: taxa nominal é a que aparece, taxa real é a que sobra depois que a inflação cobra a parte dela. Fisher faz essa conta."}], plano:"pro", ex:[
               { t:"escolha", p:"O gerente oferece R$ 10.000,00 por 12 meses a <b>10%</b>. A inflação projetada é <b>6%</b>. Você vai ganhar 4% de lucro real?",
                 o:["Não, o ganho real sai da Fórmula de Fisher e não de uma subtração",
                    "Sim, basta subtrair 10% - 6% = 4%",
@@ -909,7 +916,7 @@ const DEFAULT_DB = () => {
             ]}
           ]},
           { id:"mf_f2", nome:"Fase 2", sub:"Lucro e caixa", intro:INTRO_MF2, licoes:[
-            { id:"mf_f2l1", titulo:"Resultado e geração de riqueza", plano:"free", ex:[
+            { id:"mf_f2l1", titulo:"Resultado e geração de riqueza", estudo:[{"t": "Sair das fórmulas e olhar a empresa por dentro. Aqui você aprende como o lucro nasce e como a riqueza se acumula."}, {"t": "A Demonstração de Resultado é uma escada descendente. Você começa na receita e desce degraus, descontando em cada um.", "d": "LAJIR → LAIR → Lucro Líquido"}, {"t": "Primeiro degrau: o Lucro Operacional (LAJIR), antes de juros e imposto. Depois entram receita e despesa financeira e chega o LAIR. Saem IR e CSLL, sobra o Lucro Líquido."}, {"t": "O alerta do Lume: lucro no papel não paga boleto. Uma empresa pode dar lucro e quebrar por falta de caixa. Caixa e lucro são coisas diferentes."}, {"t": "E tem uma ordem que surpreende: primeiro vem o passivo, depois o ativo. Você levanta o dinheiro antes de comprar a máquina.", "d": "Passivo → Ativo → Receita → Lucro"}, {"t": "O estoque é comprado a prazo, a máquina vem de financiamento, o giro vem de sócios ou bancos. Sempre tem alguém financiando antes de existir ativo."}, {"t": "No fim, o lucro se divide: parte volta como reinvestimento (retenção), parte sai como dividendos para os donos. Reter é acumular riqueza."}, {"t": "Guarde: a empresa é uma máquina de transformar capital de terceiros em ativo, ativo em receita, e receita em lucro reinvestido."}], plano:"free", ex:[
               { t:"ordenar", p:"Coloque os três lucros da Demonstração de Resultado na ordem em que aparecem.",
                 seq:["Lucro Operacional (LAJIR)","Lucro Antes do Imposto de Renda (LAIR)","Lucro Líquido do Exercício"],
                 e:"LAJIR é antes de juros e IR. Entram receita e despesa financeira, chega o LAIR. Saem IR e CSLL, sobra o Lucro Líquido." },
@@ -933,7 +940,7 @@ const DEFAULT_DB = () => {
                    "Porque só servem para empresas de capital aberto"],
                 r:0, e:"Estático é a palavra da apostila. Eles fotografam um intervalo de tempo, mas não mostram o dinheiro girando." }
             ]},
-            { id:"mf_f2l2", titulo:"Risco e retorno", plano:"free", ex:[
+            { id:"mf_f2l2", titulo:"Risco e retorno", estudo:[{"t": "Todo investimento é uma aposta sobre o futuro. E aposta tem duas perguntas: quanto posso ganhar, e qual a chance de dar errado."}, {"t": "Risco é a probabilidade de algo afetar o investimento e gerar perda. Não é certeza de prejuízo: é probabilidade, e dá para estimar.", "d": "Risco = probabilidade de perda"}, {"t": "Risco e retorno andam de mãos dadas, na mesma direção: quanto maior o risco, mais retorno o investidor exige para topar.", "d": "Risco ↑ ⟹ Retorno exigido ↑"}, {"t": "Ninguém aceita risco alto por retorno baixo. É essa regra que faz um investimento arriscado precisar prometer mais para atrair dinheiro."}, {"t": "As pessoas têm perfis: o averso ao risco exige mais retorno quando o risco sobe; o indiferente não muda a exigência. A maioria é avessa."}, {"t": "Guarde este binômio: ele é a base da próxima fase, onde o 'prêmio de risco' entra direto no cálculo da taxa que aprova ou reprova um projeto."}], plano:"free", ex:[
               { t:"escolha", p:"O que é <b>risco</b> em investimentos?",
                 o:["A probabilidade de ocorrer algo que afete o investimento e provoque perdas financeiras",
                    "A certeza de que o investimento vai dar prejuízo",
@@ -963,7 +970,7 @@ const DEFAULT_DB = () => {
             ]}
           ]},
           { id:"mf_f3", nome:"Fase 3", sub:"Viabilidade de projetos", intro:INTRO_MF3, licoes:[
-            { id:"mf_f3l1", titulo:"TMA e custo de capital", plano:"free", ex:[
+            { id:"mf_f3l1", titulo:"TMA e custo de capital", estudo:[{"t": "Fase final: decidir se um projeto merece o dinheiro. E toda decisão começa definindo uma régua mínima."}, {"t": "Essa régua é a TMA, Taxa Mínima de Atratividade: o retorno mais baixo que faz valer a pena correr o risco. Abaixo dela, nem conversa.", "d": "TMA = régua mínima do investidor"}, {"t": "A TMA é feita de duas partes: o custo do capital da empresa mais um prêmio pelo risco do projeto.", "d": "TMA = custo de capital + prêmio de risco"}, {"t": "De onde vem o dinheiro da empresa? De duas fontes: sócios (capital) e mercado (empréstimos, debêntures, fornecedores). As duas cobram."}, {"t": "A média ponderada do que ela paga por essas fontes tem nome: WACC, o custo médio de capital. É o piso da TMA.", "d": "WACC = custo médio ponderado do capital"}, {"t": "Guarde: antes de calcular se um projeto é bom, você define a régua. Projeto que não supera a TMA está reprovado antes de começar."}], plano:"free", ex:[
               { t:"escolha", p:"O que é a <b>Taxa Mínima de Atratividade</b> (TMA)?",
                 o:["O retorno mínimo exigido pelos investidores para aceitarem os riscos do investimento",
                    "O retorno máximo que o projeto pode gerar",
@@ -990,7 +997,7 @@ const DEFAULT_DB = () => {
                    "O percentual de dividendos distribuído aos acionistas"],
                 r:0, e:"Custo médio de capital. Ponderada, porque cada fonte tem um peso e um preço diferentes." }
             ]},
-            { id:"mf_f3l2", titulo:"Valor Presente Líquido", plano:"free", ex:[
+            { id:"mf_f3l2", titulo:"Valor Presente Líquido", estudo:[{"t": "O VPL responde à pergunta central: somando tudo que o projeto vai gerar, trazido para hoje, sobra ou falta dinheiro?"}, {"t": "A ideia: cada fluxo futuro é descontado para valor presente pela TMA, e todos são somados junto com o investimento inicial (que é negativo).", "d": "VPL = Σ FCₜ ÷ (1 + i)ᵗ"}, {"t": "Descontar é o inverso de capitalizar: um valor lá na frente vale menos hoje. Quanto mais distante, mais ele encolhe.", "ex": {"q": "R$ 28.449 no ano 2, com TMA de 15%", "s": ["28.449 ÷ (1,15)²", "= 28.449 ÷ 1,3225"], "r": "vale R$ 21.511 hoje"}}, {"t": "Somando todos os fluxos descontados de um projeto de exemplo, com o investimento inicial de −77.000, chega-se a um VPL de R$ 31.648."}, {"t": "A regra de decisão é simples e definitiva:", "d": "VPL > 0 aceita · VPL < 0 rejeita"}, {"t": "VPL positivo significa que, mesmo depois de pagar o custo do dinheiro no tempo, ainda sobrou valor. O projeto cria riqueza."}, {"t": "E note: quanto maior a TMA, menor o VPL. A régua mais alta esmaga os fluxos distantes. Bora calcular."}], plano:"free", ex:[
               { t:"escolha", p:"O que o <b>VPL</b> representa?",
                 o:["O somatório dos fluxos de caixa futuros trazidos a valor presente, somado ao investimento inicial",
                    "O lucro líquido acumulado do projeto ao longo dos anos",
@@ -1016,7 +1023,7 @@ const DEFAULT_DB = () => {
                    "O VPL vira zero, por definição"],
                 r:0, e:"A frase da apostila: quanto maior a taxa de desconto, menor o VPL. É por isso que a régua importa tanto." }
             ]},
-            { id:"mf_f3l3", titulo:"Payback nominal e descontado", plano:"free", ex:[
+            { id:"mf_f3l3", titulo:"Payback nominal e descontado", estudo:[{"t": "Payback responde 'quando eu recupero o que investi?'. É a pergunta de quem não quer o dinheiro preso por muito tempo."}, {"t": "O payback simples soma os fluxos até zerar o investimento. Mas ele tem um pecado: trata dinheiro de anos diferentes como se valesse o mesmo."}, {"t": "O payback DESCONTADO corrige isso: soma os fluxos já trazidos a valor presente. É o momento em que o acumulado descontado deixa de ser negativo.", "d": "Payback descontado = quando o acumulado vira positivo"}, {"t": "Como calcular a fração do último período:", "ex": {"q": "Acumulado em −6.446 no fim do ano 3, fluxo do ano 4 = 25.393", "s": ["falta 6.446 dos 25.393 do ano seguinte", "6.446 ÷ 25.393 = 0,25"], "r": "3 + 0,25 = 3,25 anos"}}, {"t": "O descontado é sempre mais longo que o nominal, porque descontar reduz cada fluxo, então demora mais para acumular o suficiente.", "ex": {"q": "Um projeto deu 2,33 anos nominal", "s": ["descontar encolhe os fluxos"], "r": "o mesmo projeto: 3,15 anos descontado"}}, {"t": "Guarde: payback mede tempo, não rentabilidade. Um projeto pode voltar rápido e render pouco. Por isso ele anda junto com VPL e TIR."}], plano:"free", ex:[
               { t:"escolha", p:"O que o <b>Payback Descontado</b> mede?",
                 o:["Quanto tempo o investidor leva para recuperar o investimento, já descontado o efeito do tempo no valor do dinheiro",
                    "Quanto o projeto rende em percentual sobre o investimento",
@@ -1039,7 +1046,7 @@ const DEFAULT_DB = () => {
                 claim:"Quando o Fluxo de Caixa Livre Descontado Acumulado fica <b>positivo</b>, o investidor já recuperou todo o investimento feito no início do projeto.",
                 r:true, e:"É o ponto de virada. Daí em diante, o que vem é ganho." }
             ]},
-            { id:"mf_f3l4", titulo:"TIR e Retorno Econômico", plano:"pro", ex:[
+            { id:"mf_f3l4", titulo:"TIR e Retorno Econômico", estudo:[{"t": "A TIR é a taxa mágica: aquela que, usada para descontar os fluxos, faz o VPL dar exatamente zero. É o ponto de equilíbrio do projeto."}, {"t": "Pense assim: se a TIR é a taxa que zera tudo, ela representa a rentabilidade pura do projeto, sem depender de régua externa.", "d": "TIR = a taxa que faz VPL = 0"}, {"t": "A regra de aceitação conversa com a fase 1 desta matéria: a TIR precisa superar a TMA.", "d": "TIR > TMA aceita o projeto"}, {"t": "Se a TIR supera a régua, o retorno cobre os custos financeiros, paga os juros e ainda sobra para os donos. É a técnica mais sofisticada para projetos longos."}, {"t": "Já o Retorno Econômico (RE) é mais direto: o VPL dividido pelo investimento inicial, em percentual.", "d": "RE = VPL ÷ Investimento inicial"}, {"t": "No projeto de exemplo:", "ex": {"q": "VPL de 31.648 sobre investimento de 77.000", "s": ["RE = 31.648 ÷ 77.000", "= 0,4110"], "r": "RE = 41,10% (regra: maior que zero)"}}, {"t": "Repare que cada indicador fala uma língua: VPL responde em reais, TIR e RE em percentual, payback em tempo. É por isso que às vezes brigam."}], plano:"pro", ex:[
               { t:"escolha", p:"O que é a <b>TIR</b>?",
                 o:["A taxa que faz o VPL do projeto ser igual a zero",
                    "A taxa mínima exigida pelos investidores",
@@ -1069,7 +1076,7 @@ const DEFAULT_DB = () => {
                 claim:"O Retorno Econômico representa, de forma total, o retorno gerado pelo investimento, e sua regra de aceitação é ser <b>maior que zero</b>.",
                 r:true, e:"Se o VPL é positivo, o RE também é, porque um é o outro dividido pelo investimento inicial." }
             ]},
-            { id:"mf_f3l5", titulo:"VPL contra TIR: o conflito", plano:"pro", ex:[
+            { id:"mf_f3l5", titulo:"VPL contra TIR: o conflito", estudo:[{"t": "Chegou a hora tensa: quando VPL e TIR apontam para projetos diferentes. Em quem você confia?"}, {"t": "O cenário: dois projetos mutuamente excludentes, só um pode ser feito. O A tem VPL maior. O B tem TIR maior. E agora?", "d": "A vence no VPL · B vence na TIR"}, {"t": "Por que isso acontece? A TIR premia dinheiro que chega cedo. Um projeto que concentra fluxo no início ganha TIR alta mesmo com VPL menor."}, {"t": "E há o efeito da régua: quanto maior a taxa de desconto, menor o VPL.", "ex": {"q": "Projeto A a taxas diferentes", "s": ["a 0%: VPL = 28.000", "a 10%: VPL = 11.071"], "r": "a régua alta esmaga os fluxos distantes"}}, {"t": "A resposta do Lume: quando eles discordam e você só pode escolher um, confie no VPL. Ele mede riqueza em reais, que é o objetivo real do investidor."}, {"t": "A ferramenta para decidir com consciência é traçar o perfil de VPL: ver como cada projeto se comporta conforme a TMA muda. A escolha pode inverter."}, {"t": "Guarde o fechamento da matéria: TIR é sedutora, mas VPL é soberano quando o assunto é criar valor."}], plano:"pro", ex:[
               { t:"escolha", p:"Gitman compara dois projetos. A 10% de desconto, o VPL de A é $11.071 e o de B é $10.924. Mas a TIR de A é 19,9% e a de B é 21,7%.<br>O que esse quadro mostra?",
                 o:["Um conflito entre os indicadores: A vence pelo VPL e B vence pela TIR",
                    "Que o projeto B é melhor pelos dois indicadores",
@@ -1427,6 +1434,7 @@ function hidrataAluno(u){
   if(u.proAte===undefined) u.proAte=null;
   if(!u.err) u.err={};
   if(!u.introVista) u.introVista={};
+  if(!u.estudoVisto) u.estudoVisto={};
   if(!u.done) u.done={};
   return u;
 }
@@ -1572,7 +1580,7 @@ async function cadastrarNuvem({nome,email,senha,cursoId}){
     acesso:c?c.materias.slice():[], foto:null,
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
-    proAte:null, err:{}, introVista:{},
+    proAte:null, err:{}, introVista:{}, estudoVisto:{},
     pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
     resp:0, certo:0, melhor:0, criadoEm:Date.now() };
   await FS.collection("users").doc(uid).set(u);
@@ -1659,7 +1667,7 @@ function novoAluno(db,{nome,email,senha,cursoId}){
     foto:null,
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
-    proAte:null, err:{}, introVista:{},
+    proAte:null, err:{}, introVista:{}, estudoVisto:{},
     pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
     resp:0, certo:0, melhor:0, criadoEm:Date.now() };
   db.users[u.id]=u; return u;
@@ -1943,7 +1951,13 @@ function vTrilha(){
       if(ehPro) n.onclick=()=>modalPro(l);
       else if(!bloq) n.onclick=()=>comIntro(u,l);
       w.appendChild(n);
-      w.appendChild(el("div","node-lab",esc(l.titulo)));
+      const lab=el("div","node-lab",esc(l.titulo));
+      if(l.estudo&&l.estudo.length&&!bloq){
+        const es=el("button","study-chip","📖 Estudar");
+        es.onclick=ev=>{ ev.stopPropagation(); abrirRoteiro(l.estudo,{ctx:"estudo",id:l.id,cta:"Fechar",fim:()=>{}}); };
+        lab.appendChild(es);
+      }
+      w.appendChild(lab);
       path.appendChild(w);
     });
     v.appendChild(path);
@@ -2059,8 +2073,10 @@ function abrirVidas(){
     hud(); buzz(18); flut("Vidas cheias!"); abrirVidas(); };
 }
 function comIntro(u,l){
-  if(u.intro&&u.intro.length&&!me.introVista[u.id]) abrirIntro(u,()=>abrir(l));
-  else abrir(l);
+  const fluxo=[];
+  if(u.intro&&u.intro.length&&!me.introVista[u.id]) fluxo.push(cb=>abrirRoteiro(u.intro,{ctx:"intro",id:u.id,cta:"Iniciar",fim:cb}));
+  if(l.estudo&&l.estudo.length&&!me.estudoVisto[l.id]) fluxo.push(cb=>abrirRoteiro(l.estudo,{ctx:"estudo",id:l.id,cta:"Ir às missões",fim:cb}));
+  (function passo(){ if(!fluxo.length) return abrir(l); fluxo.shift()(passo); })();
 }
 
 /* ============ LUME, o coelho ============ */
@@ -2100,23 +2116,36 @@ function LUME(pose){
   </svg>`;
 }
 let introSt=null;
-function abrirIntro(u,depois){
+/* motor de roteiro do Lume: toca telas de intro OU de estudo.
+   opt = {ctx:"intro"|"estudo", id, cta, fim} — vistoMap decide "Pular". */
+function abrirIntro(u,depois){ abrirRoteiro(u.intro,{ctx:"intro",id:u.id,cta:"Iniciar",fim:depois}); }
+function abrirRoteiro(telas,opt){
   let ov=$("#introOv");
   if(!ov){ ov=document.createElement("div"); ov.id="introOv"; document.body.appendChild(ov); }
-  introSt={u,depois,i:0,timer:null};
+  introSt={telas,opt,i:0,timer:null};
   ov.classList.add("on"); document.body.style.overflow="hidden";
   introTela();
 }
+const vistoDe=opt=>opt.ctx==="estudo"?me.estudoVisto:me.introVista;
 function introTela(){
-  const {u,i}=introSt; const passo=u.intro[i]; const fim=i===u.intro.length-1;
+  const {telas,opt,i}=introSt; const passo=telas[i]; const fim=i===telas.length-1;
+  const jaViu=!!vistoDe(opt)[opt.id];
   const ov=$("#introOv");
+  const cta = fim ? (opt.cta||"Continuar") : "Avançar";
+  const tag = opt.ctx==="estudo" ? '<div class="in-tag">Estudo</div>' : "";
+  const ex = passo.ex ? `<div class="in-ex">
+      <div class="in-ex-q">${esc(passo.ex.q)}</div>
+      ${(passo.ex.s||[]).map(p=>`<div class="in-ex-s">${esc(p)}</div>`).join("")}
+      <div class="in-ex-r">${esc(passo.ex.r)}</div></div>` : "";
   ov.innerHTML=`<div class="in-box">
-    <div class="in-dots">${u.intro.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
-    <div class="in-lume">${LUME(passo.p||"explica")}</div>
+    ${tag}
+    <div class="in-dots">${telas.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
+    <div class="in-lume">${LUME(passo.p||(passo.ex?"pensa":"explica"))}</div>
     <div class="in-bubble"><div class="in-nome">Lume</div><div class="in-txt" id="inTxt"></div>
-      ${passo.d?`<div class="in-dest">${esc(passo.d)}</div>`:""}</div>
-    <button class="btn in-next" id="inNext">${fim?"Iniciar missões":"Avançar"}</button>
-    ${me.introVista[u.id]?'<button class="mini-btn ghost in-skip" id="inSkip">Pular</button>':""}
+      ${passo.d?`<div class="in-dest">${esc(passo.d)}</div>`:""}
+      ${ex}</div>
+    <button class="btn in-next" id="inNext">${cta}</button>
+    ${jaViu&&!fim?'<button class="mini-btn ghost in-skip" id="inSkip">Pular</button>':""}
   </div>`;
   const alvo=$("#inTxt"), txt=passo.t; let k=0;
   introSt.timer=setInterval(()=>{ alvo.textContent=txt.slice(0,++k);
@@ -2128,16 +2157,16 @@ function introTela(){
   };
   $("#inNext").onclick=avanca;
   const sk=$("#inSkip"); if(sk) sk.onclick=()=>fecharIntro(true);
-  ov.onclick=e=>{ if(e.target.closest("#inNext")||e.target.closest("#inSkip")) return; avanca(); };
+  ov.onclick=e=>{ if(e.target.closest("#inNext")||e.target.closest("#inSkip")||e.target.closest(".in-ex")) return; avanca(); };
 }
 function fecharIntro(concluiu){
   const ov=$("#introOv"); const st=introSt; introSt=null;
   if(st.timer) clearInterval(st.timer);
-  if(concluiu&&!me.introVista[st.u.id]){ me.introVista[st.u.id]=true; CORE.save(db); }
-  if(concluiu) burst(ov);
+  const opt=st.opt;
+  if(concluiu){ const vm=vistoDe(opt); if(!vm[opt.id]){ vm[opt.id]=true; CORE.save(db); } burst(ov); }
   ov.classList.add("out");
   setTimeout(()=>{ ov.classList.remove("on","out"); ov.innerHTML=""; document.body.style.overflow="";
-    if(st.depois) st.depois(); },370);
+    if(opt.fim) opt.fim(); },370);
 }
 function burst(host){
   for(let i=0;i<16;i++){ const sp=document.createElement("i"); sp.className="pburst";
