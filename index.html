@@ -444,6 +444,49 @@ input{font:inherit}
 .pv-price{font-size:13px;color:var(--text-2);margin:13px 2px 12px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .pv-price b{color:var(--text)}
 .pv-esc{color:var(--err)}
+
+/* rodadas 1+2: vidas, pro, lume */
+.hcd{font-family:var(--ff-m);font-size:10.5px;color:var(--warn);margin-left:5px}
+.chip.hp{cursor:pointer}
+.soon{color:var(--text-2);font-family:var(--ff-m);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.intro-chip{margin-left:9px;font-family:var(--ff-m);font-size:9.5px;letter-spacing:.08em;color:var(--warn);border:1px solid rgba(217,164,65,.4);border-radius:7px;padding:3px 7px;background:transparent}
+#vsheet{position:fixed;inset:0;background:rgba(15,13,12,.82);display:none;place-items:center;z-index:92;padding:20px}
+#vsheet.on{display:grid}
+.vs-hearts{display:flex;gap:6px;margin:12px 0 10px}
+.hrt.big{width:26px;height:26px;color:var(--err)}
+.hrt.big.off{color:var(--raised)}
+.vs-p{color:var(--text-2);font-size:13px;margin-bottom:12px}
+.vs-p.warn2{color:var(--warn);font-size:12px;margin:10px 0 0}
+.pro-banner .ckb,.pro-banner .mini-btn{margin-top:10px}
+.pro-banner.on{border-color:rgba(224,122,53,.55)}
+.pro-buy{position:relative;width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:3px;background:#171310;border:1px solid rgba(224,122,53,.5);border-radius:13px;padding:14px 90px 14px 14px;margin-bottom:10px;text-align:left}
+.pro-buy b{font-family:var(--ff-d);font-size:15.5px;color:var(--text)}
+.pro-buy small{color:var(--text-2);font-size:12px}
+.pro-buy .prc{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-family:var(--ff-m);font-size:14px;color:var(--warn)}
+.pau{display:flex;align-items:center;gap:6px;padding:0 8px}
+.pa-av{width:15px;height:15px;border-radius:50%;background:var(--raised);border:1px solid var(--border);flex:none}
+.pa-l{flex:1;height:5px;border-radius:3px;background:var(--border)}
+.pti{height:44px;display:grid;place-items:center;font-family:var(--ff-m);font-size:10.5px;color:var(--warn);text-align:center;letter-spacing:.07em;text-transform:uppercase;line-height:1.6;padding:0 4px}
+.icb{background:radial-gradient(circle at 38% 32%,#FFDFAF 0%,#F0A468 30%,#D2601F 62%,#7A3510 88%,#3A1B08 100%);box-shadow:0 0 6px rgba(224,122,53,.55)}
+.pburst{position:absolute;width:7px;height:7px;background:var(--amber);border-radius:2px;pointer-events:none;animation:pb .8s ease-out forwards;z-index:99}
+@keyframes pb{to{transform:translate(var(--dx),var(--dy)) rotate(240deg);opacity:0}}
+#introOv{position:fixed;inset:0;background:radial-gradient(120% 90% at 50% 12%,#171310,#0F0D0C 62%);display:none;place-items:center;z-index:95;padding:22px;overflow:hidden}
+#introOv.on{display:grid}
+#introOv.out{animation:iout .36s ease forwards}
+@keyframes iout{to{opacity:0;transform:scale(1.05)}}
+.in-box{width:min(430px,94vw);display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.in-dots{display:flex;gap:6px;margin-bottom:18px}
+.in-dots i{width:7px;height:7px;border-radius:50%;background:var(--border)}
+.in-dots i.on{background:var(--amber)}
+.lume{width:132px;height:132px;color:var(--text);animation:lbob 3.4s ease-in-out infinite}
+@keyframes lbob{50%{transform:translateY(-5px)}}
+.in-bubble{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px 16px 16px;margin-top:14px;width:100%;position:relative}
+.in-bubble::before{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(45deg);width:13px;height:13px;background:var(--surface);border-left:1px solid var(--border);border-top:1px solid var(--border)}
+.in-nome{font-family:var(--ff-m);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--warn);margin-bottom:6px}
+.in-txt{font-size:15px;line-height:1.5;min-height:68px}
+.in-dest{font-family:var(--ff-m);font-size:13px;color:var(--amber);background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-top:11px}
+.in-next{margin-top:16px;width:100%}
+.in-skip{margin-top:8px}
 </style>
 </head>
 <body>
@@ -686,7 +729,7 @@ const DEFAULT_DB = () => {
     materias:{
       economia:{ id:"economia", nome:"Economia", projeto:"Avaliar o cenário econômico",
         unidades:[
-          { id:"e_f1", nome:"Fase 1", sub:"Microeconomia", licoes:ECONOMIA_F1 },
+          { id:"e_f1", nome:"Fase 1", sub:"Microeconomia", intro:INTRO_ECO1, licoes:ECONOMIA_F1 },
           { id:"e_f2", nome:"Fase 2", sub:"Macroeconomia", licoes:[
             { id:"e_f2l1", titulo:"PIB: o termômetro da economia", plano:"free", ex:[] },
             { id:"e_f2l2", titulo:"Desemprego: causas e impactos", plano:"free", ex:[] },
@@ -700,7 +743,7 @@ const DEFAULT_DB = () => {
         ]},
       matfin:{ id:"matfin", nome:"Matemática Financeira", projeto:"Avaliar a viabilidade financeira de um projeto",
         unidades:[
-          { id:"mf_f1", nome:"Fase 1", sub:"Fundamentos e capitalização", licoes:[
+          { id:"mf_f1", nome:"Fase 1", sub:"Fundamentos e capitalização", intro:INTRO_MF1, licoes:[
             { id:"mf_f1l1", titulo:"Valor do dinheiro no tempo", plano:"free", ex:[
               { t:"escolha", p:"Toda operação financeira começa com um valor no <b>momento zero</b>. Como a apostila chama esse valor?",
                 o:["Principal, Capital, Valor Presente ou PV: todos são o mesmo valor inicial",
@@ -865,7 +908,7 @@ const DEFAULT_DB = () => {
                 e:"Expurgar é a palavra da apostila. Você tira a inflação de dentro do ganho para ver o que sobrou de verdade." }
             ]}
           ]},
-          { id:"mf_f2", nome:"Fase 2", sub:"Lucro e caixa", licoes:[
+          { id:"mf_f2", nome:"Fase 2", sub:"Lucro e caixa", intro:INTRO_MF2, licoes:[
             { id:"mf_f2l1", titulo:"Resultado e geração de riqueza", plano:"free", ex:[
               { t:"ordenar", p:"Coloque os três lucros da Demonstração de Resultado na ordem em que aparecem.",
                 seq:["Lucro Operacional (LAJIR)","Lucro Antes do Imposto de Renda (LAIR)","Lucro Líquido do Exercício"],
@@ -919,7 +962,7 @@ const DEFAULT_DB = () => {
                 e:"O investidor põe, o investido recebe. Os riscos afetam os dois, mas de formas diferentes." }
             ]}
           ]},
-          { id:"mf_f3", nome:"Fase 3", sub:"Viabilidade de projetos", licoes:[
+          { id:"mf_f3", nome:"Fase 3", sub:"Viabilidade de projetos", intro:INTRO_MF3, licoes:[
             { id:"mf_f3l1", titulo:"TMA e custo de capital", plano:"free", ex:[
               { t:"escolha", p:"O que é a <b>Taxa Mínima de Atratividade</b> (TMA)?",
                 o:["O retorno mínimo exigido pelos investidores para aceitarem os riscos do investimento",
@@ -1105,13 +1148,44 @@ const PACOTES=[
   { id:"p350", ambar:350, preco:49.90 }
 ];
 
+/* roteiros de introdução das fases, na voz do Lume */
+const INTRO_ECO1=[
+ {p:"oi",t:"Oi! Eu sou o Lume. Antes de cada fase, eu te conto o mapa do território. Bora?"},
+ {p:"explica",t:"Microeconomia é olhar a economia de pertinho: uma pessoa escolhendo, uma empresa precificando, um mercado se ajustando."},
+ {p:"explica",t:"Tudo começa no cabo de guerra entre quem vende e quem compra. Onde as forças empatam, nasce o preço.",d:"Oferta × Demanda = Equilíbrio"},
+ {p:"pensa",t:"Depois você mede o quanto as pessoas reagem a preço, a elasticidade, e conhece os campos de batalha: concorrência, monopólio e companhia."},
+ {p:"feliz",t:"São 5 missões. Errou? Faz parte: toda resposta vem com explicação, e as vidas voltam com o tempo. Preparado?"}
+];
+const INTRO_MF1=[
+ {p:"oi",t:"Fase 1! Aqui mora a ideia que sustenta TODA a matemática financeira."},
+ {p:"explica",t:"Dinheiro tem hora marcada: um real hoje vale mais que um real prometido. Inflação e juros explicam o porquê.",d:"R$ 1 hoje > R$ 1 amanhã"},
+ {p:"explica",t:"Essa fórmula é a sua espada. Com valor presente, taxa e tempo, você viaja com o dinheiro para o futuro e volta.",d:"VF = PV × (1 + i)^n"},
+ {p:"pensa",t:"Cuidado com as pegadinhas: taxa nominal não é efetiva, e o n anda SEMPRE na mesma unidade do i. Muita gente escorrega aí."},
+ {p:"explica",t:"Você ainda compara juros simples com compostos e aprende a expurgar a inflação com a fórmula de Fisher."},
+ {p:"feliz",t:"6 missões te esperam. Bora fazer o tempo trabalhar para você?"}
+];
+const INTRO_MF2=[
+ {p:"oi",t:"Fase 2: sair do papel e olhar o caixa."},
+ {p:"explica",t:"A Demonstração de Resultado é uma escada de lucros. Cada degrau desconta uma coisa: operação, juros, imposto.",d:"LAJIR → LAIR → Lucro Líquido"},
+ {p:"explica",t:"E fica o alerta do Lume: lucro no papel não paga boleto. O que sustenta a empresa é caixa girando e riqueza reinvestida."},
+ {p:"pensa",t:"Todo investimento carrega risco. E quanto maior ele for, mais retorno o investidor cobra para topar.",d:"Risco ↑ = Retorno exigido ↑"},
+ {p:"feliz",t:"Duas missões certeiras. Vamos?"}
+];
+const INTRO_MF3=[
+ {p:"oi",t:"Chegou a fase final: decidir se um projeto VALE o dinheiro."},
+ {p:"explica",t:"Primeiro você define a Taxa Mínima de Atratividade: custo do capital mais o prêmio pelo risco. Abaixo dela, nem conversa.",d:"TMA = régua do investidor"},
+ {p:"explica",t:"Aí desconta todos os fluxos futuros para hoje e soma. Sobrou valor? O projeto passa.",d:"VPL > 0 = aceita"},
+ {p:"pensa",t:"Payback diz QUANDO o dinheiro volta. TIR diz a taxa que zera tudo. E quando VPL e TIR discordam, você vai saber em quem confiar."},
+ {p:"feliz",t:"5 missões e você fecha a matéria. Vai fundo!"}
+];
+
 /* insígnias em SVG na caligrafia do app: traço fino, monocromático */
 const INSIG={
   bussola:'<circle cx="12" cy="12" r="8.5"/><path d="M15.2 8.8l-2 4.4-4.4 2 2-4.4z"/>',
   livro:'<path d="M12 6.2C10.3 4.9 7.8 4.6 5 5.2v12.6c2.8-.6 5.3-.3 7 1 1.7-1.3 4.2-1.6 7-1V5.2c-2.8-.6-5.3-.3-7 1z"/><path d="M12 6.2v12.6"/>',
-  louro:'<path d="M7.2 4.5c-2.1 3.9-2.1 8.7.9 12.6M16.8 4.5c2.1 3.9 2.1 8.7-.9 12.6"/><path d="M6.6 8.4H4.4M6.6 12H4.2M8 15.4l-2 .9M17.4 8.4h2.2M17.4 12h2.4M16 15.4l2 .9"/><circle cx="12" cy="18.4" r="1.1"/>',
+  louro:'<path d="M6.5 5c-2.6 4.2-2.6 9.2 1.4 13.2M17.5 5c2.6 4.2 2.6 9.2-1.4 13.2"/><path d="M6.9 8.6C5.4 8 4.3 8 3.2 8.6c.9 1 2.1 1.4 3.7 1.2zM6.4 12.4c-1.5-.3-2.6 0-3.5.9 1.1.8 2.4 1 4 .5zM7.7 15.9c-1.4.2-2.4.8-3 1.8 1.3.4 2.5.1 3.8-.8zM17.1 8.6c1.5-.6 2.6-.6 3.7 0-.9 1-2.1 1.4-3.7 1.2zM17.6 12.4c1.5-.3 2.6 0 3.5.9-1.1.8-2.4 1-4 .5zM16.3 15.9c1.4.2 2.4.8 3 1.8-1.3.4-2.5.1-3.8-.8z"/><circle cx="12" cy="19.2" r="1.1"/>',
   torre:'<path d="M7.5 20.5h9M8.5 20.5v-7h7v7M6.5 9.5h11M7 9.5V5h2.2v1.8h2V5h1.6v1.8h2V5H17v4.5"/>',
-  coruja:'<path d="M5.5 8.8L7.4 6l1.8 1.8h5.6L16.6 6l1.9 2.8"/><path d="M5.5 8.8c-.3 7.6 2.7 11.2 6.5 11.2s6.8-3.6 6.5-11.2"/><circle cx="9.6" cy="11.4" r="1.15"/><circle cx="14.4" cy="11.4" r="1.15"/><path d="M12 14l-1.1 1.7h2.2z"/>',
+  coruja:'<path d="M6 10a6 6 0 0 1 12 0v4a6 6 0 0 1-12 0z"/><path d="M6.4 8.4L4.8 5.6 7.8 6.9M17.6 8.4l1.6-2.8-3 1.3"/><circle cx="9.4" cy="10.8" r="2.05"/><circle cx="14.6" cy="10.8" r="2.05"/><circle cx="9.4" cy="10.8" r=".55" fill="currentColor"/><circle cx="14.6" cy="10.8" r=".55" fill="currentColor"/><path d="M12 12.9l-1 1.4h2z"/><path d="M9.6 20v-1.7M12 20.4v-1.5M14.4 20v-1.7"/>',
   pena:'<path d="M19 4.8c-6.2.2-10.9 4.3-12.8 10.9l-.9 3 3-.9C14.9 16 19 11.2 19 4.8z"/><path d="M6.5 17.5L16.5 7.5"/>',
   brasav:'<path d="M12 3.2c.9 3 3.9 4.4 3.9 7.8a3.9 3.9 0 1 1-7.8 0c0-1.5.6-2.7 1.6-3.9.4 1 .9 1.6 1.8 2.1-.5-1.9-.1-4.1.5-6z"/>',
   cometa:'<circle cx="8.2" cy="15.8" r="3.1"/><path d="M11.2 12.8L20 4M13.4 15.2l6.2-6.2M9.8 10.6l6-6"/>',
@@ -1142,7 +1216,7 @@ function LOJA(){ return [
   { id:"in_cometa",  tipo:"flair", nome:"Cometa",         moeda:"ambar",  preco:130, ic:"cometa", fx:"flick" },
   { id:"me_semana", tipo:"flair", nome:"Semana de Fogo", moeda:"merito", preco:0, ic:"escudo7",  dica:"Estude 7 dias seguidos" },
   { id:"me_cem",    tipo:"flair", nome:"Centurião",      moeda:"merito", preco:0, ic:"escudoC",  dica:"Responda 100 exercícios" },
-  { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as lições de uma fase" },
+  { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as missões de uma fase" },
   { id:"fu_bandeira", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:150, ic:"bandeira", fx:"pulse", ate:"2026-12-31" },
 
   { id:"nm_ambar",   tipo:"nome", nome:"Nome de Âmbar", moeda:"ambar", preco:90,  css:"nm-ambar" },
@@ -1192,6 +1266,19 @@ function proximaVidaEm(u,now){
   return Math.max(0,(u.heartsAt+REGEN_MS)-now);
 }
 
+/* Pro por período: gestor dá permanente (pro:true), aluno compra dias (proAte) */
+function isPro(u){ return !!(u&&(u.pro===true||(u.proAte&&u.proAte>Date.now()))); }
+const pacotesDe=db=>(db&&db.config&&Array.isArray(db.config.pacotes)&&db.config.pacotes.length)?db.config.pacotes:PACOTES;
+
+/* recarga de vidas: paga em Brasas, nunca em dinheiro */
+function recarregarVidas(db,u){
+  const preco=(db.config&&db.config.vidaPreco)||60;
+  if(u.hearts>=MAX_VIDAS) return {ok:false,err:"Suas vidas já estão cheias."};
+  if((u.brasas||0)<preco) return {ok:false,err:"Custa "+preco+" Brasas e você tem "+(u.brasas||0)+". Missões e check-in rendem mais."};
+  u.brasas-=preco; u.hearts=MAX_VIDAS; u.heartsAt=null;
+  save(db); return {ok:true,preco};
+}
+
 /* compras com moeda */
 function comprarItem(db,u,itemId){
   const it=(db.loja||[]).find(i=>i.id===itemId);
@@ -1216,10 +1303,20 @@ function equipar(db,u,itemId){
 function pedirAmbar(db,u,pacoteId,txid){
   if((db.pedidos||[]).some(p=>p.uid===u.id&&p.status==="pendente"))
     return {ok:false,err:"Você já tem um pedido aguardando confirmação."};
-  const pc=PACOTES.find(p=>p.id===pacoteId);
+  const pc=pacotesDe(db).find(p=>p.id===pacoteId);
   if(!pc) return {ok:false,err:"Pacote inválido."};
-  const pd={ id:uid("px"), uid:u.id, pacoteId:pc.id, ambar:pc.ambar, valor:pc.preco,
-             txid:String(txid||"").slice(0,25), status:"pendente", criadoEm:Date.now() };
+  const pd={ id:uid("px"), uid:u.id, tipo:"ambar", pacoteId:pc.id, ambar:pc.ambar, valor:pc.preco,
+             txid:String(txid||"").slice(0,25), status:"pendente", visto:false, criadoEm:Date.now() };
+  db.pedidos.push(pd); save(db); return {ok:true,pedido:pd};
+}
+function pedirPro(db,u,txid){
+  if((db.pedidos||[]).some(p=>p.uid===u.id&&p.status==="pendente"))
+    return {ok:false,err:"Você já tem um pedido aguardando confirmação."};
+  if(u.pro===true) return {ok:false,err:"Seu Pro já é permanente."};
+  const preco=(db.config&&db.config.proPreco)||14.90;
+  const dias=(db.config&&db.config.proDias)||30;
+  const pd={ id:uid("px"), uid:u.id, tipo:"pro", dias, valor:preco,
+             txid:String(txid||"").slice(0,25), status:"pendente", visto:false, criadoEm:Date.now() };
   db.pedidos.push(pd); save(db); return {ok:true,pedido:pd};
 }
 function confirmarPedido(db,pid){
@@ -1227,7 +1324,12 @@ function confirmarPedido(db,pid){
   if(!pd||pd.status!=="pendente") return false;
   const u=db.users[pd.uid]; if(!u) return false;
   pd.status="confirmado"; pd.resolvidoEm=Date.now();
-  u.ambar=(u.ambar||0)+pd.ambar;
+  if(pd.tipo==="pro"){
+    const base=Math.max(Date.now(), u.proAte||0);
+    u.proAte=base+(pd.dias||30)*864e5;
+  } else {
+    u.ambar=(u.ambar||0)+pd.ambar;
+  }
   save(db); return true;
 }
 function recusarPedido(db,pid){
@@ -1300,6 +1402,11 @@ function migrate3(d){
     if(e&&e.t==="associar"&&Array.isArray(e.pares))
       e.pares=e.pares.map(p=>Array.isArray(p)?{a:p[0],b:p[1]}:p);
   }))));
+  if(d.config.vidaPreco==null) d.config.vidaPreco=60;
+  if(d.config.proPreco==null)  d.config.proPreco=14.90;
+  if(d.config.proDias==null)   d.config.proDias=30;
+  if(!Array.isArray(d.config.pacotes)||!d.config.pacotes.length)
+    d.config.pacotes=PACOTES.map(pc=>({id:pc.id,ambar:pc.ambar,preco:pc.preco}));
   Object.values(d.users).forEach(hidrataAluno);
   const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
   if(br&&!d.pedidos.length)
@@ -1317,6 +1424,9 @@ function hidrataAluno(u){
   if(u.lastCheckin===undefined) u.lastCheckin=null;
   if(u.vidaDia===undefined) u.vidaDia=null;
   if(u.heartsAt===undefined) u.heartsAt=null;
+  if(u.proAte===undefined) u.proAte=null;
+  if(!u.err) u.err={};
+  if(!u.introVista) u.introVista={};
   if(!u.done) u.done={};
   return u;
 }
@@ -1462,6 +1572,7 @@ async function cadastrarNuvem({nome,email,senha,cursoId}){
     acesso:c?c.materias.slice():[], foto:null,
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
+    proAte:null, err:{}, introVista:{},
     pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
     resp:0, certo:0, melhor:0, criadoEm:Date.now() };
   await FS.collection("users").doc(uid).set(u);
@@ -1513,7 +1624,7 @@ function save(d){
     if(u.status!=="aprovado") return;
     put("r:"+u.id,FS.collection("ranking").doc(u.id),
       { id:u.id, nome:u.nome, foto:u.foto||null, xp:u.xp||0,
-        cursoId:u.cursoId||null, pro:!!u.pro, equip:u.equip||{} });
+        cursoId:u.cursoId||null, pro:isPro(u), equip:u.equip||{} });
   });
   /* o que sumiu do cache é apagado da nuvem (exclusões do gestor) */
   Object.keys(SNAP).slice().forEach(k=>{
@@ -1544,6 +1655,7 @@ function novoAluno(db,{nome,email,senha,cursoId}){
     foto:null,
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
+    proAte:null, err:{}, introVista:{},
     pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
     resp:0, certo:0, melhor:0, criadoEm:Date.now() };
   db.users[u.id]=u; return u;
@@ -1594,6 +1706,7 @@ return { load,save,wipe,getSession,setSession,clearSession,byEmail,alunos,novoAl
          hojeStr,checkin,regenVidas,perderVida,proximaVidaEm,
          comprarItem,equipar,pedirAmbar,confirmarPedido,recusarPedido,creditarAmbar,
          pixPayload,PACOTES,MAX_VIDAS,INSIG,checarMeritos,
+         isPro,pacotesDe,recarregarVidas,pedirPro,
          fbInit,onAuth,login,logout,authUser,fbErro,GESTOR_EMAIL,
          preCursos,bootAluno,bootGestor,cadastrarNuvem,publicarConteudo };
 })();
@@ -1715,13 +1828,22 @@ function entrar(uid){
   if(me.status!=="aprovado") return telaEspera(me);
   $("#auth").classList.add("hide"); $("#app").classList.add("on");
   CORE.tickStreak(me); CORE.regenVidas(me); CORE.save(db); CORE.checarMeritos(db,me);
+  setTimeout(avisosPedidos,600);
+  if(!window.__vidaTick) window.__vidaTick=setInterval(()=>{
+    if(!me) return;
+    const b=me.hearts; CORE.regenVidas(me);
+    if(me.hearts!==b) CORE.save(db);
+    try{ if($("#cHp")) hud(); }catch(e){}
+  },30000);
   const mats=CORE.materiasDe(db,me);
   matAtual = mats.length ? mats[0].id : null;
   tab="trilha"; navs(); hud(); paint();
 }
 
 /* ============ HUD ============ */
+function fmtMs(ms){ const mm=Math.ceil(ms/6e4); return mm>=60?Math.floor(mm/60)+"h"+String(mm%60).padStart(2,"0"):mm+"min"; }
 function hud(){
+  CORE.regenVidas(me);
   $("#vXp").textContent=me.xp; $("#vSt").textContent=me.streak;
   $("#cSt").classList.toggle("on",me.streak>0);
   const h=$("#cHp"); h.innerHTML="";
@@ -1732,6 +1854,9 @@ function hud(){
     s.innerHTML='<path d="M12 21s-7.5-4.9-9.5-9A5.3 5.3 0 0 1 12 6.3 5.3 5.3 0 0 1 21.5 12c-2 4.1-9.5 9-9.5 9z"/>';
     h.appendChild(s);
   }
+  const ms=CORE.proximaVidaEm(me);
+  if(ms!=null) h.appendChild(el("span","hcd",fmtMs(ms)));
+  h.onclick=abrirVidas;
 }
 
 /* ============ NAV ============ */
@@ -1779,32 +1904,40 @@ function vTrilha(){
   const M=db.materias[matAtual];
   let liberado=true, gi=0;
   M.unidades.forEach(u=>{
-    const feitas=u.licoes.filter(l=>me.done[l.id]).length;
+    const conteudo=u.licoes.filter(l=>l.ex&&l.ex.length);
+    const feitas=conteudo.filter(l=>me.done[l.id]).length;
+    const proN=conteudo.filter(l=>l.plano==="pro").length;
+    const meuTotal=CORE.isPro(me)?conteudo.length:conteudo.length-proN;
     const band=el("div","unit-band");
+    const cont = !conteudo.length ? '<span class="soon">Em breve</span>'
+      : `${feitas}/${meuTotal}${(!CORE.isPro(me)&&proN)?` <span class="soon">· ${proN} Pro</span>`:""}`;
     band.innerHTML=`<div class="t"><small>${esc(u.nome)}</small><b>${esc(u.sub||M.nome)}</b></div>
-      <div class="pc">${feitas}/${u.licoes.length}</div>`;
+      <div class="pc">${cont}</div>`;
+    if(u.intro&&u.intro.length&&conteudo.length){
+      const rp=el("button","intro-chip","► Intro");
+      rp.onclick=()=>abrirIntro(u,null);
+      band.querySelector(".t").appendChild(rp);
+    }
     v.appendChild(band);
+    if(!conteudo.length) return;
 
     const path=el("div","path");
-    u.licoes.forEach(l=>{
+    conteudo.forEach(l=>{
       const done=!!me.done[l.id];
-      const vazia=!l.ex||!l.ex.length;
-      const isPro = l.plano==="pro" && !me.pro;
-      const bloq = vazia || isPro || (!done && !liberado);
+      const ehPro = l.plano==="pro" && !CORE.isPro(me);
+      const bloq = ehPro || (!done && !liberado);
       const cur = !done && !bloq && liberado;
       if(!done && !bloq) liberado=false;
 
       const w=el("div","node-wrap"+(done?" done":"")+(cur?" cur":""));
       w.style.transform="translateX("+OFF[gi%OFF.length]+"px)"; gi++;
       if(cur) w.appendChild(el("div","start-bub","COMEÇAR"));
-      const n=el("button","node"+(done?" done":cur?" cur":isPro?" pro":"")+(bloq?" lock":""));
+      const n=el("button","node"+(done?" done":cur?" cur":ehPro?" pro":"")+(bloq?" lock":""));
       n.innerHTML = done ? '<svg class="mark"><use href="#m"/></svg>'
-        : isPro ? ICO_LOCK : bloq ? ICO_LOCK : (vazia? ICO_LOCK : ICO_STAR);
+        : (ehPro||bloq) ? ICO_LOCK : ICO_STAR;
       if(l.plano==="pro") n.appendChild(el("div","pro-tag","PRO"));
-      if(isPro) n.onclick=()=>modal("Conteúdo Pro","“"+l.titulo+"” faz parte do plano Pro. Aqui entraria a proposta de assinatura.",
-        [{t:"Quero assinar",c:"amber",f:()=>{closeModal();modal("Em breve","O checkout ainda não existe. Peça a liberação ao gestor.",[{t:"Ok",f:closeModal}]);}},{t:"Agora não",c:"ghost",f:closeModal}]);
-      else if(vazia) n.onclick=()=>modal("Em breve","Esta lição ainda não tem exercícios publicados.",[{t:"Ok",f:closeModal}]);
-      else if(!bloq) n.onclick=()=>abrir(l);
+      if(ehPro) n.onclick=()=>modalPro(l);
+      else if(!bloq) n.onclick=()=>comIntro(u,l);
       w.appendChild(n);
       w.appendChild(el("div","node-lab",esc(l.titulo)));
       path.appendChild(w);
@@ -1855,6 +1988,160 @@ function msgVida(){
   const mm=Math.ceil(ms/6e4);
   const t=mm>=60?Math.floor(mm/60)+"h"+String(mm%60).padStart(2,"0"):mm+" min";
   return "Uma vida volta a cada 3 horas e tudo enche quando o dia vira. Próxima vida em "+t+".";
+}
+
+function goTab(t){ tab=t; navs(); paint(); window.scrollTo(0,0); }
+function modalPro(l){
+  const pr=((db.config&&db.config.proPreco)||14.9).toFixed(2).replace(".",",");
+  const di=(db.config&&db.config.proDias)||30;
+  modal("Missão Pro","“"+l.titulo+"” faz parte do Modus Pro: "+di+" dias por R$ "+pr+", pagos via Pix e liberados pelo gestor.",
+    [{t:"Assinar Pro",c:"amber",f:()=>{closeModal();iniciarPixPro();}},{t:"Agora não",c:"ghost",f:closeModal}]);
+}
+function iniciarPixPro(){
+  if(!db.config||!db.config.pixChave){ goTab("loja");
+    return modal("Pix ainda não configurado","O gestor ainda não cadastrou a chave Pix. Fala com ele.",[{t:"Ok",c:"ghost",f:closeModal}]); }
+  if((db.pedidos||[]).some(p=>p.uid===me.id&&p.status==="pendente")) return goTab("loja");
+  const preco=(db.config.proPreco)||14.9, dias=(db.config.proDias)||30;
+  const txid="MD"+Math.random().toString(36).slice(2,10).toUpperCase();
+  pixSel={tipo:"pro",rotulo:"Modus Pro · "+dias+" dias",valor:preco,txid,payload:CORE.pixPayload(db.config,preco,txid)};
+  goTab("loja");
+}
+function modalSemVidas(pref){
+  const preco=(db.config&&db.config.vidaPreco)||60;
+  const btns=[];
+  if((me.brasas||0)>=preco) btns.push({t:"Recarregar · "+preco+" Brasas",c:"amber",f:()=>{
+    const r=CORE.recarregarVidas(db,me); closeModal();
+    if(!r.ok) return modal("Não deu",r.err,[{t:"Ok",c:"ghost",f:closeModal}]);
+    hud(); flut("Vidas cheias!"); buzz(18);
+  }});
+  btns.push({t:"Esperar",c:"ghost",f:closeModal});
+  modal("Sem vidas",(pref||"")+msgVida()+((me.brasas||0)<preco?" Recarregar custa "+preco+" Brasas e você tem "+(me.brasas||0)+".":""),btns);
+}
+function avisosPedidos(){
+  const novos=(db.pedidos||[]).filter(p=>p.uid===me.id&&p.status!=="pendente"&&!p.visto);
+  if(!novos.length) return;
+  novos.forEach(p=>p.visto=true); CORE.save(db);
+  const ms=novos.map(p=>p.status==="recusado"
+    ? "Seu pedido de "+(p.tipo==="pro"?"Pro":(p.ambar+" Âmbar"))+" foi recusado. Qualquer dúvida, fala com o gestor."
+    : p.tipo==="pro" ? "Seu Modus Pro está ativo! As missões PRO abriram."
+    : "+"+p.ambar+" Âmbar caíram na sua conta!");
+  modal(novos.every(p=>p.status==="recusado")?"Sobre o seu pedido":"Boa notícia!",ms.join(" "),
+    [{t:"Show",c:"amber",f:closeModal}]);
+}
+function abrirVidas(){
+  let ov=$("#vsheet");
+  if(!ov){ ov=document.createElement("div"); ov.id="vsheet"; document.body.appendChild(ov); }
+  const preco=(db.config&&db.config.vidaPreco)||60;
+  const ms=CORE.proximaVidaEm(me);
+  const cheio=me.hearts>=CORE.MAX_VIDAS;
+  const HRT=off=>'<svg viewBox="0 0 24 24" fill="currentColor" class="hrt big'+(off?" off":"")+'"><path d="M12 21s-7.5-4.9-9.5-9A5.3 5.3 0 0 1 12 6.3 5.3 5.3 0 0 1 21.5 12c-2 4.1-9.5 9-9.5 9z"/></svg>';
+  ov.innerHTML=`<div class="pv-box">
+    <div class="pv-t">Vidas</div>
+    <div class="vs-hearts">${HRT(false).repeat(me.hearts)}${HRT(true).repeat(5-me.hearts)}</div>
+    <p class="vs-p">${cheio?"Tudo cheio. Errar numa missão gasta uma vida.":"Uma vida volta a cada 3 horas"+(ms!=null?" (próxima em "+fmtMs(ms)+")":"")+", e a virada do dia enche tudo."}</p>
+    <div class="pixbtns">
+      ${cheio?"":`<button class="ckb" id="vsBuy"><i class="icb"></i>Recarregar · ${preco}</button>`}
+      <button class="mini-btn ghost" id="vsNo">Fechar</button>
+    </div>
+    ${!cheio&&(me.brasas||0)<preco?`<p class="vs-p warn2">Você tem ${me.brasas||0} Brasas. Missões e check-in rendem mais.</p>`:""}
+  </div>`;
+  ov.classList.add("on");
+  const fechar=()=>ov.classList.remove("on");
+  $("#vsNo").onclick=fechar;
+  ov.onclick=e=>{ if(e.target===ov) fechar(); };
+  const b=$("#vsBuy");
+  if(b) b.onclick=()=>{ const r=CORE.recarregarVidas(db,me);
+    if(!r.ok){ fechar(); return modal("Não deu",r.err,[{t:"Ok",c:"ghost",f:closeModal}]); }
+    hud(); buzz(18); flut("Vidas cheias!"); abrirVidas(); };
+}
+function comIntro(u,l){
+  if(u.intro&&u.intro.length&&!me.introVista[u.id]) abrirIntro(u,()=>abrir(l));
+  else abrir(l);
+}
+
+/* ============ LUME, o coelho ============ */
+const LUME_P={
+  oi:{o:"oo",b:"sorriso",e:1}, explica:{o:"oo",b:"fala",e:0},
+  pensa:{o:"pensa",b:"hum",e:2}, feliz:{o:"feliz",b:"sorriso",e:1}, ops:{o:"x",b:"o",e:2}
+};
+function LUME(pose){
+  const P=LUME_P[pose]||LUME_P.explica;
+  const olhos={
+    oo:'<circle cx="52" cy="74" r="3.1" fill="currentColor" stroke="none"/><circle cx="74" cy="74" r="3.1" fill="currentColor" stroke="none"/>',
+    feliz:'<path d="M47 75q5-6.5 10 0M69 75q5-6.5 10 0"/>',
+    pensa:'<path d="M47 73.5h10"/><circle cx="74" cy="74" r="3.1" fill="currentColor" stroke="none"/>',
+    x:'<path d="M48 71l7 6M55 71l-7 6M69 71l7 6M76 71l-7 6"/>'
+  }[P.o];
+  const boca={
+    sorriso:'<path d="M54 88q9 8 18 0"/>',
+    fala:'<ellipse cx="63" cy="90" rx="4.5" ry="5.2"/>',
+    hum:'<path d="M58 90h10"/>',
+    o:'<circle cx="63" cy="90" r="4"/>'
+  }[P.b];
+  const oe = P.e===2
+    ? '<path d="M45 52C36 41 30 32 34 18c8 2 14 12 16 31"/>'
+    : '<path d="M46 50C42 34 42 20 50 8c7 8 9 24 6 42"/>';
+  const od = P.e===1
+    ? '<path d="M80 50c4-16 4-30-4-42-7 8-9 24-6 42"/>'
+    : '<path d="M81 52c9-11 15-20 11-34-8 2-14 12-16 31"/>';
+  return `<svg class="lume" viewBox="0 0 126 126" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    ${oe}${od}
+    <ellipse cx="63" cy="80" rx="30" ry="27"/>
+    ${olhos}
+    <path d="M60 82.5q3 2.8 6 0"/>
+    ${boca}
+    <path d="M33 92q-8-1-12-5M33 97q-7 2-12 0M93 92q8-1 12-5M93 97q7 2 12 0"/>
+    <path d="M38 100q25 12 50 0l-3 9q-22 8-44 0z" fill="var(--amber)" stroke="none" opacity=".95"/>
+    <path d="M78 106l8 12-11-4z" fill="var(--amber)" stroke="none" opacity=".95"/>
+  </svg>`;
+}
+let introSt=null;
+function abrirIntro(u,depois){
+  let ov=$("#introOv");
+  if(!ov){ ov=document.createElement("div"); ov.id="introOv"; document.body.appendChild(ov); }
+  introSt={u,depois,i:0,timer:null};
+  ov.classList.add("on"); document.body.style.overflow="hidden";
+  introTela();
+}
+function introTela(){
+  const {u,i}=introSt; const passo=u.intro[i]; const fim=i===u.intro.length-1;
+  const ov=$("#introOv");
+  ov.innerHTML=`<div class="in-box">
+    <div class="in-dots">${u.intro.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
+    <div class="in-lume">${LUME(passo.p||"explica")}</div>
+    <div class="in-bubble"><div class="in-nome">Lume</div><div class="in-txt" id="inTxt"></div>
+      ${passo.d?`<div class="in-dest">${esc(passo.d)}</div>`:""}</div>
+    <button class="btn in-next" id="inNext">${fim?"Iniciar missões":"Avançar"}</button>
+    ${me.introVista[u.id]?'<button class="mini-btn ghost in-skip" id="inSkip">Pular</button>':""}
+  </div>`;
+  const alvo=$("#inTxt"), txt=passo.t; let k=0;
+  introSt.timer=setInterval(()=>{ alvo.textContent=txt.slice(0,++k);
+    if(k>=txt.length){ clearInterval(introSt.timer); introSt.timer=null; } },16);
+  const avanca=()=>{
+    if(introSt.timer){ clearInterval(introSt.timer); introSt.timer=null; alvo.textContent=txt; return; }
+    if(!fim){ introSt.i++; introTela(); return; }
+    fecharIntro(true);
+  };
+  $("#inNext").onclick=avanca;
+  const sk=$("#inSkip"); if(sk) sk.onclick=()=>fecharIntro(true);
+  ov.onclick=e=>{ if(e.target.closest("#inNext")||e.target.closest("#inSkip")) return; avanca(); };
+}
+function fecharIntro(concluiu){
+  const ov=$("#introOv"); const st=introSt; introSt=null;
+  if(st.timer) clearInterval(st.timer);
+  if(concluiu&&!me.introVista[st.u.id]){ me.introVista[st.u.id]=true; CORE.save(db); }
+  if(concluiu) burst(ov);
+  ov.classList.add("out");
+  setTimeout(()=>{ ov.classList.remove("on","out"); ov.innerHTML=""; document.body.style.overflow="";
+    if(st.depois) st.depois(); },370);
+}
+function burst(host){
+  for(let i=0;i<16;i++){ const sp=document.createElement("i"); sp.className="pburst";
+    sp.style.left="50%"; sp.style.top="44%";
+    sp.style.setProperty("--dx",(Math.random()*240-120)+"px");
+    sp.style.setProperty("--dy",(Math.random()*-210-30)+"px");
+    sp.style.animationDelay=(Math.random()*90)+"ms";
+    host.appendChild(sp); setTimeout(()=>sp.remove(),950); }
 }
 
 /* ============ PROVADOR ============ */
@@ -1945,10 +2232,10 @@ function vLoja(){
       if(tipo==="moldura")    prev=`<div class="pav${" "+it.css}">${esc((pn[0]||"M")).toUpperCase()}</div>`;
       else if(tipo==="flair") prev=`<div class="pem2">${insigSVG(it,"big")}</div>`;
       else if(tipo==="nome")  prev=`<div class="pnm nm ${it.css}">${esc(pn)}</div>`;
-      else if(tipo==="aura")  prev=`<div class="pau ${it.css}"></div>`;
+      else if(tipo==="aura")  prev=`<div class="pau ${it.css}"><i class="pa-av"></i><span class="pa-l"></span></div>`;
       else                    prev=`<div class="pti">${esc(it.nome)}</div>`;
       const preco = tem?(eqp?"Equipado":"Equipar") : mer?"Conquiste" : `${prem?GEMA:'<i class="icb"></i>'}${it.preco}`;
-      b.innerHTML=`${selo}${prev}<b>${esc(it.nome)}</b><span class="pr${prem?" a":""}${mer?" m":""}">${preco}</span>`;
+      b.innerHTML=`${selo}${prev}${tipo==="titulo"?"":`<b>${esc(it.nome)}</b>`}<span class="pr${prem?" a":""}${mer?" m":""}">${preco}</span>`;
       b.onclick=()=>{ if(tem){ CORE.equipar(db,me,it.id); vLoja(); } else abrirProv(it); };
       grid.appendChild(b);
     });
@@ -1960,11 +2247,10 @@ function vLoja(){
   const pend=(db.pedidos||[]).find(pd=>pd.uid===me.id&&pd.status==="pendente");
   let inner=`<div class="shop-h amb"><b>Comprar Âmbar</b><small>Pague com Pix pelo seu banco. O gestor confirma e o Âmbar entra na sua conta.</small></div>`;
   if(pend){
-    inner+=`<div class="pdban">Pedido de <b>${pend.ambar} Âmbar</b> (R$ ${pend.valor.toFixed(2).replace(".",",")}) aguardando confirmação do gestor.</div>`;
+    inner+=`<div class="pdban">Pedido de <b>${pend.tipo==="pro"?("Modus Pro · "+(pend.dias||30)+" dias"):(pend.ambar+" Âmbar")}</b> (R$ ${pend.valor.toFixed(2).replace(".",",")}) aguardando confirmação do gestor.</div>`;
   } else if(pixSel){
-    const pc=CORE.PACOTES.find(x=>x.id===pixSel.pacoteId);
     inner+=`<div class="pixbox">
-      <b>${pc.ambar} Âmbar · R$ ${pc.preco.toFixed(2).replace(".",",")}</b>
+      <b>${pixSel.rotulo} · R$ ${pixSel.valor.toFixed(2).replace(".",",")}</b>
       <p>Copie o código, pague no app do seu banco (Pix copia e cola) e depois toque em "Já paguei".</p>
       <textarea class="pixcode" id="pixTa" readonly>${pixSel.payload}</textarea>
       <div class="pixbtns">
@@ -1973,7 +2259,12 @@ function vLoja(){
         <button class="mini-btn ghost" id="bPixNo">Cancelar</button>
       </div></div>`;
   } else {
-    inner+=`<div class="pacs">`+CORE.PACOTES.map(pc=>
+    if(me.pro!==true){
+      const pr2=((db.config&&db.config.proPreco)||14.9).toFixed(2).replace(".",",");
+      const di2=(db.config&&db.config.proDias)||30;
+      inner+=`<button class="pro-buy" id="bProLoja"><span class="seal">PRO</span><b>Modus Pro · ${di2} dias</b><small>${CORE.isPro(me)?"Renovar soma "+di2+" dias ao seu prazo atual":"Libera todas as missões PRO das suas matérias"}</small><span class="prc">R$ ${pr2}</span></button>`;
+    }
+    inner+=`<div class="pacs">`+CORE.pacotesDe(db).map(pc=>
       `<button class="pac" data-p="${pc.id}">${GEMA}<b>${pc.ambar}</b><small>R$ ${pc.preco.toFixed(2).replace(".",",")}</small></button>`).join("")+`</div>`;
   }
   amb.innerHTML=inner; v.appendChild(amb);
@@ -1981,11 +2272,12 @@ function vLoja(){
   if(!pend&&!pixSel) amb.querySelectorAll(".pac").forEach(b=>b.onclick=()=>{
     if(!db.config||!db.config.pixChave)
       return modal("Pix ainda não configurado","O gestor ainda não cadastrou a chave Pix. Fala com ele.",[{t:"Ok",c:"ghost",f:closeModal}]);
-    const pc=CORE.PACOTES.find(x=>x.id===b.dataset.p);
+    const pc=CORE.pacotesDe(db).find(x=>x.id===b.dataset.p);
     const txid="MD"+Math.random().toString(36).slice(2,10).toUpperCase();
-    pixSel={pacoteId:pc.id,txid,payload:CORE.pixPayload(db.config,pc.preco,txid)};
+    pixSel={tipo:"ambar",pacoteId:pc.id,rotulo:pc.ambar+" Âmbar",valor:pc.preco,txid,payload:CORE.pixPayload(db.config,pc.preco,txid)};
     vLoja();
   });
+  const bpl=$("#bProLoja"); if(bpl) bpl.onclick=iniciarPixPro;
   if(pixSel&&!pend){
     $("#bCopy").onclick=()=>{
       const ta=$("#pixTa");
@@ -1995,7 +2287,7 @@ function vLoja(){
       else { ta.select(); document.execCommand("copy"); done(); }
     };
     $("#bPaguei").onclick=()=>{
-      const r=CORE.pedirAmbar(db,me,pixSel.pacoteId,pixSel.txid);
+      const r=pixSel.tipo==="pro"?CORE.pedirPro(db,me,pixSel.txid):CORE.pedirAmbar(db,me,pixSel.pacoteId,pixSel.txid);
       pixSel=null;
       if(!r.ok) return modal("Não deu",r.err,[{t:"Ok",c:"ghost",f:closeModal}]);
       vLoja();
@@ -2041,11 +2333,13 @@ function vPerfil(){
       <div class="prof-av${mold(me)}">${me.foto?`<img src="${me.foto}" alt="">`:esc(me.nome.trim()[0]||"?").toUpperCase()}</div>
       <div><div class="ninline"><b class="nm${nomeEq(me.equip)}">${esc(me.nome)}</b>${flair(me)}</div><small>${esc(me.email)}</small><br><small>${titEq(me)?'<span class="tit">'+esc(titEq(me).nome)+"</span>":esc(c?c.nome:"—")}</small></div>
     </div>
-    ${me.pro?`<div class="pro-banner"><b>Modus Pro ativo</b><p>Você tem acesso a todo o conteúdo Pro liberado nas suas matérias.</p></div>`:
-      `<div class="pro-banner"><b>Modus Pro</b><p>Libera as lições marcadas com PRO. Peça ao gestor ou assine quando o checkout existir.</p></div>`}
+    ${(()=>{const pr=((db.config&&db.config.proPreco)||14.9).toFixed(2).replace(".",",");const di=(db.config&&db.config.proDias)||30;
+      if(me.pro===true) return `<div class="pro-banner on"><b>Modus Pro ativo</b><p>Acesso permanente liberado pelo gestor. Todas as missões PRO estão abertas.</p></div>`;
+      if(CORE.isPro(me)) return `<div class="pro-banner on"><b>Modus Pro ativo</b><p>Válido até ${new Date(me.proAte).toLocaleDateString("pt-BR")}. Todas as missões PRO estão abertas.</p><button class="mini-btn" id="bRenovar">Renovar · +${di} dias por R$ ${pr}</button></div>`;
+      return `<div class="pro-banner"><b>Modus Pro</b><p>Libera as missões marcadas com PRO nas suas matérias.</p><button class="ckb" id="bAssinar">Assinar · ${di} dias por R$ ${pr}</button></div>`;})()}
     <div class="gr">
       <div class="st"><b class="a">${me.xp}</b><small>XP total</small></div>
-      <div class="st"><b>${me.streak}</b><small>Dias seguidos</small></div>
+      <div class="st"><b>${me.streak}</b><small>${me.streak===1?"Dia seguido":"Dias seguidos"}</small></div>
       <div class="st"><b>${me.resp?Math.round(me.certo/me.resp*100)+"%":"—"}</b><small>Acerto</small></div>
       <div class="st"><b>${me.melhor}</b><small>Melhor seq.</small></div>
     </div>
@@ -2064,6 +2358,8 @@ function vPerfil(){
     d.innerHTML=`<div class="d${nPro&&!me.pro?" p":""}"></div><b>${esc(m.nome)}</b><span>${nPro?nPro+" pro":"liberada"}</span>`;
     a.appendChild(d);
   });
+  const bAs=$("#bAssinar"); if(bAs) bAs.onclick=iniciarPixPro;
+  const bRe=$("#bRenovar"); if(bRe) bRe.onclick=iniciarPixPro;
   $("#bFoto").onclick=()=>$("#fotoIn").click();
   $("#fotoIn").onchange=ev=>{
     const f=ev.target.files&&ev.target.files[0]; if(!f) return;
@@ -2091,7 +2387,7 @@ function vPerfil(){
 let L=null,ix=0,cur=null,st=null,checked=false,seq=0,ses=null;
 function abrir(l){
   CORE.regenVidas(me); CORE.save(db); hud();
-  if(me.hearts<=0) return modal("Sem vidas",msgVida(),[{t:"Entendi",c:"ghost",f:closeModal}]);
+  if(me.hearts<=0) return modalSemVidas();
   L=l; ix=0; seq=0; ses={certo:0,total:0,xp:0,melhor:0};
   $("#stage").classList.add("on"); document.body.style.overflow="hidden"; render();
 }
@@ -2276,10 +2572,15 @@ function verificar(){
   me.resp++; ses.total++;
   if(a){
     me.certo++; ses.certo++; seq++;
+    if(me.err&&me.err[L.id]){ const kx=L.ex.indexOf(cur), a=me.err[L.id], j=a.indexOf(kx);
+      if(j>-1){ a.splice(j,1); if(!a.length) delete me.err[L.id]; } }
     if(seq>ses.melhor)ses.melhor=seq;
     if(seq>me.melhor)me.melhor=seq;
     const g=10+(seq>=3?5:0); me.xp+=g; ses.xp+=g; flut("+"+g); buzz(18);
-  } else { seq=0; CORE.perderVida(me); buzz([14,60,14]); }
+    if(seq===3||seq===5||seq===8) setTimeout(()=>flut(seq+" seguidas!"),650);
+  } else { seq=0; CORE.perderVida(me); buzz([14,60,14]);
+    const kx=L.ex.indexOf(cur);
+    if(kx>-1){ me.err=me.err||{}; const a=me.err[L.id]=me.err[L.id]||[]; if(!a.includes(kx)) a.push(kx); } }
   CORE.save(db); hud();
   const fb=$("#fb"); fb.className="fb on "+(a?"good":"bad");
   $("#fbIc").innerHTML=a?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'
@@ -2290,8 +2591,7 @@ function verificar(){
   c.textContent=ix+1<L.ex.length?"Continuar":"Finalizar"; c.disabled=false;
   c.onclick=()=>{
     if(me.hearts<=0){ $("#stage").classList.remove("on"); document.body.style.overflow=""; hud(); paint();
-      return modal("Suas vidas acabaram","A lição não foi concluída. "+msgVida(),
-        [{t:"Entendi",c:"ghost",f:closeModal}]); }
+      return modalSemVidas("A missão não foi concluída. "); }
     ix++; if(ix<L.ex.length)render(); else concluir();
   };
 }
@@ -2308,10 +2608,11 @@ function concluir(){
   hud(); paint();
   setTimeout(()=>{
     $("#stage").classList.remove("on");
-    $("#dTit").textContent=perf?"Lição perfeita":"Lição concluída";
+    $("#dTit").textContent=perf?"Missão perfeita":"Missão concluída";
     $("#dSub").textContent=(perf?"Você acertou tudo em "+L.titulo+". Bônus de 20 XP.":"Você concluiu "+L.titulo+".")+" Você ganhou "+ganhoBr+" Brasas.";
     $("#dXp").textContent="+"+ses.xp; $("#dAcc").textContent=acc+"%"; $("#dSeq").textContent=ses.melhor;
     $("#done").classList.add("on");
+    if(perf) burst($("#done"));
   },420);
 }
 $("#dBtn").onclick=()=>{ $("#done").classList.remove("on"); document.body.style.overflow=""; hud(); paint();
