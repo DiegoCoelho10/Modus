@@ -170,6 +170,12 @@ h1.pt{font-family:var(--ff-d);font-weight:700;font-size:23px;letter-spacing:-.03
 .catm.m{color:var(--ok)}
 .catp.fix{border:none;background:none;text-align:right;color:var(--text-2)}
 .tag.esc2{color:var(--err);border-color:rgba(196,69,60,.4);margin-left:6px}
+
+.prow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.prow:last-of-type{border-bottom:none}
+.prow span{font-size:13.5px;color:var(--text)}
+.sinp{width:96px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px;font-family:var(--ff-m);font-size:13.5px;text-align:right;flex:none}
+.subh{font-family:var(--ff-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin:12px 0 2px}
 </style>
 </head>
 <body>
@@ -370,7 +376,7 @@ const DEFAULT_DB = () => {
     materias:{
       economia:{ id:"economia", nome:"Economia", projeto:"Avaliar o cenário econômico",
         unidades:[
-          { id:"e_f1", nome:"Fase 1", sub:"Microeconomia", licoes:ECONOMIA_F1 },
+          { id:"e_f1", nome:"Fase 1", sub:"Microeconomia", intro:INTRO_ECO1, licoes:ECONOMIA_F1 },
           { id:"e_f2", nome:"Fase 2", sub:"Macroeconomia", licoes:[
             { id:"e_f2l1", titulo:"PIB: o termômetro da economia", plano:"free", ex:[] },
             { id:"e_f2l2", titulo:"Desemprego: causas e impactos", plano:"free", ex:[] },
@@ -384,7 +390,7 @@ const DEFAULT_DB = () => {
         ]},
       matfin:{ id:"matfin", nome:"Matemática Financeira", projeto:"Avaliar a viabilidade financeira de um projeto",
         unidades:[
-          { id:"mf_f1", nome:"Fase 1", sub:"Fundamentos e capitalização", licoes:[
+          { id:"mf_f1", nome:"Fase 1", sub:"Fundamentos e capitalização", intro:INTRO_MF1, licoes:[
             { id:"mf_f1l1", titulo:"Valor do dinheiro no tempo", plano:"free", ex:[
               { t:"escolha", p:"Toda operação financeira começa com um valor no <b>momento zero</b>. Como a apostila chama esse valor?",
                 o:["Principal, Capital, Valor Presente ou PV: todos são o mesmo valor inicial",
@@ -549,7 +555,7 @@ const DEFAULT_DB = () => {
                 e:"Expurgar é a palavra da apostila. Você tira a inflação de dentro do ganho para ver o que sobrou de verdade." }
             ]}
           ]},
-          { id:"mf_f2", nome:"Fase 2", sub:"Lucro e caixa", licoes:[
+          { id:"mf_f2", nome:"Fase 2", sub:"Lucro e caixa", intro:INTRO_MF2, licoes:[
             { id:"mf_f2l1", titulo:"Resultado e geração de riqueza", plano:"free", ex:[
               { t:"ordenar", p:"Coloque os três lucros da Demonstração de Resultado na ordem em que aparecem.",
                 seq:["Lucro Operacional (LAJIR)","Lucro Antes do Imposto de Renda (LAIR)","Lucro Líquido do Exercício"],
@@ -603,7 +609,7 @@ const DEFAULT_DB = () => {
                 e:"O investidor põe, o investido recebe. Os riscos afetam os dois, mas de formas diferentes." }
             ]}
           ]},
-          { id:"mf_f3", nome:"Fase 3", sub:"Viabilidade de projetos", licoes:[
+          { id:"mf_f3", nome:"Fase 3", sub:"Viabilidade de projetos", intro:INTRO_MF3, licoes:[
             { id:"mf_f3l1", titulo:"TMA e custo de capital", plano:"free", ex:[
               { t:"escolha", p:"O que é a <b>Taxa Mínima de Atratividade</b> (TMA)?",
                 o:["O retorno mínimo exigido pelos investidores para aceitarem os riscos do investimento",
@@ -789,13 +795,44 @@ const PACOTES=[
   { id:"p350", ambar:350, preco:49.90 }
 ];
 
+/* roteiros de introdução das fases, na voz do Lume */
+const INTRO_ECO1=[
+ {p:"oi",t:"Oi! Eu sou o Lume. Antes de cada fase, eu te conto o mapa do território. Bora?"},
+ {p:"explica",t:"Microeconomia é olhar a economia de pertinho: uma pessoa escolhendo, uma empresa precificando, um mercado se ajustando."},
+ {p:"explica",t:"Tudo começa no cabo de guerra entre quem vende e quem compra. Onde as forças empatam, nasce o preço.",d:"Oferta × Demanda = Equilíbrio"},
+ {p:"pensa",t:"Depois você mede o quanto as pessoas reagem a preço, a elasticidade, e conhece os campos de batalha: concorrência, monopólio e companhia."},
+ {p:"feliz",t:"São 5 missões. Errou? Faz parte: toda resposta vem com explicação, e as vidas voltam com o tempo. Preparado?"}
+];
+const INTRO_MF1=[
+ {p:"oi",t:"Fase 1! Aqui mora a ideia que sustenta TODA a matemática financeira."},
+ {p:"explica",t:"Dinheiro tem hora marcada: um real hoje vale mais que um real prometido. Inflação e juros explicam o porquê.",d:"R$ 1 hoje > R$ 1 amanhã"},
+ {p:"explica",t:"Essa fórmula é a sua espada. Com valor presente, taxa e tempo, você viaja com o dinheiro para o futuro e volta.",d:"VF = PV × (1 + i)^n"},
+ {p:"pensa",t:"Cuidado com as pegadinhas: taxa nominal não é efetiva, e o n anda SEMPRE na mesma unidade do i. Muita gente escorrega aí."},
+ {p:"explica",t:"Você ainda compara juros simples com compostos e aprende a expurgar a inflação com a fórmula de Fisher."},
+ {p:"feliz",t:"6 missões te esperam. Bora fazer o tempo trabalhar para você?"}
+];
+const INTRO_MF2=[
+ {p:"oi",t:"Fase 2: sair do papel e olhar o caixa."},
+ {p:"explica",t:"A Demonstração de Resultado é uma escada de lucros. Cada degrau desconta uma coisa: operação, juros, imposto.",d:"LAJIR → LAIR → Lucro Líquido"},
+ {p:"explica",t:"E fica o alerta do Lume: lucro no papel não paga boleto. O que sustenta a empresa é caixa girando e riqueza reinvestida."},
+ {p:"pensa",t:"Todo investimento carrega risco. E quanto maior ele for, mais retorno o investidor cobra para topar.",d:"Risco ↑ = Retorno exigido ↑"},
+ {p:"feliz",t:"Duas missões certeiras. Vamos?"}
+];
+const INTRO_MF3=[
+ {p:"oi",t:"Chegou a fase final: decidir se um projeto VALE o dinheiro."},
+ {p:"explica",t:"Primeiro você define a Taxa Mínima de Atratividade: custo do capital mais o prêmio pelo risco. Abaixo dela, nem conversa.",d:"TMA = régua do investidor"},
+ {p:"explica",t:"Aí desconta todos os fluxos futuros para hoje e soma. Sobrou valor? O projeto passa.",d:"VPL > 0 = aceita"},
+ {p:"pensa",t:"Payback diz QUANDO o dinheiro volta. TIR diz a taxa que zera tudo. E quando VPL e TIR discordam, você vai saber em quem confiar."},
+ {p:"feliz",t:"5 missões e você fecha a matéria. Vai fundo!"}
+];
+
 /* insígnias em SVG na caligrafia do app: traço fino, monocromático */
 const INSIG={
   bussola:'<circle cx="12" cy="12" r="8.5"/><path d="M15.2 8.8l-2 4.4-4.4 2 2-4.4z"/>',
   livro:'<path d="M12 6.2C10.3 4.9 7.8 4.6 5 5.2v12.6c2.8-.6 5.3-.3 7 1 1.7-1.3 4.2-1.6 7-1V5.2c-2.8-.6-5.3-.3-7 1z"/><path d="M12 6.2v12.6"/>',
-  louro:'<path d="M7.2 4.5c-2.1 3.9-2.1 8.7.9 12.6M16.8 4.5c2.1 3.9 2.1 8.7-.9 12.6"/><path d="M6.6 8.4H4.4M6.6 12H4.2M8 15.4l-2 .9M17.4 8.4h2.2M17.4 12h2.4M16 15.4l2 .9"/><circle cx="12" cy="18.4" r="1.1"/>',
+  louro:'<path d="M6.5 5c-2.6 4.2-2.6 9.2 1.4 13.2M17.5 5c2.6 4.2 2.6 9.2-1.4 13.2"/><path d="M6.9 8.6C5.4 8 4.3 8 3.2 8.6c.9 1 2.1 1.4 3.7 1.2zM6.4 12.4c-1.5-.3-2.6 0-3.5.9 1.1.8 2.4 1 4 .5zM7.7 15.9c-1.4.2-2.4.8-3 1.8 1.3.4 2.5.1 3.8-.8zM17.1 8.6c1.5-.6 2.6-.6 3.7 0-.9 1-2.1 1.4-3.7 1.2zM17.6 12.4c1.5-.3 2.6 0 3.5.9-1.1.8-2.4 1-4 .5zM16.3 15.9c1.4.2 2.4.8 3 1.8-1.3.4-2.5.1-3.8-.8z"/><circle cx="12" cy="19.2" r="1.1"/>',
   torre:'<path d="M7.5 20.5h9M8.5 20.5v-7h7v7M6.5 9.5h11M7 9.5V5h2.2v1.8h2V5h1.6v1.8h2V5H17v4.5"/>',
-  coruja:'<path d="M5.5 8.8L7.4 6l1.8 1.8h5.6L16.6 6l1.9 2.8"/><path d="M5.5 8.8c-.3 7.6 2.7 11.2 6.5 11.2s6.8-3.6 6.5-11.2"/><circle cx="9.6" cy="11.4" r="1.15"/><circle cx="14.4" cy="11.4" r="1.15"/><path d="M12 14l-1.1 1.7h2.2z"/>',
+  coruja:'<path d="M6 10a6 6 0 0 1 12 0v4a6 6 0 0 1-12 0z"/><path d="M6.4 8.4L4.8 5.6 7.8 6.9M17.6 8.4l1.6-2.8-3 1.3"/><circle cx="9.4" cy="10.8" r="2.05"/><circle cx="14.6" cy="10.8" r="2.05"/><circle cx="9.4" cy="10.8" r=".55" fill="currentColor"/><circle cx="14.6" cy="10.8" r=".55" fill="currentColor"/><path d="M12 12.9l-1 1.4h2z"/><path d="M9.6 20v-1.7M12 20.4v-1.5M14.4 20v-1.7"/>',
   pena:'<path d="M19 4.8c-6.2.2-10.9 4.3-12.8 10.9l-.9 3 3-.9C14.9 16 19 11.2 19 4.8z"/><path d="M6.5 17.5L16.5 7.5"/>',
   brasav:'<path d="M12 3.2c.9 3 3.9 4.4 3.9 7.8a3.9 3.9 0 1 1-7.8 0c0-1.5.6-2.7 1.6-3.9.4 1 .9 1.6 1.8 2.1-.5-1.9-.1-4.1.5-6z"/>',
   cometa:'<circle cx="8.2" cy="15.8" r="3.1"/><path d="M11.2 12.8L20 4M13.4 15.2l6.2-6.2M9.8 10.6l6-6"/>',
@@ -826,7 +863,7 @@ function LOJA(){ return [
   { id:"in_cometa",  tipo:"flair", nome:"Cometa",         moeda:"ambar",  preco:130, ic:"cometa", fx:"flick" },
   { id:"me_semana", tipo:"flair", nome:"Semana de Fogo", moeda:"merito", preco:0, ic:"escudo7",  dica:"Estude 7 dias seguidos" },
   { id:"me_cem",    tipo:"flair", nome:"Centurião",      moeda:"merito", preco:0, ic:"escudoC",  dica:"Responda 100 exercícios" },
-  { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as lições de uma fase" },
+  { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as missões de uma fase" },
   { id:"fu_bandeira", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:150, ic:"bandeira", fx:"pulse", ate:"2026-12-31" },
 
   { id:"nm_ambar",   tipo:"nome", nome:"Nome de Âmbar", moeda:"ambar", preco:90,  css:"nm-ambar" },
@@ -876,6 +913,19 @@ function proximaVidaEm(u,now){
   return Math.max(0,(u.heartsAt+REGEN_MS)-now);
 }
 
+/* Pro por período: gestor dá permanente (pro:true), aluno compra dias (proAte) */
+function isPro(u){ return !!(u&&(u.pro===true||(u.proAte&&u.proAte>Date.now()))); }
+const pacotesDe=db=>(db&&db.config&&Array.isArray(db.config.pacotes)&&db.config.pacotes.length)?db.config.pacotes:PACOTES;
+
+/* recarga de vidas: paga em Brasas, nunca em dinheiro */
+function recarregarVidas(db,u){
+  const preco=(db.config&&db.config.vidaPreco)||60;
+  if(u.hearts>=MAX_VIDAS) return {ok:false,err:"Suas vidas já estão cheias."};
+  if((u.brasas||0)<preco) return {ok:false,err:"Custa "+preco+" Brasas e você tem "+(u.brasas||0)+". Missões e check-in rendem mais."};
+  u.brasas-=preco; u.hearts=MAX_VIDAS; u.heartsAt=null;
+  save(db); return {ok:true,preco};
+}
+
 /* compras com moeda */
 function comprarItem(db,u,itemId){
   const it=(db.loja||[]).find(i=>i.id===itemId);
@@ -900,10 +950,20 @@ function equipar(db,u,itemId){
 function pedirAmbar(db,u,pacoteId,txid){
   if((db.pedidos||[]).some(p=>p.uid===u.id&&p.status==="pendente"))
     return {ok:false,err:"Você já tem um pedido aguardando confirmação."};
-  const pc=PACOTES.find(p=>p.id===pacoteId);
+  const pc=pacotesDe(db).find(p=>p.id===pacoteId);
   if(!pc) return {ok:false,err:"Pacote inválido."};
-  const pd={ id:uid("px"), uid:u.id, pacoteId:pc.id, ambar:pc.ambar, valor:pc.preco,
-             txid:String(txid||"").slice(0,25), status:"pendente", criadoEm:Date.now() };
+  const pd={ id:uid("px"), uid:u.id, tipo:"ambar", pacoteId:pc.id, ambar:pc.ambar, valor:pc.preco,
+             txid:String(txid||"").slice(0,25), status:"pendente", visto:false, criadoEm:Date.now() };
+  db.pedidos.push(pd); save(db); return {ok:true,pedido:pd};
+}
+function pedirPro(db,u,txid){
+  if((db.pedidos||[]).some(p=>p.uid===u.id&&p.status==="pendente"))
+    return {ok:false,err:"Você já tem um pedido aguardando confirmação."};
+  if(u.pro===true) return {ok:false,err:"Seu Pro já é permanente."};
+  const preco=(db.config&&db.config.proPreco)||14.90;
+  const dias=(db.config&&db.config.proDias)||30;
+  const pd={ id:uid("px"), uid:u.id, tipo:"pro", dias, valor:preco,
+             txid:String(txid||"").slice(0,25), status:"pendente", visto:false, criadoEm:Date.now() };
   db.pedidos.push(pd); save(db); return {ok:true,pedido:pd};
 }
 function confirmarPedido(db,pid){
@@ -911,7 +971,12 @@ function confirmarPedido(db,pid){
   if(!pd||pd.status!=="pendente") return false;
   const u=db.users[pd.uid]; if(!u) return false;
   pd.status="confirmado"; pd.resolvidoEm=Date.now();
-  u.ambar=(u.ambar||0)+pd.ambar;
+  if(pd.tipo==="pro"){
+    const base=Math.max(Date.now(), u.proAte||0);
+    u.proAte=base+(pd.dias||30)*864e5;
+  } else {
+    u.ambar=(u.ambar||0)+pd.ambar;
+  }
   save(db); return true;
 }
 function recusarPedido(db,pid){
@@ -984,6 +1049,11 @@ function migrate3(d){
     if(e&&e.t==="associar"&&Array.isArray(e.pares))
       e.pares=e.pares.map(p=>Array.isArray(p)?{a:p[0],b:p[1]}:p);
   }))));
+  if(d.config.vidaPreco==null) d.config.vidaPreco=60;
+  if(d.config.proPreco==null)  d.config.proPreco=14.90;
+  if(d.config.proDias==null)   d.config.proDias=30;
+  if(!Array.isArray(d.config.pacotes)||!d.config.pacotes.length)
+    d.config.pacotes=PACOTES.map(pc=>({id:pc.id,ambar:pc.ambar,preco:pc.preco}));
   Object.values(d.users).forEach(hidrataAluno);
   const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
   if(br&&!d.pedidos.length)
@@ -1001,6 +1071,9 @@ function hidrataAluno(u){
   if(u.lastCheckin===undefined) u.lastCheckin=null;
   if(u.vidaDia===undefined) u.vidaDia=null;
   if(u.heartsAt===undefined) u.heartsAt=null;
+  if(u.proAte===undefined) u.proAte=null;
+  if(!u.err) u.err={};
+  if(!u.introVista) u.introVista={};
   if(!u.done) u.done={};
   return u;
 }
@@ -1146,6 +1219,7 @@ async function cadastrarNuvem({nome,email,senha,cursoId}){
     acesso:c?c.materias.slice():[], foto:null,
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
+    proAte:null, err:{}, introVista:{},
     pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
     resp:0, certo:0, melhor:0, criadoEm:Date.now() };
   await FS.collection("users").doc(uid).set(u);
@@ -1197,7 +1271,7 @@ function save(d){
     if(u.status!=="aprovado") return;
     put("r:"+u.id,FS.collection("ranking").doc(u.id),
       { id:u.id, nome:u.nome, foto:u.foto||null, xp:u.xp||0,
-        cursoId:u.cursoId||null, pro:!!u.pro, equip:u.equip||{} });
+        cursoId:u.cursoId||null, pro:isPro(u), equip:u.equip||{} });
   });
   /* o que sumiu do cache é apagado da nuvem (exclusões do gestor) */
   Object.keys(SNAP).slice().forEach(k=>{
@@ -1228,6 +1302,7 @@ function novoAluno(db,{nome,email,senha,cursoId}){
     foto:null,
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
+    proAte:null, err:{}, introVista:{},
     pro:false, xp:0, streak:0, lastDay:null, hearts:5, done:{},
     resp:0, certo:0, melhor:0, criadoEm:Date.now() };
   db.users[u.id]=u; return u;
@@ -1278,6 +1353,7 @@ return { load,save,wipe,getSession,setSession,clearSession,byEmail,alunos,novoAl
          hojeStr,checkin,regenVidas,perderVida,proximaVidaEm,
          comprarItem,equipar,pedirAmbar,confirmarPedido,recusarPedido,creditarAmbar,
          pixPayload,PACOTES,MAX_VIDAS,INSIG,checarMeritos,
+         isPro,pacotesDe,recarregarVidas,pedirPro,
          fbInit,onAuth,login,logout,authUser,fbErro,GESTOR_EMAIL,
          preCursos,bootAluno,bootGestor,cadastrarNuvem,publicarConteudo };
 })();
@@ -1291,6 +1367,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;"
 const ini=n=>esc(String(n||"?").trim()[0]||"?").toUpperCase();
 let db=null, me=null, tab="insc";
 
+const pdRotulo=pd=>pd.tipo==="pro"?("Modus Pro · "+(pd.dias||30)+" dias"):(pd.ambar+" Âmbar");
 function toast(msg,tipo){
   const t=$("#toast"); t.textContent=msg; t.className="on "+(tipo||"");
   clearTimeout(t._t); t._t=setTimeout(()=>t.className="",2600);
@@ -1311,6 +1388,15 @@ function vLojaAdm(){
       <label class="flb">Cidade</label><input class="finp" id="pxC" value="${esc(db.config.pixCidade||"")}">
       <div class="acts" style="margin-top:10px"><button class="act a" id="pxS">Salvar Pix</button></div>
     </div>
+    <div class="sec">Preços do sistema</div>
+    <div class="card">
+      <div class="prow"><span>Recarga de vidas (Brasas)</span><input class="sinp" id="sVida" type="number" min="1" step="1" value="${(db.config.vidaPreco||60)}"></div>
+      <div class="prow"><span>Modus Pro — duração (dias)</span><input class="sinp" id="sProD" type="number" min="1" step="1" value="${(db.config.proDias||30)}"></div>
+      <div class="prow"><span>Modus Pro — preço (R$)</span><input class="sinp" id="sProP" type="text" inputmode="decimal" value="${(db.config.proPreco||14.9).toFixed(2).replace(".",",")}"></div>
+      <div class="subh">Pacotes de Âmbar</div>
+      ${(db.config.pacotes||[]).map((pc,i)=>`<div class="prow"><span>${pc.ambar} Âmbar</span><input class="sinp" data-pa="${i}" type="text" inputmode="decimal" value="${pc.preco.toFixed(2).replace(".",",")}"></div>`).join("")}
+      <div class="acts" style="margin-top:12px"><button class="act a" id="sSys">Salvar preços</button></div>
+    </div>
     <div class="sec">Catálogo e preços</div>
     <div class="card" id="cat"></div>
     ${hist.length?'<div class="sec">Últimos pedidos resolvidos</div><div id="hst"></div>':""}`;
@@ -1323,7 +1409,7 @@ function vLojaAdm(){
     card.innerHTML=`<div class="row">
         <div class="av">${u.foto?`<img src="${u.foto}" alt="">`:ini(u.nome||"?")}</div>
         <div class="who"><b>${esc(u.nome||"?")}</b><small>${esc(u.email||"")}</small></div>
-        <div style="font-family:var(--ff-m);font-size:14px;color:var(--warn);flex:none">${pdx.ambar} âmbar</div>
+        <div style="font-family:var(--ff-m);font-size:13px;color:var(--warn);flex:none;text-align:right">${pdx.tipo==="pro"?"PRO "+(pdx.dias||30)+"d":pdx.ambar+" âmbar"}</div>
       </div>
       <div class="tags">
         <span class="tag amb">R$ ${pdx.valor.toFixed(2).replace(".",",")}</span>
@@ -1335,7 +1421,7 @@ function vLojaAdm(){
         <button class="act no" data-a="no">Recusar</button>
       </div>`;
     card.querySelector('[data-a="ok"]').onclick=()=>{
-      modal(`<h3>Confirmar pedido</h3><div class="mp">Confirme só depois de ver o Pix de <b>R$ ${pdx.valor.toFixed(2).replace(".",",")}</b> no seu extrato (txid ${esc(pdx.txid||"—")}). ${esc(u.nome||"O aluno")} recebe ${pdx.ambar} Âmbar na hora.</div>
+      modal(`<h3>Confirmar pedido</h3><div class="mp">Confirme só depois de ver o Pix de <b>R$ ${pdx.valor.toFixed(2).replace(".",",")}</b> no seu extrato (txid ${esc(pdx.txid||"—")}). ${esc(u.nome||"O aluno")} recebe ${pdx.tipo==="pro"?((pdx.dias||30)+" dias de Modus Pro"):(pdx.ambar+" Âmbar")} na hora.</div>
         <div class="mbtns"><button class="mb2" id="y">Confirmar</button><button class="mb2 ghost" id="n">Cancelar</button></div>`);
       $("#y").onclick=()=>{ CORE.confirmarPedido(db,pdx.id); closeModal(); refresh(); toast("Âmbar creditado"); };
       $("#n").onclick=closeModal;
@@ -1354,6 +1440,19 @@ function vLojaAdm(){
     db.config.pixNome=$("#pxN").value.trim();
     db.config.pixCidade=$("#pxC").value.trim();
     CORE.save(db); toast("Pix salvo");
+  };
+  $("#sSys").onclick=()=>{
+    const num=v=>{ const n=Number(String(v).replace(",",".")); return isFinite(n)?n:null; };
+    const vv=Math.floor(num($("#sVida").value)), pd=Math.floor(num($("#sProD").value)), pp=num($("#sProP").value);
+    if(!(vv>0)||!(pd>0)||!(pp>0)) return toast("Valor inválido");
+    db.config.vidaPreco=vv; db.config.proDias=pd; db.config.proPreco=pp;
+    let inval=false;
+    document.querySelectorAll("[data-pa]").forEach(inp=>{
+      const i=+inp.dataset.pa, v=num(inp.value);
+      if(!(v>0)){ inval=true; return; }
+      if(db.config.pacotes[i]) db.config.pacotes[i].preco=v;
+    });
+    CORE.save(db); toast(inval?"Salvo (algum pacote inválido foi ignorado)":"Preços salvos");
   };
 
   const cat=$("#cat"); const TIPO={moldura:"Molduras",flair:"Insígnias",nome:"Estilos de nome",aura:"Auras",titulo:"Títulos"};
@@ -1388,7 +1487,7 @@ function vLojaAdm(){
     hist.forEach(pdx=>{
       const u=db.users[pdx.uid]||{};
       const r=el("div","hrow");
-      r.innerHTML=`<b>${esc(u.nome||"?")}</b> · ${pdx.ambar} Âmbar · R$ ${pdx.valor.toFixed(2).replace(".",",")} · <span class="${pdx.status==="confirmado"?"hok":"hno"}">${pdx.status}</span>`;
+      r.innerHTML=`<b>${esc(u.nome||"?")}</b> · ${pdRotulo(pdx)} · R$ ${pdx.valor.toFixed(2).replace(".",",")} · <span class="${pdx.status==="confirmado"?"hok":"hno"}">${pdx.status}</span>`;
       h$.appendChild(r);
     });
   }
@@ -1520,7 +1619,7 @@ function mAprovar(u){
       b.onclick=()=>{ sel.has(m.id)?sel.delete(m.id):sel.add(m.id); draw(); };
       l.appendChild(b);
     });
-    $("#pro").onclick=()=>{u.pro=!u.pro;draw();};
+    $("#pro").onclick=()=>{u.pro=!u.pro;if(!u.pro)u.proAte=null;draw();};
     $("#x").onclick=closeModal;
     $("#ok").onclick=()=>{
       u.acesso=[...sel]; u.status="aprovado";
@@ -1559,7 +1658,7 @@ function vAlunos(){
         <div class="tags">
           <span class="tag ${u.status==="aprovado"?"ok":u.status==="pendente"?"pend":"no"}">${u.status}</span>
           <span class="tag">${esc(c?c.nome:"—")}</span>
-          ${u.pro?'<span class="tag pro">Pro</span>':""}
+          ${u.pro===true?'<span class="tag pro">Pro</span>':(CORE.isPro(u)?`<span class="tag pro">Pro até ${new Date(u.proAte).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})}</span>`:"")}
           <span class="tag">${u.brasas||0} brasas</span>
           <span class="tag amb">${u.ambar||0} âmbar</span>
           <span class="tag">${u.acesso.length} matéria(s)</span>
@@ -1582,7 +1681,7 @@ function vAlunos(){
           CORE.creditarAmbar(db,u.id,q); closeModal(); refresh(); toast(q+" Âmbar creditado(s) para "+u.nome.split(" ")[0]); };
         $("#n").onclick=closeModal;
       };
-      card.querySelector('[data-a="pro"]').onclick=()=>{u.pro=!u.pro;refresh();toast(u.pro?"Pro ativado":"Pro removido");};
+      card.querySelector('[data-a="pro"]').onclick=()=>{u.pro=!u.pro;if(!u.pro)u.proAte=null;refresh();toast(u.pro?"Pro permanente ativado":"Pro removido");};
       const ap=card.querySelector('[data-a="ap"]'); if(ap) ap.onclick=()=>mAprovar(u);
       const bl=card.querySelector('[data-a="bl"]'); if(bl) bl.onclick=()=>{u.status="recusado";refresh();toast("Aluno bloqueado");};
       card.querySelector('[data-a="del"]').onclick=()=>{
