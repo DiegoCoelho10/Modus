@@ -1585,8 +1585,12 @@ async function publicarConteudo(){
   const jobs=[];
   Object.values(d.cursos).forEach(c=>jobs.push(FS.collection("cursos").doc(c.id).set(JSON.parse(JSON.stringify(c)))));
   Object.values(d.materias).forEach(mm=>jobs.push(FS.collection("materias").doc(mm.id).set(JSON.parse(JSON.stringify(mm)))));
-  jobs.push(FS.collection("config").doc("loja").set({itens:LOJA()}));
-  jobs.push(FS.collection("config").doc("geral").set((CACHE&&CACHE.config)||{pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"}));
+  /* só semeia o catálogo da loja se ainda não existir; nunca sobrescreve preços já editados */
+  const lojaAtual=(CACHE&&Array.isArray(CACHE.loja)&&CACHE.loja.length)?CACHE.loja:LOJA();
+  jobs.push(FS.collection("config").doc("loja").set({itens:lojaAtual}));
+  /* preserva a config do gestor (chave Pix, preços); só preenche o que falta */
+  const cfg=Object.assign({pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"},(CACHE&&CACHE.config)||{});
+  jobs.push(FS.collection("config").doc("geral").set(cfg));
   await Promise.all(jobs);
   return bootGestor();
 }
