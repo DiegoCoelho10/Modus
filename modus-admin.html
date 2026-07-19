@@ -1290,13 +1290,17 @@ async function cadastrarNuvem({nome,email,senha,cursoId}){
 }
 /* primeira publicação: manda cursos, matérias e catálogo para a nuvem */
 async function publicarConteudo(){
-  const d=DEFAULT_DB(); migrate3(d); migrate4(d);
+  const d=DEFAULT_DB(); migrate3(d); migrate4(d); migrate5(d);
   const jobs=[];
   Object.values(d.cursos).forEach(c=>jobs.push(FS.collection("cursos").doc(c.id).set(JSON.parse(JSON.stringify(c)))));
   Object.values(d.materias).forEach(mm=>jobs.push(FS.collection("materias").doc(mm.id).set(JSON.parse(JSON.stringify(mm)))));
-  /* só semeia o catálogo da loja se ainda não existir; nunca sobrescreve preços já editados */
-  const lojaAtual=(CACHE&&Array.isArray(CACHE.loja)&&CACHE.loja.length)?CACHE.loja:LOJA();
-  jobs.push(FS.collection("config").doc("loja").set({itens:lojaAtual}));
+  /* SEMPRE reescreve o catálogo com a versão atual (v5), preservando apenas
+     os preços que o gestor editou nos itens que continuam existindo. */
+  const catalogo=LOJA();
+  const antiga=(CACHE&&Array.isArray(CACHE.loja))?CACHE.loja:[];
+  catalogo.forEach(n=>{ const o=antiga.find(x=>x.id===n.id);
+    if(o&&o.preco>0&&n.moeda!=="merito") n.preco=o.preco; });
+  jobs.push(FS.collection("config").doc("loja").set({itens:catalogo}));
   /* preserva a config do gestor (chave Pix, preços); só preenche o que falta */
   const cfg=Object.assign({pixChave:"",pixNome:"Modus Edu",pixCidade:"Rio de Janeiro"},(CACHE&&CACHE.config)||{});
   jobs.push(FS.collection("config").doc("geral").set(cfg));
