@@ -494,6 +494,83 @@ input{font:inherit}
 .in-ex-r{font-family:var(--ff-m);font-size:13.5px;color:var(--amber);margin-top:8px;font-weight:600}
 .study-chip{display:block;margin:6px auto 0;font-family:var(--ff-m);font-size:10px;letter-spacing:.04em;color:var(--text-2);border:1px solid var(--border);border-radius:7px;padding:3px 9px;background:var(--surface)}
 .node-wrap.done .study-chip,.node-wrap.cur .study-chip{color:var(--warn);border-color:rgba(217,164,65,.4)}
+
+/* ===== ANÉIS SVG ANIMADOS (cosméticos de Âmbar) ===== */
+.avwrap{position:relative;overflow:visible!important}
+.avwrap>img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.fxring{position:absolute;left:50%;top:50%;width:152%;height:152%;transform:translate(-50%,-50%);
+  pointer-events:none;z-index:3;display:block}
+.fxring svg{width:100%;height:100%;display:block}
+.fxring.girL{animation:fxGirL 16s linear infinite}
+.fxring.girM{animation:fxGirM 9s linear infinite}
+.fxring.pulsa{animation:fxPul 2.8s ease-in-out infinite}
+.fxring.cintila{animation:fxCin 2.4s ease-in-out infinite}
+@keyframes fxGirL{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes fxGirM{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes fxPul{0%,100%{transform:translate(-50%,-50%) scale(.97);opacity:.8}50%{transform:translate(-50%,-50%) scale(1.04);opacity:1}}
+@keyframes fxCin{0%,100%{opacity:.62}50%{opacity:1}}
+/* insígnia SVG rica ao lado do nome */
+.fxbadge{display:inline-flex;width:18px;height:18px;flex:none;vertical-align:middle}
+.fxbadge svg{width:100%;height:100%;display:block}
+.rk .fxring{width:150%;height:150%}
+@media (prefers-reduced-motion:reduce){.fxring{animation:none!important}}
+.pembig{display:inline-flex;width:38px;height:38px}.pembig svg{width:100%;height:100%}
+
+/* ===== LIVRO DA MATÉRIA ===== */
+.mat-head{margin:2px 0 10px}
+.mat-livro{width:100%;display:flex;align-items:center;gap:13px;background:linear-gradient(135deg,#1C1613,#151110);
+  border:1px solid rgba(224,122,53,.32);border-radius:15px;padding:13px 15px;text-align:left;position:relative;overflow:hidden}
+.mat-livro::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 88% 20%,rgba(224,122,53,.14),transparent 60%);pointer-events:none}
+.mat-livro-ic{width:42px;height:42px;flex:none;display:inline-flex}
+.mat-livro-ic svg{width:100%;height:100%}
+.ml-t{flex:1;display:flex;flex-direction:column;gap:2px}
+.ml-t b{font-family:var(--ff-d);font-size:15.5px;color:var(--text)}
+.ml-t small{color:var(--text-2);font-size:12px}
+.ml-go{font-size:24px;color:var(--amber);flex:none}
+#livroOv{position:fixed;inset:0;background:rgba(10,9,8,.9);backdrop-filter:blur(3px);display:none;place-items:center;z-index:96;padding:16px}
+#livroOv.on{display:grid}
+.lv-box{width:min(460px,96vw);max-height:92vh;display:flex;flex-direction:column;background:linear-gradient(160deg,#181310,#0F0C0A);
+  border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lv-top{display:flex;align-items:center;gap:12px;padding:14px 16px 0}
+.lv-prog{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.lv-prog i{display:block;height:100%;background:linear-gradient(90deg,#B85C1E,#F0A468);border-radius:3px;transition:width .3s}
+.lv-x{width:30px;height:30px;flex:none;border-radius:9px;background:var(--surface);border:1px solid var(--border);color:var(--text-2);font-size:15px}
+.lv-cap{font-family:var(--ff-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);padding:12px 20px 0;text-align:center}
+.lv-page{flex:1;overflow-y:auto;padding:14px 22px 20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.lv-lume{width:104px;height:104px;flex:none}
+.lv-txt{font-size:15.5px;line-height:1.55;margin-top:10px}
+.lv-dest{font-family:var(--ff-m);font-size:13.5px;color:var(--amber);background:rgba(224,122,53,.08);border:1px solid rgba(224,122,53,.28);border-radius:10px;padding:10px 13px;margin-top:13px;width:100%}
+.lv-ex{margin-top:14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:left;width:100%}
+.lv-ex-q{font-size:13px;font-style:italic;margin-bottom:9px}
+.lv-ex-s{font-family:var(--ff-m);font-size:12.5px;color:var(--text-2);padding:3px 0 3px 12px;border-left:2px solid var(--border);margin:3px 0}
+.lv-ex-r{font-family:var(--ff-m);font-size:13.5px;color:var(--amber);font-weight:600;margin-top:9px}
+.lv-read{margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);border-radius:11px;padding:11px 18px;font-size:13.5px;font-weight:600}
+.lv-read.on{border-color:var(--ok);color:var(--ok)}
+.lv-check{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-size:11px}
+.lv-read.on .lv-check{background:var(--ok);color:#0F0D0C;border-color:var(--ok)}
+.lv-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-top:1px solid var(--border);background:rgba(0,0,0,.2)}
+.lv-b{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600}
+.lv-b:disabled{opacity:.35}
+.lv-cont{font-family:var(--ff-m);font-size:12px;color:var(--text-2)}
+
+/* ===== TRILHA VIVA ===== */
+.trilha-wrap{position:relative}
+.trilha-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;border-radius:20px}
+.trilha-bg canvas{width:100%;height:100%;display:block;opacity:.5}
+.path{z-index:1}
+/* conector: linha vertical entre um nó e o de cima */
+.node-wrap::before{content:"";position:absolute;top:-42px;left:50%;width:4px;height:44px;
+  transform:translateX(-50%);border-radius:3px;z-index:-1;
+  background:repeating-linear-gradient(var(--border) 0 6px,transparent 6px 12px);}
+.path>.node-wrap:first-child::before{display:none}
+.node-wrap.done::before,.node-wrap.cur::before{background:linear-gradient(var(--amber-press),var(--amber))}
+/* Lume morando no mapa, ao lado do nó atual */
+.map-lume{position:absolute;left:calc(50% + 60px);top:2px;width:66px;height:66px;z-index:2;
+  pointer-events:none;animation:lumeMap 3.6s ease-in-out infinite}
+.map-lume svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+@keyframes lumeMap{50%{transform:translateY(-6px) rotate(-3deg)}}
+@media (prefers-reduced-motion:reduce){.map-lume{animation:none}.trilha-bg{display:none}}
 </style>
 </head>
 <body>
@@ -568,6 +645,7 @@ input{font:inherit}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="modus-fx.js"></script>
 <script>
 /* ============================================================================
    MODUS EDU — NÚCLEO DE DADOS
@@ -1206,31 +1284,60 @@ const INSIG={
    mexe (fx) é exclusivo de Âmbar. Mérito não se compra. `ate` fecha a
    janela de venda de um item escasso. */
 function LOJA(){ return [
-  { id:"mo_musgo",  tipo:"moldura", nome:"Aro Musgo",     moeda:"brasas", preco:150, css:"mo-musgo" },
-  { id:"mo_tijolo", tipo:"moldura", nome:"Aro Tijolo",    moeda:"brasas", preco:150, css:"mo-tijolo" },
-  { id:"mo_duplo",  tipo:"moldura", nome:"Aro Duplo",     moeda:"brasas", preco:300, css:"mo-duplo" },
-  { id:"mo_ambar",  tipo:"moldura", nome:"Aro de Âmbar",  moeda:"ambar",  preco:60,  css:"mo-ambar" },
-  { id:"mo_brasa",  tipo:"moldura", nome:"Brasa Viva",    moeda:"ambar",  preco:110, css:"mo-brasa" },
-  { id:"mo_const",  tipo:"moldura", nome:"Constelação",   moeda:"ambar",  preco:150, css:"mo-const" },
+  /* ===== MOLDURAS ===== */
+  /* Brasa: aros simples em CSS (ganhos jogando) */
+  { id:"mo_musgo",  tipo:"moldura", nome:"Aro Musgo",   moeda:"brasas", preco:120, css:"mo-musgo" },
+  { id:"mo_tijolo", tipo:"moldura", nome:"Aro Tijolo",  moeda:"brasas", preco:120, css:"mo-tijolo" },
+  { id:"mo_duplo",  tipo:"moldura", nome:"Aro Duplo",   moeda:"brasas", preco:260, css:"mo-duplo" },
+  /* Âmbar: anéis SVG animados ao vivo */
+  { id:"an_constelacao", tipo:"moldura", nome:"Anel Constelação", moeda:"ambar", preco:80,  svg:"constelacao", fx:"cintila" },
+  { id:"an_eclipse",     tipo:"moldura", nome:"Anel Eclipse",     moeda:"ambar", preco:90,  svg:"eclipse",     fx:"girM" },
+  { id:"an_gelo",        tipo:"moldura", nome:"Anel de Gelo",     moeda:"ambar", preco:110, svg:"gelo",        fx:"pulsa" },
+  { id:"an_brasa",       tipo:"moldura", nome:"Anel de Brasa",    moeda:"ambar", preco:110, svg:"brasa",       fx:"pulsa" },
+  { id:"an_obsidiana",   tipo:"moldura", nome:"Anel Obsidiana",   moeda:"ambar", preco:130, svg:"obsidiana",   fx:"girL" },
+  { id:"an_solar",       tipo:"moldura", nome:"Anel Solar",       moeda:"ambar", preco:140, svg:"solar",       fx:"girL" },
+  { id:"an_lava",        tipo:"moldura", nome:"Anel de Lava",     moeda:"ambar", preco:150, svg:"lava",        fx:"girL" },
+  { id:"an_arcano",      tipo:"moldura", nome:"Anel Arcano",      moeda:"ambar", preco:160, svg:"arcano",      fx:"girM" },
+  { id:"an_espirito",    tipo:"moldura", nome:"Anel Espírito",    moeda:"ambar", preco:170, svg:"espirito",    fx:"cintila" },
+  { id:"an_arcoiris",    tipo:"moldura", nome:"Anel Arco-íris",   moeda:"ambar", preco:190, svg:"arcoiris",    fx:"girM" },
+  { id:"an_fogo",        tipo:"moldura", nome:"Anel de Fogo",     moeda:"ambar", preco:200, svg:"fogo",        fx:"girL" },
 
-  { id:"in_pena",    tipo:"flair", nome:"Pena",           moeda:"brasas", preco:60,  ic:"pena" },
-  { id:"in_livro",   tipo:"flair", nome:"Livro Aberto",   moeda:"brasas", preco:60,  ic:"livro" },
-  { id:"in_bussola", tipo:"flair", nome:"Bússola",        moeda:"brasas", preco:80,  ic:"bussola" },
-  { id:"in_coruja",  tipo:"flair", nome:"Coruja",         moeda:"brasas", preco:100, ic:"coruja" },
-  { id:"in_torre",   tipo:"flair", nome:"Torre",          moeda:"brasas", preco:100, ic:"torre" },
-  { id:"in_louro",   tipo:"flair", nome:"Louros",         moeda:"brasas", preco:120, ic:"louro" },
-  { id:"in_brasav",  tipo:"flair", nome:"Chama de Âmbar", moeda:"ambar",  preco:90,  ic:"brasav", fx:"pulse" },
-  { id:"in_cometa",  tipo:"flair", nome:"Cometa",         moeda:"ambar",  preco:130, ic:"cometa", fx:"flick" },
+  /* ===== INSÍGNIAS ===== */
+  /* Brasa: as simples em traço (INSIG antigo) */
+  { id:"in_pena",    tipo:"flair", nome:"Pena",     moeda:"brasas", preco:60,  ic:"pena" },
+  { id:"in_livro",   tipo:"flair", nome:"Livro",    moeda:"brasas", preco:60,  ic:"livro" },
+  { id:"in_bussolab",tipo:"flair", nome:"Rosa dos Ventos", moeda:"brasas", preco:80, ic:"bussola" },
+  { id:"in_torreb",  tipo:"flair", nome:"Torre",    moeda:"brasas", preco:100, ic:"torre" },
+  { id:"in_louro",   tipo:"flair", nome:"Ramo",     moeda:"brasas", preco:120, ic:"louro" },
+  /* Âmbar: insígnias SVG ricas */
+  { id:"si_estrela",  tipo:"flair", nome:"Estrela-Bússola", moeda:"ambar", preco:70,  svg:"estrela" },
+  { id:"si_lira",     tipo:"flair", nome:"Lira",            moeda:"ambar", preco:80,  svg:"lira" },
+  { id:"si_ampulheta",tipo:"flair", nome:"Ampulheta",       moeda:"ambar", preco:90,  svg:"ampulheta" },
+  { id:"si_bussola",  tipo:"flair", nome:"Bússola de Ouro", moeda:"ambar", preco:100, svg:"bussola" },
+  { id:"si_torre",    tipo:"flair", nome:"Torre de Ouro",   moeda:"ambar", preco:100, svg:"torre" },
+  { id:"si_elmo",     tipo:"flair", nome:"Elmo",            moeda:"ambar", preco:110, svg:"elmo" },
+  { id:"si_olho",     tipo:"flair", nome:"Olho de Saber",   moeda:"ambar", preco:120, svg:"olho" },
+  { id:"si_cajado",   tipo:"flair", nome:"Cajado Alado",    moeda:"ambar", preco:130, svg:"cajado" },
+  { id:"si_leao",     tipo:"flair", nome:"Escudo do Leão",  moeda:"ambar", preco:150, svg:"leao" },
+  /* mérito: não compra */
   { id:"me_semana", tipo:"flair", nome:"Semana de Fogo", moeda:"merito", preco:0, ic:"escudo7",  dica:"Estude 7 dias seguidos" },
   { id:"me_cem",    tipo:"flair", nome:"Centurião",      moeda:"merito", preco:0, ic:"escudoC",  dica:"Responda 100 exercícios" },
   { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as missões de uma fase" },
-  { id:"fu_bandeira", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:150, ic:"bandeira", fx:"pulse", ate:"2026-12-31" },
+  /* escasso */
+  { id:"si_diamante", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:180, svg:"diamante", ate:"2026-12-31" },
 
+  /* ===== GEMAS (selo ao lado, brasa barato) ===== */
+  { id:"gm_azul",  tipo:"flair", nome:"Safira",    moeda:"ambar", preco:70, svg:"gema_azul" },
+  { id:"gm_verde", tipo:"flair", nome:"Esmeralda", moeda:"ambar", preco:70, svg:"gema_verde" },
+
+  /* ===== ESTILOS DE NOME (Âmbar) ===== */
   { id:"nm_ambar",   tipo:"nome", nome:"Nome de Âmbar", moeda:"ambar", preco:90,  css:"nm-ambar" },
   { id:"nm_lampejo", tipo:"nome", nome:"Lampejo",       moeda:"ambar", preco:150, css:"nm-lampejo" },
 
+  /* ===== AURA (Âmbar) ===== */
   { id:"au_ambar", tipo:"aura", nome:"Aura de Âmbar", moeda:"ambar", preco:160, css:"au-ambar" },
 
+  /* ===== TÍTULOS ===== */
   { id:"ti_constante", tipo:"titulo", nome:"Constante",          moeda:"brasas", preco:200 },
   { id:"ti_calculista",tipo:"titulo", nome:"Calculista",         moeda:"brasas", preco:200 },
   { id:"ti_madruga",   tipo:"titulo", nome:"Turno da Madrugada", moeda:"brasas", preco:250 },
@@ -1471,6 +1578,37 @@ function migrate4(d){
   if(br&&!br.inv.length){ br.brasas=br.brasas||180; br.inv=["in_livro"]; br.equip.flair="in_livro"; }
 }
 
+/* v5: catálogo de cosméticos SVG. Reembolsa itens antigos que saíram e
+   preserva os que continuam. Preço editado pelo gestor sobrevive. */
+const REEMBOLSO_V5={ mo_ambar:["ambar",60], mo_brasa:["ambar",110], mo_const:["ambar",150],
+  in_brasav:["ambar",90], in_cometa:["ambar",130], fu_bandeira:["ambar",150],
+  in_bussola:["brasas",80], in_coruja:["brasas",100], in_torre:["brasas",100] };
+function migrate5(d){
+  if(d.v>=5) return;
+  d.v=5;
+  const velho=d.loja||[];
+  d.loja=LOJA();
+  d.loja.forEach(n=>{ const o=velho.find(x=>x.id===n.id);
+    if(o&&o.preco>0&&n.moeda!=="merito") n.preco=o.preco; });
+  const ids=new Set(d.loja.map(i=>i.id));
+  Object.values(d.users).forEach(u=>{
+    if(u.role!=="aluno") return;
+    if(!u.equip) u.equip={};
+    ["moldura","flair","titulo","nome","aura"].forEach(k=>{ if(u.equip[k]===undefined) u.equip[k]=null; });
+    (u.inv||[]).filter(id=>!ids.has(id)).forEach(id=>{
+      const r=REEMBOLSO_V5[id]; if(r) u[r[0]]=(u[r[0]]||0)+r[1];
+    });
+    u.inv=(u.inv||[]).filter(id=>ids.has(id));
+    Object.keys(u.equip).forEach(k=>{ if(u.equip[k]&&!ids.has(u.equip[k])) u.equip[k]=null; });
+  });
+  /* demo reequipada com os cosméticos novos, para VER no ranking */
+  const la=Object.values(d.users).find(u=>u.email==="larissa@demo.com");
+  if(la){ la.brasas=la.brasas||240; la.ambar=la.ambar||60;
+    la.inv=["an_fogo","si_leao","nm_ambar"]; la.equip.moldura="an_fogo"; la.equip.flair="si_leao"; la.equip.nome="nm_ambar"; }
+  const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
+  if(br){ br.ambar=br.ambar||30; br.inv=["an_gelo"]; br.equip.moldura="an_gelo"; br.equip.flair=null; }
+}
+
 /* ---------- FIREBASE: o app na nuvem ---------- */
 const FB_CONFIG={ apiKey:"AIzaSyCSyAYCHqzJiEk6UYW88YZ7ZhSvE_HAhzM",
   authDomain:"modus-edu.firebaseapp.com", projectId:"modus-edu",
@@ -1608,8 +1746,8 @@ function load(){
   if(NUVEM&&FS){ if(!CACHE) CACHE=baseCache(); return CACHE; }
   let d=null;
   try{ d=JSON.parse(localStorage.getItem(K_DB)||"null"); }catch(e){}
-  if(!d||(d.v!==2&&d.v!==3&&d.v!==4)){ d=DEFAULT_DB(); }
-  migrate3(d); migrate4(d); localStorage.setItem(K_DB,JSON.stringify(d));
+  if(!d||(d.v!==2&&d.v!==3&&d.v!==4&&d.v!==5)){ d=DEFAULT_DB(); }
+  migrate3(d); migrate4(d); migrate5(d); localStorage.setItem(K_DB,JSON.stringify(d));
   return d;
 }
 function save(d){
@@ -1914,7 +2052,24 @@ function vTrilha(){
   v.appendChild(bar);
 
   const M=db.materias[matAtual];
+  /* livro de estudo da matéria: reúne o material de todas as lições */
+  const temEstudo = M.unidades.some(u=>(u.licoes||[]).some(l=>l.estudo&&l.estudo.length));
+  if(temEstudo){
+    const head=el("div","mat-head");
+    const liv = window.MODUSFX&&MODUSFX.has("livro_arvore")
+      ? `<span class="mat-livro-ic">${MODUSFX.SVG.livro_arvore}</span>`
+      : "📖";
+    head.innerHTML=`<button class="mat-livro" id="matLivro">${liv}
+      <span class="ml-t"><b>Livro da matéria</b><small>Estude com o Lume, página a página</small></span>
+      <span class="ml-go">›</span></button>`;
+    v.appendChild(head);
+    head.querySelector("#matLivro").onclick=()=>abrirLivro(M);
+  }
   let liberado=true, gi=0;
+  const wrap=el("div","trilha-wrap");
+  const bg=el("div","trilha-bg"); bg.innerHTML='<canvas></canvas>'; wrap.appendChild(bg);
+  v.appendChild(wrap);
+  const alvoWrap=wrap;
   M.unidades.forEach(u=>{
     const conteudo=u.licoes.filter(l=>l.ex&&l.ex.length);
     const feitas=conteudo.filter(l=>me.done[l.id]).length;
@@ -1930,7 +2085,7 @@ function vTrilha(){
       rp.onclick=()=>abrirIntro(u,null);
       band.querySelector(".t").appendChild(rp);
     }
-    v.appendChild(band);
+    alvoWrap.appendChild(band);
     if(!conteudo.length) return;
 
     const path=el("div","path");
@@ -1960,8 +2115,17 @@ function vTrilha(){
       w.appendChild(lab);
       path.appendChild(w);
     });
-    v.appendChild(path);
+    alvoWrap.appendChild(path);
   });
+  // Lume ao lado do primeiro nó atual (o "COMEÇAR")
+  setTimeout(()=>{
+    const cur=alvoWrap.querySelector(".node-wrap.cur");
+    if(cur&&window.MODUSFX!==undefined){
+      const lm=document.createElement("div"); lm.className="map-lume";
+      lm.innerHTML=LUME("feliz"); cur.appendChild(lm);
+    }
+    pintaFundoTrilha(alvoWrap.querySelector(".trilha-bg canvas"));
+  },30);
   rail();
 }
 
@@ -1992,8 +2156,22 @@ function insigSVG(it,extra){
   const cor=it.moeda==="merito"?"fM":it.moeda==="ambar"?"fA":"fB";
   return `<span class="flair ${cor}${it.fx?" fx-"+it.fx:""}${extra?" "+extra:""}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${CORE.INSIG[it.ic]}</svg></span>`;
 }
-const moldEq=eq=>{const it=lojaItem(eq&&eq.moldura);return it?" "+it.css:"";};
-const flairEq=eq=>insigSVG(lojaItem(eq&&eq.flair));
+const moldEq=eq=>{const it=lojaItem(eq&&eq.moldura);return (it&&it.css)?" "+it.css:"";};
+const moldRing=eq=>{const it=lojaItem(eq&&eq.moldura);
+  return (it&&it.svg&&window.MODUSFX)?MODUSFX.ring(it.svg,it.fx||"girL"):"";};
+/* avatar central: foto/inicial + anel SVG animado por cima (se houver) + moldura CSS */
+function avatarHTML(u,cls){
+  const inner = u.foto?`<img src="${u.foto}" alt="">`:esc((u.nome||"?").trim()[0]||"?").toUpperCase();
+  const ring = moldRing(u&&u.equip);
+  const cssM = moldEq(u&&u.equip);
+  return `<div class="${cls} avwrap${cssM}">${inner}${ring}</div>`;
+}
+function insigMini(it,extra){
+  if(!it) return "";
+  if(it.svg&&window.MODUSFX) return MODUSFX.badge(it.svg);
+  return insigSVG(it,extra);
+}
+const flairEq=eq=>insigMini(lojaItem(eq&&eq.flair));
 const titItem=eq=>lojaItem(eq&&eq.titulo);
 const nomeEq=eq=>{const it=lojaItem(eq&&eq.nome);return it?" "+it.css:"";};
 const auraEq=eq=>{const it=lojaItem(eq&&eq.aura);return it?" "+it.css:"";};
@@ -2078,6 +2256,109 @@ function comIntro(u,l){
   if(l.estudo&&l.estudo.length&&!me.estudoVisto[l.id]) fluxo.push(cb=>abrirRoteiro(l.estudo,{ctx:"estudo",id:l.id,cta:"Ir às missões",fim:cb}));
   (function passo(){ if(!fluxo.length) return abrir(l); fluxo.shift()(passo); })();
 }
+
+
+
+/* fundo de profundidade da trilha: poeira de estrelas âmbar, deriva lenta */
+function pintaFundoTrilha(canvas){
+  if(!canvas) return;
+  const wrap=canvas.parentElement;
+  const W=wrap.clientWidth||360, H=wrap.parentElement.clientHeight||600;
+  const dpr=Math.min(devicePixelRatio||1,2);
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  const ctx=canvas.getContext("2d"); ctx.scale(dpr,dpr);
+  const reduz = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  const N=Math.min(46,Math.round(W*H/9000));
+  const st=Array.from({length:N},()=>({
+    x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.4+0.3,
+    a:Math.random()*0.5+0.15, ph:Math.random()*6.28, sp:0.4+Math.random()*0.6,
+    dep:Math.random()  // profundidade: fundo move menos
+  }));
+  let raf;
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    st.forEach(s=>{
+      const tw = reduz?1:(Math.sin(t*0.001*s.sp+s.ph)*0.4+0.6);
+      const yy = reduz? s.y : (s.y + Math.sin(t*0.0002*(0.4+s.dep))*6*s.dep);
+      ctx.beginPath(); ctx.arc(s.x,yy,s.r,0,6.28);
+      ctx.fillStyle=`rgba(224,150,90,${(s.a*tw).toFixed(3)})`;
+      ctx.fill();
+    });
+    if(!reduz) raf=requestAnimationFrame(draw);
+  }
+  // cancela loop anterior se a trilha foi repintada
+  if(window.__trilhaRaf) cancelAnimationFrame(window.__trilhaRaf);
+  if(reduz){ draw(0); } else { (function loop(t){ draw(t); window.__trilhaRaf=requestAnimationFrame(loop); })(0); }
+}
+
+/* ============ LIVRO DA MATÉRIA ============ */
+function abrirLivro(M){
+  // monta as páginas: cada lição vira um capítulo, cada tela de estudo uma página
+  const paginas=[];
+  M.unidades.forEach(u=>(u.licoes||[]).forEach(l=>{
+    if(l.estudo&&l.estudo.length){
+      l.estudo.forEach((tela,i)=>paginas.push({
+        cap:l.titulo, licao:l.id, idx:i, total:l.estudo.length, tela
+      }));
+    }
+  }));
+  if(!paginas.length) return;
+  if(!me.lido) me.lido={};
+
+  let ov=$("#livroOv");
+  if(!ov){ ov=document.createElement("div"); ov.id="livroOv"; document.body.appendChild(ov); }
+  ov.classList.add("on"); document.body.style.overflow="hidden";
+  let p=0;
+  // abre na primeira página não lida, se houver
+  const primeiraNova=paginas.findIndex(pg=>!me.lido[pg.licao+":"+pg.idx]);
+  if(primeiraNova>0) p=primeiraNova;
+
+  function chave(pg){ return pg.licao+":"+pg.idx; }
+  function lidas(){ return paginas.filter(pg=>me.lido[chave(pg)]).length; }
+
+  function pinta(){
+    const pg=paginas[p]; const t=pg.tela; const k=chave(pg);
+    const lido=!!me.lido[k];
+    const ex = t.ex ? `<div class="lv-ex">
+        <div class="lv-ex-q">${esc(t.ex.q)}</div>
+        ${(t.ex.s||[]).map(x=>`<div class="lv-ex-s">${esc(x)}</div>`).join("")}
+        <div class="lv-ex-r">${esc(t.ex.r)}</div></div>` : "";
+    ov.innerHTML=`<div class="lv-box">
+      <div class="lv-top">
+        <div class="lv-prog"><i style="width:${(lidas()/paginas.length*100).toFixed(0)}%"></i></div>
+        <button class="lv-x" id="lvX">✕</button>
+      </div>
+      <div class="lv-cap">${esc(pg.cap)}</div>
+      <div class="lv-page">
+        <div class="lv-lume">${LUME(t.p||(t.ex?"pensa":"explica"))}</div>
+        <div class="lv-txt">${esc(t.t)}</div>
+        ${t.d?`<div class="lv-dest">${esc(t.d)}</div>`:""}
+        ${ex}
+        <button class="lv-read${lido?" on":""}" id="lvRead">
+          <span class="lv-check">${lido?"✓":""}</span>${lido?"Página lida":"Marcar como lida"}
+        </button>
+      </div>
+      <div class="lv-nav">
+        <button class="lv-b" id="lvPrev" ${p===0?"disabled":""}>‹ Anterior</button>
+        <span class="lv-cont">${p+1} / ${paginas.length}</span>
+        <button class="lv-b" id="lvNext" ${p===paginas.length-1?"disabled":""}>Próxima ›</button>
+      </div>
+    </div>`;
+    $("#lvX").onclick=fechar;
+    $("#lvRead").onclick=()=>{
+      me.lido[k]=!me.lido[k]; CORE.save(db);
+      if(me.lido[k]&&p<paginas.length-1){ p++; pinta(); } else pinta();
+    };
+    $("#lvPrev").onclick=()=>{ if(p>0){p--;pinta();} };
+    $("#lvNext").onclick=()=>{ if(p<paginas.length-1){p++;pinta();} };
+  }
+  function fechar(){ ov.classList.remove("on"); document.body.style.overflow="";
+    setTimeout(()=>{ov.innerHTML="";},250); }
+  ov.onclick=e=>{ if(e.target===ov) fechar(); };
+  pinta();
+}
+
+/* ============ LIVRO DA MATÉRIA (fim) ============ */
 
 /* ============ LUME, o coelho ============ */
 const LUME_P={
@@ -2194,7 +2475,7 @@ function abrirProv(it){
     <div class="pv-sub">Assim os outros te veem no ranking:</div>
     <div class="pvrk${auraEq(eq)}">
       <div class="pvpos">7</div>
-      <div class="pvav${moldEq(eq)}">${me.foto?`<img src="${me.foto}" alt="">`:esc(me.nome.trim()[0]||"?").toUpperCase()}</div>
+      ${avatarHTML({nome:me.nome,foto:me.foto,equip:eq},"pvav")}
       <div class="pvinfo"><div class="ninline"><b class="nm${nomeEq(eq)}">${esc(me.nome)}</b>${flairEq(eq)}</div>
         <small>${titItem(eq)?'<span class="tit">'+esc(titItem(eq).nome)+"</span>":esc(c?c.nome:"—")}</small></div>
       <div class="pvxp">${me.xp} XP</div>
@@ -2262,8 +2543,11 @@ function vLoja(){
                  : mer?`<span class="seal m">MÉRITO</span>`
                  : prem?`<span class="seal">ÂMBAR</span>`:"";
       let prev;
-      if(tipo==="moldura")    prev=`<div class="pav${" "+it.css}">${esc((pn[0]||"M")).toUpperCase()}</div>`;
-      else if(tipo==="flair") prev=`<div class="pem2">${insigSVG(it,"big")}</div>`;
+      if(tipo==="moldura"){
+        if(it.svg&&window.MODUSFX) prev=`<div class="pav avwrap">${me.foto?`<img src="${me.foto}" alt="">`:esc((pn[0]||"M")).toUpperCase()}${MODUSFX.ring(it.svg,it.fx||"girL")}</div>`;
+        else prev=`<div class="pav${" "+(it.css||"")}">${esc((pn[0]||"M")).toUpperCase()}</div>`;
+      }
+      else if(tipo==="flair") prev=`<div class="pem2">${it.svg&&window.MODUSFX?MODUSFX.icon(it.svg,"pembig"):insigSVG(it,"big")}</div>`;
       else if(tipo==="nome")  prev=`<div class="pnm nm ${it.css}">${esc(pn)}</div>`;
       else if(tipo==="aura")  prev=`<div class="pau ${it.css}"><i class="pa-av"></i><span class="pa-l"></span></div>`;
       else                    prev=`<div class="pti">${esc(it.nome)}</div>`;
@@ -2347,7 +2631,7 @@ function vRank(){
       const c=db.cursos[u.cursoId];
       const r=el("div","rk"+(u.id===me.id?" me":"")+(i<3?" p"+(i+1):"")+auraEq(u.equip));
       r.innerHTML=`<div class="pos">${i<3?["🥇","🥈","🥉"][i]:i+1}</div>
-        <div class="av${mold(u)}">${u.foto?`<img src="${u.foto}" alt="">`:esc(u.nome.trim()[0]||"?").toUpperCase()}</div>
+        ${avatarHTML(u,"av")}
         <div class="info"><div class="ninline"><b class="nm${nomeEq(u.equip)}">${esc(u.nome)}</b>${flair(u)}${u.id===me.id?'<span class="vc">(você)</span>':""}</div><small>${titEq(u)?'<span class="tit">'+esc(titEq(u).nome)+"</span>":esc(c?c.nome:"—")+(u.pro?" · Pro":"")}</small></div>
         <div class="xp">${u.xp}</div>`;
       v.appendChild(r);
@@ -2363,7 +2647,7 @@ function vPerfil(){
   const mats=CORE.materiasDe(db,me);
   v.innerHTML=`
     <div class="prof-head">
-      <div class="prof-av${mold(me)}">${me.foto?`<img src="${me.foto}" alt="">`:esc(me.nome.trim()[0]||"?").toUpperCase()}</div>
+      ${avatarHTML(me,"prof-av")}
       <div><div class="ninline"><b class="nm${nomeEq(me.equip)}">${esc(me.nome)}</b>${flair(me)}</div><small>${esc(me.email)}</small><br><small>${titEq(me)?'<span class="tit">'+esc(titEq(me).nome)+"</span>":esc(c?c.nome:"—")}</small></div>
     </div>
     ${(()=>{const pr=((db.config&&db.config.proPreco)||14.9).toFixed(2).replace(".",",");const di=(db.config&&db.config.proDias)||30;
