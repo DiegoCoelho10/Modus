@@ -208,6 +208,7 @@ h1.pt{font-family:var(--ff-d);font-weight:700;font-size:23px;letter-spacing:-.03
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="modus-fx.js"></script>
 <script>
 /* ============================================================================
    MODUS EDU — NÚCLEO DE DADOS
@@ -846,31 +847,60 @@ const INSIG={
    mexe (fx) é exclusivo de Âmbar. Mérito não se compra. `ate` fecha a
    janela de venda de um item escasso. */
 function LOJA(){ return [
-  { id:"mo_musgo",  tipo:"moldura", nome:"Aro Musgo",     moeda:"brasas", preco:150, css:"mo-musgo" },
-  { id:"mo_tijolo", tipo:"moldura", nome:"Aro Tijolo",    moeda:"brasas", preco:150, css:"mo-tijolo" },
-  { id:"mo_duplo",  tipo:"moldura", nome:"Aro Duplo",     moeda:"brasas", preco:300, css:"mo-duplo" },
-  { id:"mo_ambar",  tipo:"moldura", nome:"Aro de Âmbar",  moeda:"ambar",  preco:60,  css:"mo-ambar" },
-  { id:"mo_brasa",  tipo:"moldura", nome:"Brasa Viva",    moeda:"ambar",  preco:110, css:"mo-brasa" },
-  { id:"mo_const",  tipo:"moldura", nome:"Constelação",   moeda:"ambar",  preco:150, css:"mo-const" },
+  /* ===== MOLDURAS ===== */
+  /* Brasa: aros simples em CSS (ganhos jogando) */
+  { id:"mo_musgo",  tipo:"moldura", nome:"Aro Musgo",   moeda:"brasas", preco:120, css:"mo-musgo" },
+  { id:"mo_tijolo", tipo:"moldura", nome:"Aro Tijolo",  moeda:"brasas", preco:120, css:"mo-tijolo" },
+  { id:"mo_duplo",  tipo:"moldura", nome:"Aro Duplo",   moeda:"brasas", preco:260, css:"mo-duplo" },
+  /* Âmbar: anéis SVG animados ao vivo */
+  { id:"an_constelacao", tipo:"moldura", nome:"Anel Constelação", moeda:"ambar", preco:80,  svg:"constelacao", fx:"cintila" },
+  { id:"an_eclipse",     tipo:"moldura", nome:"Anel Eclipse",     moeda:"ambar", preco:90,  svg:"eclipse",     fx:"girM" },
+  { id:"an_gelo",        tipo:"moldura", nome:"Anel de Gelo",     moeda:"ambar", preco:110, svg:"gelo",        fx:"pulsa" },
+  { id:"an_brasa",       tipo:"moldura", nome:"Anel de Brasa",    moeda:"ambar", preco:110, svg:"brasa",       fx:"pulsa" },
+  { id:"an_obsidiana",   tipo:"moldura", nome:"Anel Obsidiana",   moeda:"ambar", preco:130, svg:"obsidiana",   fx:"girL" },
+  { id:"an_solar",       tipo:"moldura", nome:"Anel Solar",       moeda:"ambar", preco:140, svg:"solar",       fx:"girL" },
+  { id:"an_lava",        tipo:"moldura", nome:"Anel de Lava",     moeda:"ambar", preco:150, svg:"lava",        fx:"girL" },
+  { id:"an_arcano",      tipo:"moldura", nome:"Anel Arcano",      moeda:"ambar", preco:160, svg:"arcano",      fx:"girM" },
+  { id:"an_espirito",    tipo:"moldura", nome:"Anel Espírito",    moeda:"ambar", preco:170, svg:"espirito",    fx:"cintila" },
+  { id:"an_arcoiris",    tipo:"moldura", nome:"Anel Arco-íris",   moeda:"ambar", preco:190, svg:"arcoiris",    fx:"girM" },
+  { id:"an_fogo",        tipo:"moldura", nome:"Anel de Fogo",     moeda:"ambar", preco:200, svg:"fogo",        fx:"girL" },
 
-  { id:"in_pena",    tipo:"flair", nome:"Pena",           moeda:"brasas", preco:60,  ic:"pena" },
-  { id:"in_livro",   tipo:"flair", nome:"Livro Aberto",   moeda:"brasas", preco:60,  ic:"livro" },
-  { id:"in_bussola", tipo:"flair", nome:"Bússola",        moeda:"brasas", preco:80,  ic:"bussola" },
-  { id:"in_coruja",  tipo:"flair", nome:"Coruja",         moeda:"brasas", preco:100, ic:"coruja" },
-  { id:"in_torre",   tipo:"flair", nome:"Torre",          moeda:"brasas", preco:100, ic:"torre" },
-  { id:"in_louro",   tipo:"flair", nome:"Louros",         moeda:"brasas", preco:120, ic:"louro" },
-  { id:"in_brasav",  tipo:"flair", nome:"Chama de Âmbar", moeda:"ambar",  preco:90,  ic:"brasav", fx:"pulse" },
-  { id:"in_cometa",  tipo:"flair", nome:"Cometa",         moeda:"ambar",  preco:130, ic:"cometa", fx:"flick" },
+  /* ===== INSÍGNIAS ===== */
+  /* Brasa: as simples em traço (INSIG antigo) */
+  { id:"in_pena",    tipo:"flair", nome:"Pena",     moeda:"brasas", preco:60,  ic:"pena" },
+  { id:"in_livro",   tipo:"flair", nome:"Livro",    moeda:"brasas", preco:60,  ic:"livro" },
+  { id:"in_bussolab",tipo:"flair", nome:"Rosa dos Ventos", moeda:"brasas", preco:80, ic:"bussola" },
+  { id:"in_torreb",  tipo:"flair", nome:"Torre",    moeda:"brasas", preco:100, ic:"torre" },
+  { id:"in_louro",   tipo:"flair", nome:"Ramo",     moeda:"brasas", preco:120, ic:"louro" },
+  /* Âmbar: insígnias SVG ricas */
+  { id:"si_estrela",  tipo:"flair", nome:"Estrela-Bússola", moeda:"ambar", preco:70,  svg:"estrela" },
+  { id:"si_lira",     tipo:"flair", nome:"Lira",            moeda:"ambar", preco:80,  svg:"lira" },
+  { id:"si_ampulheta",tipo:"flair", nome:"Ampulheta",       moeda:"ambar", preco:90,  svg:"ampulheta" },
+  { id:"si_bussola",  tipo:"flair", nome:"Bússola de Ouro", moeda:"ambar", preco:100, svg:"bussola" },
+  { id:"si_torre",    tipo:"flair", nome:"Torre de Ouro",   moeda:"ambar", preco:100, svg:"torre" },
+  { id:"si_elmo",     tipo:"flair", nome:"Elmo",            moeda:"ambar", preco:110, svg:"elmo" },
+  { id:"si_olho",     tipo:"flair", nome:"Olho de Saber",   moeda:"ambar", preco:120, svg:"olho" },
+  { id:"si_cajado",   tipo:"flair", nome:"Cajado Alado",    moeda:"ambar", preco:130, svg:"cajado" },
+  { id:"si_leao",     tipo:"flair", nome:"Escudo do Leão",  moeda:"ambar", preco:150, svg:"leao" },
+  /* mérito: não compra */
   { id:"me_semana", tipo:"flair", nome:"Semana de Fogo", moeda:"merito", preco:0, ic:"escudo7",  dica:"Estude 7 dias seguidos" },
   { id:"me_cem",    tipo:"flair", nome:"Centurião",      moeda:"merito", preco:0, ic:"escudoC",  dica:"Responda 100 exercícios" },
   { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as missões de uma fase" },
-  { id:"fu_bandeira", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:150, ic:"bandeira", fx:"pulse", ate:"2026-12-31" },
+  /* escasso */
+  { id:"si_diamante", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:180, svg:"diamante", ate:"2026-12-31" },
 
+  /* ===== GEMAS (selo ao lado, brasa barato) ===== */
+  { id:"gm_azul",  tipo:"flair", nome:"Safira",    moeda:"ambar", preco:70, svg:"gema_azul" },
+  { id:"gm_verde", tipo:"flair", nome:"Esmeralda", moeda:"ambar", preco:70, svg:"gema_verde" },
+
+  /* ===== ESTILOS DE NOME (Âmbar) ===== */
   { id:"nm_ambar",   tipo:"nome", nome:"Nome de Âmbar", moeda:"ambar", preco:90,  css:"nm-ambar" },
   { id:"nm_lampejo", tipo:"nome", nome:"Lampejo",       moeda:"ambar", preco:150, css:"nm-lampejo" },
 
+  /* ===== AURA (Âmbar) ===== */
   { id:"au_ambar", tipo:"aura", nome:"Aura de Âmbar", moeda:"ambar", preco:160, css:"au-ambar" },
 
+  /* ===== TÍTULOS ===== */
   { id:"ti_constante", tipo:"titulo", nome:"Constante",          moeda:"brasas", preco:200 },
   { id:"ti_calculista",tipo:"titulo", nome:"Calculista",         moeda:"brasas", preco:200 },
   { id:"ti_madruga",   tipo:"titulo", nome:"Turno da Madrugada", moeda:"brasas", preco:250 },
@@ -1111,6 +1141,37 @@ function migrate4(d){
   if(br&&!br.inv.length){ br.brasas=br.brasas||180; br.inv=["in_livro"]; br.equip.flair="in_livro"; }
 }
 
+/* v5: catálogo de cosméticos SVG. Reembolsa itens antigos que saíram e
+   preserva os que continuam. Preço editado pelo gestor sobrevive. */
+const REEMBOLSO_V5={ mo_ambar:["ambar",60], mo_brasa:["ambar",110], mo_const:["ambar",150],
+  in_brasav:["ambar",90], in_cometa:["ambar",130], fu_bandeira:["ambar",150],
+  in_bussola:["brasas",80], in_coruja:["brasas",100], in_torre:["brasas",100] };
+function migrate5(d){
+  if(d.v>=5) return;
+  d.v=5;
+  const velho=d.loja||[];
+  d.loja=LOJA();
+  d.loja.forEach(n=>{ const o=velho.find(x=>x.id===n.id);
+    if(o&&o.preco>0&&n.moeda!=="merito") n.preco=o.preco; });
+  const ids=new Set(d.loja.map(i=>i.id));
+  Object.values(d.users).forEach(u=>{
+    if(u.role!=="aluno") return;
+    if(!u.equip) u.equip={};
+    ["moldura","flair","titulo","nome","aura"].forEach(k=>{ if(u.equip[k]===undefined) u.equip[k]=null; });
+    (u.inv||[]).filter(id=>!ids.has(id)).forEach(id=>{
+      const r=REEMBOLSO_V5[id]; if(r) u[r[0]]=(u[r[0]]||0)+r[1];
+    });
+    u.inv=(u.inv||[]).filter(id=>ids.has(id));
+    Object.keys(u.equip).forEach(k=>{ if(u.equip[k]&&!ids.has(u.equip[k])) u.equip[k]=null; });
+  });
+  /* demo reequipada com os cosméticos novos, para VER no ranking */
+  const la=Object.values(d.users).find(u=>u.email==="larissa@demo.com");
+  if(la){ la.brasas=la.brasas||240; la.ambar=la.ambar||60;
+    la.inv=["an_fogo","si_leao","nm_ambar"]; la.equip.moldura="an_fogo"; la.equip.flair="si_leao"; la.equip.nome="nm_ambar"; }
+  const br=Object.values(d.users).find(u=>u.email==="bruno@demo.com");
+  if(br){ br.ambar=br.ambar||30; br.inv=["an_gelo"]; br.equip.moldura="an_gelo"; br.equip.flair=null; }
+}
+
 /* ---------- FIREBASE: o app na nuvem ---------- */
 const FB_CONFIG={ apiKey:"AIzaSyCSyAYCHqzJiEk6UYW88YZ7ZhSvE_HAhzM",
   authDomain:"modus-edu.firebaseapp.com", projectId:"modus-edu",
@@ -1248,8 +1309,8 @@ function load(){
   if(NUVEM&&FS){ if(!CACHE) CACHE=baseCache(); return CACHE; }
   let d=null;
   try{ d=JSON.parse(localStorage.getItem(K_DB)||"null"); }catch(e){}
-  if(!d||(d.v!==2&&d.v!==3&&d.v!==4)){ d=DEFAULT_DB(); }
-  migrate3(d); migrate4(d); localStorage.setItem(K_DB,JSON.stringify(d));
+  if(!d||(d.v!==2&&d.v!==3&&d.v!==4&&d.v!==5)){ d=DEFAULT_DB(); }
+  migrate3(d); migrate4(d); migrate5(d); localStorage.setItem(K_DB,JSON.stringify(d));
   return d;
 }
 function save(d){
