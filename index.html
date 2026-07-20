@@ -13,17 +13,46 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0F0D0C;--surface:#171413;--raised:#201C1A;--border:#2D2826;--muted:#4A4340;
-  --amber:#E07A35;--amber-press:#B85C1E;--amber-hover:#F0A468;
-  --text:#F5F0EA;--text-2:#A8A09B;
-  --ok:#6E8257;--err:#C4453C;--warn:#D9A441;
-  --paper:#F5F0EA;--paper-2:#E7E0D7;--ink:#201C1A;--ink-2:#6B615B;--ink-line:#D6CDC2;
   --ff-d:'Space Grotesk',system-ui,sans-serif;--ff-b:'Inter',system-ui,sans-serif;--ff-m:'DM Mono',monospace;
   --safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);
 }
+/* ===== TEMA VITRAL (padrão, índigo mágico) ===== */
+:root, html[data-tema="vitral"]{
+  --bg:#14132A;--surface:#1E1D3D;--raised:#252449;--border:#363463;--muted:#4A4770;
+  --amber:#F0A445;--amber-press:#D0842F;--amber-hover:#FFC46B;
+  --text:#F1EEFF;--text-2:#A6A0D0;
+  --ok:#57D9A3;--err:#F0736A;--warn:#F0A445;
+  --paper:#F1EEFF;--paper-2:#E4E0FA;--ink:#1E1D3D;--ink-2:#6B6698;--ink-line:#CBC6EC;
+  --accent:#7C5CFF;--accent-2:#B9A6FF;
+  --app-bg:radial-gradient(140% 55% at 50% -8%,#2a2456 0%,transparent 55%),radial-gradient(120% 45% at 82% 28%,#3a2560 0%,transparent 48%),linear-gradient(180deg,#181637 0%,#12102a 50%,#0e0c22 100%);
+  --node-cur-a:#FFC46B;--node-cur-b:#E0842F;--node-cur-c:#c25f16;
+  --node-done-a:#FFD79C;--node-done-b:#E0973A;--node-done-c:#a86322;
+  --node-lock-a:#2a2850;--node-lock-b:#1c1a3a;--node-lock-ic:#5D5896;
+  --road-base:#232049;--road-base2:#1a1838;--road-dot:#3a3663;
+  --road-lit-a:#E0842F;--road-lit-b:#FFC46B;--road-glow:rgba(240,164,69,.6);
+  --spark:#FFD79C;--star-warm:255,196,107;--star-cool:150,120,255;
+  --shadow-strong:rgba(30,20,70,.5);--on-amber:#241200;--shadow-3d:#0c0a1e;
+}
+/* ===== TEMA AMANHECER (claro, papel quente) ===== */
+html[data-tema="amanhecer"]{
+  --bg:#FBF3E9;--surface:#FFFFFF;--raised:#FDF7EF;--border:#EAD9C4;--muted:#D8C4AC;
+  --amber:#E06A1E;--amber-press:#C4551A;--amber-hover:#F0932E;
+  --text:#2A1D12;--text-2:#8A7561;
+  --ok:#5B8C3E;--err:#C4453C;--warn:#C4881A;
+  --paper:#FFFFFF;--paper-2:#FDF7EF;--ink:#2A1D12;--ink-2:#8A7561;--ink-line:#EAD9C4;
+  --accent:#E06A1E;--accent-2:#F0932E;
+  --app-bg:radial-gradient(140% 50% at 50% -6%,#FFE9CC 0%,transparent 55%),radial-gradient(120% 40% at 80% 24%,#FCE0C4 0%,transparent 50%),linear-gradient(180deg,#FDF6EC 0%,#F8EDDC 55%,#F4E6D2 100%);
+  --node-cur-a:#F0932E;--node-cur-b:#DA5A16;--node-cur-c:#b8481a;
+  --node-done-a:#F5B871;--node-done-b:#E0803A;--node-done-c:#b8621f;
+  --node-lock-a:#EFE2D0;--node-lock-b:#E4D5C2;--node-lock-ic:#B7A88F;
+  --road-base:#EAD9C4;--road-base2:#E0CBB0;--road-dot:#D8C4AC;
+  --road-lit-a:#DA5A16;--road-lit-b:#F0932E;--road-glow:rgba(224,106,30,.4);
+  --spark:#F0932E;--star-warm:224,150,60;--star-cool:200,140,80;
+  --shadow-strong:rgba(180,110,40,.25);--on-amber:#FFFFFF;--shadow-3d:#D8C4AC;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{background:var(--bg);color:var(--text);font-family:var(--ff-b);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+body{background:var(--app-bg,var(--bg));background-attachment:fixed;color:var(--text);font-family:var(--ff-b);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 input{font:inherit}
 ::selection{background:var(--amber);color:#0F0D0C}
@@ -56,7 +85,7 @@ input{font:inherit}
 .pick.on .r::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--amber)}
 .pick b{display:block;font-size:14.5px;font-weight:600}
 .pick small{color:var(--text-2);font-size:12px}
-.btn{width:100%;padding:15px;border-radius:12px;font-family:var(--ff-d);font-weight:700;font-size:14.5px;letter-spacing:.04em;text-transform:uppercase;background:var(--amber);color:#170F08;box-shadow:0 3px 0 var(--amber-press);transition:transform .1s;margin-top:16px}
+.btn{width:100%;padding:15px;border-radius:12px;font-family:var(--ff-d);font-weight:700;font-size:14.5px;letter-spacing:.04em;text-transform:uppercase;background:var(--amber);color:var(--on-amber);box-shadow:0 3px 0 var(--amber-press);transition:transform .1s;margin-top:16px}
 .btn:active{transform:translateY(3px);box-shadow:none}
 .btn:disabled{background:var(--muted);color:var(--text-2);box-shadow:none;transform:none}
 .btn.ghost{background:transparent;color:var(--text-2);box-shadow:none;border:1.5px solid var(--border);margin-top:9px}
@@ -138,24 +167,24 @@ input{font:inherit}
   width:66px;height:66px;border-radius:50%;position:relative;
   background:var(--raised);border:2px solid var(--border);
   display:grid;place-items:center;color:var(--muted);
-  box-shadow:0 5px 0 #100E0D;transition:transform .12s,background .2s;
+  box-shadow:0 5px 0 var(--shadow-3d);transition:transform .12s,background .2s;
 }
 .node:active{transform:translateY(5px);box-shadow:none}
 .node svg{width:26px;height:26px}
 .node .num{font-family:var(--ff-m);font-size:17px}
-.node.done{background:var(--amber);border-color:var(--amber-hover);color:#170F08;box-shadow:0 5px 0 var(--amber-press)}
+.node.done{background:var(--amber);border-color:var(--amber-hover);color:var(--on-amber);box-shadow:0 5px 0 var(--amber-press)}
 .node.done .mark{width:22px;height:28px}
 .node.cur{background:var(--raised);border-color:var(--amber);color:var(--amber);box-shadow:0 5px 0 var(--amber-press)}
 .node.cur::before{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid rgba(224,122,53,.28);animation:pl 2s ease-out infinite}
 @keyframes pl{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.18);opacity:0}}
-.node.pro{border-color:rgba(217,164,65,.45);color:var(--warn);border-style:dashed;box-shadow:0 5px 0 #100E0D}
+.node.pro{border-color:rgba(217,164,65,.45);color:var(--warn);border-style:dashed;box-shadow:0 5px 0 var(--shadow-3d)}
 .node.lock{cursor:default}
-.node.lock:active{transform:none;box-shadow:0 5px 0 #100E0D}
+.node.lock:active{transform:none;box-shadow:0 5px 0 var(--shadow-3d)}
 .node-lab{font-size:11.5px;color:var(--text-2);margin-top:6px;text-align:center;max-width:130px;line-height:1.3}
 .node-wrap.done .node-lab,.node-wrap.cur .node-lab{color:var(--text)}
 .start-bub{
   position:absolute;top:-40px;left:50%;transform:translateX(-50%);
-  background:var(--amber);color:#170F08;font-family:var(--ff-d);font-weight:700;font-size:11px;
+  background:var(--amber);color:var(--on-amber);font-family:var(--ff-d);font-weight:700;font-size:11px;
   letter-spacing:.1em;padding:6px 12px;border-radius:8px;white-space:nowrap;
   box-shadow:0 3px 0 var(--amber-press);animation:bob 1.6s ease-in-out infinite;
 }
@@ -181,7 +210,7 @@ input{font:inherit}
 .rk .pos{width:28px;flex:none;text-align:center;font-family:var(--ff-m);font-size:14px;color:var(--text-2)}
 .rk.p1 .pos,.rk.p2 .pos,.rk.p3 .pos{color:var(--amber);font-weight:700}
 .rk .av{width:36px;height:36px;flex:none;border-radius:50%;background:var(--raised);border:1px solid var(--border);display:grid;place-items:center;font-family:var(--ff-d);font-weight:700;font-size:14px;color:var(--text-2)}
-.rk.me .av{background:var(--amber);color:#170F08;border-color:var(--amber)}
+.rk.me .av{background:var(--amber);color:var(--on-amber);border-color:var(--amber)}
 .rk .info{flex:1;min-width:0}
 .rk .info b{display:block;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk .info small{color:var(--text-2);font-size:11.5px}
@@ -190,7 +219,7 @@ input{font:inherit}
 
 /* ============ PERFIL ============ */
 .prof-head{display:flex;align-items:center;gap:15px;margin-bottom:18px}
-.prof-av{width:62px;height:62px;border-radius:50%;background:var(--amber);color:#170F08;display:grid;place-items:center;font-family:var(--ff-d);font-weight:700;font-size:24px;flex:none}
+.prof-av{width:62px;height:62px;border-radius:50%;background:var(--amber);color:var(--on-amber);display:grid;place-items:center;font-family:var(--ff-d);font-weight:700;font-size:24px;flex:none}
 .prof-head b{display:block;font-family:var(--ff-d);font-weight:700;font-size:20px;letter-spacing:-.02em}
 .prof-head small{color:var(--text-2);font-size:13px}
 .gr{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px}
@@ -321,7 +350,7 @@ input{font:inherit}
 .mbtns{display:grid;gap:8px}
 .mb2{padding:13px;border-radius:10px;font-family:var(--ff-d);font-weight:600;font-size:14px;border:1px solid var(--border);background:var(--raised)}
 .mb2.warn{background:var(--err);border-color:var(--err);color:#fff}
-.mb2.amber{background:var(--amber);border-color:var(--amber);color:#170F08}
+.mb2.amber{background:var(--amber);border-color:var(--amber);color:var(--on-amber)}
 .mb2.ghost{background:transparent;color:var(--text-2)}
 .hello{font-family:var(--ff-d);font-weight:700;font-size:21px;letter-spacing:-.025em;margin:2px 2px 14px}
 .rk .av{overflow:hidden}
@@ -346,7 +375,7 @@ input{font:inherit}
 .ckin .t{flex:1;min-width:0}
 .ckin b{font-family:var(--ff-d);font-weight:600;font-size:14.5px;display:block}
 .ckin small{color:var(--text-2);font-size:12px}
-.ckb{background:var(--amber);color:#170F08;border-radius:10px;padding:10px 15px;font-family:var(--ff-d);font-weight:700;font-size:14px;box-shadow:0 3px 0 var(--amber-press);flex:none}
+.ckb{background:var(--amber);color:var(--on-amber);border-radius:10px;padding:10px 15px;font-family:var(--ff-d);font-weight:700;font-size:14px;box-shadow:0 3px 0 var(--amber-press);flex:none}
 .ckb:disabled{background:var(--raised);color:var(--text-2);box-shadow:none}
 .ckb.ok2{background:var(--ok);color:#10130D;box-shadow:0 3px 0 #4A5A3B}
 .shop-h{margin:4px 2px 10px}
@@ -459,7 +488,7 @@ input{font:inherit}
 .vs-p.warn2{color:var(--warn);font-size:12px;margin:10px 0 0}
 .pro-banner .ckb,.pro-banner .mini-btn{margin-top:10px}
 .pro-banner.on{border-color:rgba(224,122,53,.55)}
-.pro-buy{position:relative;width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:3px;background:#171310;border:1px solid rgba(224,122,53,.5);border-radius:13px;padding:14px 90px 14px 14px;margin-bottom:10px;text-align:left}
+.pro-buy{position:relative;width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:3px;background:var(--surface);border:1px solid rgba(224,122,53,.5);border-radius:13px;padding:14px 90px 14px 14px;margin-bottom:10px;text-align:left}
 .pro-buy b{font-family:var(--ff-d);font-size:15.5px;color:var(--text)}
 .pro-buy small{color:var(--text-2);font-size:12px}
 .pro-buy .prc{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-family:var(--ff-m);font-size:14px;color:var(--warn)}
@@ -470,7 +499,7 @@ input{font:inherit}
 .icb{background:radial-gradient(circle at 38% 32%,#FFDFAF 0%,#F0A468 30%,#D2601F 62%,#7A3510 88%,#3A1B08 100%);box-shadow:0 0 6px rgba(224,122,53,.55)}
 .pburst{position:absolute;width:7px;height:7px;background:var(--amber);border-radius:2px;pointer-events:none;animation:pb .8s ease-out forwards;z-index:99}
 @keyframes pb{to{transform:translate(var(--dx),var(--dy)) rotate(240deg);opacity:0}}
-#introOv{position:fixed;inset:0;background:radial-gradient(120% 90% at 50% 12%,#171310,#0F0D0C 62%);display:none;place-items:center;z-index:95;padding:22px;overflow:hidden}
+#introOv{position:fixed;inset:0;background:radial-gradient(120% 90% at 50% 12%,var(--surface),#0F0D0C 62%);display:none;place-items:center;z-index:95;padding:22px;overflow:hidden}
 #introOv.on{display:grid}
 #introOv.out{animation:iout .36s ease forwards}
 @keyframes iout{to{opacity:0;transform:scale(1.05)}}
@@ -554,23 +583,57 @@ input{font:inherit}
 .lv-b:disabled{opacity:.35}
 .lv-cont{font-family:var(--ff-m);font-size:12px;color:var(--text-2)}
 
-/* ===== TRILHA VIVA ===== */
+/* ===== TRILHA BELA (mundo de jogo, serpentina, 2 temas) ===== */
 .trilha-wrap{position:relative}
 .trilha-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;border-radius:20px}
-.trilha-bg canvas{width:100%;height:100%;display:block;opacity:.5}
-.path{z-index:1}
-/* conector: linha vertical entre um nó e o de cima */
-.node-wrap::before{content:"";position:absolute;top:-42px;left:50%;width:4px;height:44px;
-  transform:translateX(-50%);border-radius:3px;z-index:-1;
-  background:repeating-linear-gradient(var(--border) 0 6px,transparent 6px 12px);}
-.path>.node-wrap:first-child::before{display:none}
-.node-wrap.done::before,.node-wrap.cur::before{background:linear-gradient(var(--amber-press),var(--amber))}
-/* Lume morando no mapa, ao lado do nó atual */
-.map-lume{position:absolute;left:calc(50% + 60px);top:2px;width:66px;height:66px;z-index:2;
-  pointer-events:none;animation:lumeMap 3.6s ease-in-out infinite}
-.map-lume svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
-@keyframes lumeMap{50%{transform:translateY(-6px) rotate(-3deg)}}
-@media (prefers-reduced-motion:reduce){.map-lume{animation:none}.trilha-bg{display:none}}
+.trilha-bg canvas{width:100%;height:100%;display:block;opacity:.7}
+/* o mapa: nós posicionados em serpentina sobre uma curva SVG */
+.map{position:relative;z-index:2}
+.map svg.road{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.tnode{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-50%)}
+.tnode .orb{position:relative;width:74px;height:74px;border-radius:50%;display:grid;place-items:center}
+.tnode .face{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:2;border:none;padding:0;cursor:pointer}
+.tnode .face svg{width:32px;height:32px}
+.tnode .face .mark{width:26px;height:30px}
+/* concluído: medalha de brasa */
+.tnode.done .face{background:radial-gradient(circle at 38% 30%,var(--node-done-a),var(--node-done-b) 45%,var(--node-done-c) 100%);
+  color:#fff;box-shadow:0 6px 18px var(--shadow-strong),inset 0 2px 4px rgba(255,255,255,.4),inset 0 -3px 6px rgba(90,40,10,.4)}
+.tnode.done .ring{position:absolute;inset:-5px;border-radius:50%;border:3px solid var(--node-done-a);opacity:.5;z-index:1}
+/* atual: joia acesa que pulsa */
+.tnode.cur .face{background:radial-gradient(circle at 38% 30%,#fff0d8,var(--node-cur-a) 40%,var(--node-cur-b) 100%);
+  color:#fff;box-shadow:0 0 0 6px var(--road-glow),0 0 34px var(--road-glow),inset 0 2px 6px rgba(255,255,255,.5),inset 0 -4px 8px var(--node-cur-c);
+  animation:beat 2.4s ease-in-out infinite}
+.tnode.cur .halo{position:absolute;inset:-16px;border-radius:50%;z-index:0;background:radial-gradient(circle,var(--road-glow),transparent 68%);animation:pulseH 2.4s ease-in-out infinite}
+.tnode.cur .spin{position:absolute;inset:-9px;border-radius:50%;z-index:1;
+  background:conic-gradient(from 0deg,transparent,var(--node-cur-a),transparent 40%);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 0);mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 0);
+  animation:spin 4s linear infinite}
+@keyframes beat{50%{transform:scale(1.06)}}
+@keyframes pulseH{50%{opacity:.5;transform:scale(1.12)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* trancado: pedra apagada */
+.tnode.lock .face{background:radial-gradient(circle at 40% 32%,var(--node-lock-a),var(--node-lock-b) 70%);
+  color:var(--node-lock-ic);box-shadow:inset 0 2px 4px rgba(255,255,255,.05),inset 0 -3px 6px rgba(0,0,0,.4),0 4px 12px var(--shadow-strong);cursor:default}
+.tnode .tlab{margin-top:11px;text-align:center;max-width:150px;font-weight:700;font-size:13px;line-height:1.25;color:var(--text-2)}
+.tnode.done .tlab,.tnode.cur .tlab{color:var(--text)}
+.tnode .tsub{font-size:10.5px;color:var(--text-2);opacity:.6;margin-top:2px;font-weight:500}
+.tnode.cur .tsub{color:var(--amber);opacity:1}
+.tnode .study-chip{margin-top:8px}
+.tbub{position:absolute;top:-30px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:5;
+  font-family:var(--ff-m);font-size:10px;font-weight:800;letter-spacing:.1em;padding:6px 13px;border-radius:11px;
+  background:linear-gradient(135deg,var(--node-cur-a),var(--node-cur-b));color:var(--on-amber);box-shadow:0 5px 16px var(--road-glow);animation:bob 2.4s ease-in-out infinite}
+.tbub::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:9px;height:9px;background:var(--node-cur-b)}
+@keyframes bob{50%{transform:translateX(-50%) translateY(-3px)}}
+.pro-tag{position:absolute;top:-6px;right:-6px;z-index:6;background:var(--warn);color:var(--on-amber);font-family:var(--ff-m);font-size:8.5px;letter-spacing:.08em;padding:2px 5px;border-radius:5px;font-weight:700}
+.tspark{position:absolute;border-radius:50%;background:var(--spark);z-index:2;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.tnode.cur .face,.tnode.cur .halo,.tnode.cur .spin,.tbub{animation:none}.trilha-bg{display:none}.tspark{display:none}}
+/* seletor de tema nas configurações */
+.tema-row{display:flex;gap:10px;margin-top:10px}
+.tema-opt{flex:1;border:2px solid var(--border);border-radius:14px;padding:12px;cursor:pointer;text-align:center;background:var(--surface);transition:border-color .15s}
+.tema-opt.sel{border-color:var(--amber)}
+.tema-opt .sw{height:40px;border-radius:9px;margin-bottom:8px}
+.tema-opt b{font-size:13px}
+.tema-opt small{display:block;font-size:10.5px;color:var(--text-2);margin-top:2px}
 </style>
 </head>
 <body>
@@ -1223,7 +1286,7 @@ const DEFAULT_DB = () => {
 
 
 /* ---------- loja e economia ---------- */
-const MAX_VIDAS=5, REGEN_MS=3*60*60*1000;
+const MAX_VIDAS=5, REGEN_MS=30*60*1000;
 const CHECKIN_BRASAS=10, LICAO_BRASAS=15, LICAO_REDO_BRASAS=5;
 const hojeStr=()=>dstr(new Date());
 
@@ -1290,17 +1353,17 @@ function LOJA(){ return [
   { id:"mo_tijolo", tipo:"moldura", nome:"Aro Tijolo",  moeda:"brasas", preco:120, css:"mo-tijolo" },
   { id:"mo_duplo",  tipo:"moldura", nome:"Aro Duplo",   moeda:"brasas", preco:260, css:"mo-duplo" },
   /* Âmbar: anéis SVG animados ao vivo */
-  { id:"an_constelacao", tipo:"moldura", nome:"Aro Estrelado", moeda:"ambar", preco:80,  svg:"constelacao", fx:"cintila" },
-  { id:"an_eclipse",     tipo:"moldura", nome:"Aro Eclipse",     moeda:"ambar", preco:90,  svg:"eclipse",     fx:"girM" },
-  { id:"an_gelo",        tipo:"moldura", nome:"Aro Cristal",     moeda:"ambar", preco:110, svg:"gelo",        fx:"pulsa" },
-  { id:"an_brasa",       tipo:"moldura", nome:"Aro Brasa",    moeda:"ambar", preco:110, svg:"brasa",       fx:"pulsa" },
-  { id:"an_obsidiana",   tipo:"moldura", nome:"Aro Grafite",   moeda:"ambar", preco:130, svg:"obsidiana",   fx:"girL" },
-  { id:"an_solar",       tipo:"moldura", nome:"Aro Solar",       moeda:"ambar", preco:140, svg:"solar",       fx:"girL" },
-  { id:"an_lava",        tipo:"moldura", nome:"Aro Magma",     moeda:"ambar", preco:150, svg:"lava",        fx:"girL" },
-  { id:"an_arcano",      tipo:"moldura", nome:"Aro Violeta",      moeda:"ambar", preco:160, svg:"arcano",      fx:"girM" },
-  { id:"an_espirito",    tipo:"moldura", nome:"Aro Aurora",    moeda:"ambar", preco:170, svg:"espirito",    fx:"cintila" },
-  { id:"an_arcoiris",    tipo:"moldura", nome:"Aro Prisma",   moeda:"ambar", preco:190, svg:"arcoiris",    fx:"girM" },
-  { id:"an_fogo",        tipo:"moldura", nome:"Aro em Chamas",     moeda:"ambar", preco:200, svg:"fogo",        fx:"girL" },
+  { id:"an_constelacao", tipo:"moldura", nome:"Aro Estrelado", moeda:"ambar", preco:25,  svg:"constelacao", fx:"cintila" },
+  { id:"an_eclipse",     tipo:"moldura", nome:"Aro Eclipse",     moeda:"ambar", preco:28,  svg:"eclipse",     fx:"girM" },
+  { id:"an_gelo",        tipo:"moldura", nome:"Aro Cristal",     moeda:"ambar", preco:30, svg:"gelo",        fx:"pulsa" },
+  { id:"an_brasa",       tipo:"moldura", nome:"Aro Brasa",    moeda:"ambar", preco:30, svg:"brasa",       fx:"pulsa" },
+  { id:"an_obsidiana",   tipo:"moldura", nome:"Aro Grafite",   moeda:"ambar", preco:34, svg:"obsidiana",   fx:"girL" },
+  { id:"an_solar",       tipo:"moldura", nome:"Aro Solar",       moeda:"ambar", preco:36, svg:"solar",       fx:"girL" },
+  { id:"an_lava",        tipo:"moldura", nome:"Aro Magma",     moeda:"ambar", preco:38, svg:"lava",        fx:"girL" },
+  { id:"an_arcano",      tipo:"moldura", nome:"Aro Violeta",      moeda:"ambar", preco:40, svg:"arcano",      fx:"girM" },
+  { id:"an_espirito",    tipo:"moldura", nome:"Aro Aurora",    moeda:"ambar", preco:42, svg:"espirito",    fx:"cintila" },
+  { id:"an_arcoiris",    tipo:"moldura", nome:"Aro Prisma",   moeda:"ambar", preco:45, svg:"arcoiris",    fx:"girM" },
+  { id:"an_fogo",        tipo:"moldura", nome:"Aro em Chamas",     moeda:"ambar", preco:48, svg:"fogo",        fx:"girL" },
 
   /* ===== INSÍGNIAS ===== */
   /* Brasa: as simples em traço (INSIG antigo) */
@@ -1310,40 +1373,40 @@ function LOJA(){ return [
   { id:"in_torreb",  tipo:"flair", nome:"Torre",    moeda:"brasas", preco:100, ic:"torre" },
   { id:"in_louro",   tipo:"flair", nome:"Ramo",     moeda:"brasas", preco:120, ic:"louro" },
   /* Âmbar: insígnias SVG ricas */
-  { id:"si_estrela",  tipo:"flair", nome:"Estrela", moeda:"ambar", preco:70,  svg:"estrela" },
-  { id:"si_lira",     tipo:"flair", nome:"Lira",            moeda:"ambar", preco:80,  svg:"lira" },
-  { id:"si_ampulheta",tipo:"flair", nome:"Ampulheta",       moeda:"ambar", preco:90,  svg:"ampulheta" },
-  { id:"si_bussola",  tipo:"flair", nome:"Bússola", moeda:"ambar", preco:100, svg:"bussola" },
-  { id:"si_torre",    tipo:"flair", nome:"Torre",   moeda:"ambar", preco:100, svg:"torre" },
-  { id:"si_elmo",     tipo:"flair", nome:"Elmo",            moeda:"ambar", preco:110, svg:"elmo" },
-  { id:"si_olho",     tipo:"flair", nome:"Foco",   moeda:"ambar", preco:120, svg:"olho" },
-  { id:"si_cajado",   tipo:"flair", nome:"Emblema Alado",    moeda:"ambar", preco:130, svg:"cajado" },
-  { id:"si_leao",     tipo:"flair", nome:"Escudo do Mérito",  moeda:"ambar", preco:150, svg:"leao" },
+  { id:"si_estrela",  tipo:"flair", nome:"Estrela", moeda:"ambar", preco:15,  svg:"estrela" },
+  { id:"si_lira",     tipo:"flair", nome:"Lira",            moeda:"ambar", preco:18,  svg:"lira" },
+  { id:"si_ampulheta",tipo:"flair", nome:"Ampulheta",       moeda:"ambar", preco:20,  svg:"ampulheta" },
+  { id:"si_bussola",  tipo:"flair", nome:"Bússola", moeda:"ambar", preco:22, svg:"bussola" },
+  { id:"si_torre",    tipo:"flair", nome:"Torre",   moeda:"ambar", preco:22, svg:"torre" },
+  { id:"si_elmo",     tipo:"flair", nome:"Elmo",            moeda:"ambar", preco:25, svg:"elmo" },
+  { id:"si_olho",     tipo:"flair", nome:"Foco",   moeda:"ambar", preco:26, svg:"olho" },
+  { id:"si_cajado",   tipo:"flair", nome:"Emblema Alado",    moeda:"ambar", preco:28, svg:"cajado" },
+  { id:"si_leao",     tipo:"flair", nome:"Escudo do Mérito",  moeda:"ambar", preco:32, svg:"leao" },
   /* mérito: não compra */
   { id:"me_semana", tipo:"flair", nome:"Semana de Fogo", moeda:"merito", preco:0, ic:"escudo7",  dica:"Estude 7 dias seguidos" },
   { id:"me_cem",    tipo:"flair", nome:"Centurião",      moeda:"merito", preco:0, ic:"escudoC",  dica:"Responda 100 exercícios" },
   { id:"me_fase",   tipo:"flair", nome:"Fase Fechada",   moeda:"merito", preco:0, ic:"escudoOK", dica:"Conclua todas as missões de uma fase" },
   /* escasso */
-  { id:"si_diamante", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:180, svg:"diamante", ate:"2026-12-31" },
+  { id:"si_diamante", tipo:"flair", nome:"Fundador", moeda:"ambar", preco:60, svg:"diamante", ate:"2026-12-31" },
 
   /* ===== GEMAS (selo ao lado, brasa barato) ===== */
-  { id:"gm_azul",  tipo:"flair", nome:"Gema Azul",    moeda:"ambar", preco:70, svg:"gema_azul" },
-  { id:"gm_verde", tipo:"flair", nome:"Gema Verde", moeda:"ambar", preco:70, svg:"gema_verde" },
+  { id:"gm_azul",  tipo:"flair", nome:"Gema Azul",    moeda:"ambar", preco:20, svg:"gema_azul" },
+  { id:"gm_verde", tipo:"flair", nome:"Gema Verde", moeda:"ambar", preco:20, svg:"gema_verde" },
 
   /* ===== ESTILOS DE NOME (Âmbar) ===== */
-  { id:"nm_ambar",   tipo:"nome", nome:"Nome de Âmbar", moeda:"ambar", preco:90,  css:"nm-ambar" },
-  { id:"nm_lampejo", tipo:"nome", nome:"Lampejo",       moeda:"ambar", preco:150, css:"nm-lampejo" },
+  { id:"nm_ambar",   tipo:"nome", nome:"Nome de Âmbar", moeda:"ambar", preco:22,  css:"nm-ambar" },
+  { id:"nm_lampejo", tipo:"nome", nome:"Lampejo",       moeda:"ambar", preco:38, css:"nm-lampejo" },
 
   /* ===== AURA (Âmbar) ===== */
-  { id:"au_ambar", tipo:"aura", nome:"Aura de Âmbar", moeda:"ambar", preco:160, css:"au-ambar" },
+  { id:"au_ambar", tipo:"aura", nome:"Aura de Âmbar", moeda:"ambar", preco:40, css:"au-ambar" },
 
   /* ===== TÍTULOS ===== */
   { id:"ti_constante", tipo:"titulo", nome:"Constante",          moeda:"brasas", preco:200 },
   { id:"ti_calculista",tipo:"titulo", nome:"Calculista",         moeda:"brasas", preco:200 },
   { id:"ti_madruga",   tipo:"titulo", nome:"Turno da Madrugada", moeda:"brasas", preco:250 },
   { id:"ti_turma",     tipo:"titulo", nome:"Turma 2026",         moeda:"brasas", preco:300, ate:"2026-12-31" },
-  { id:"ti_chamas",    tipo:"titulo", nome:"Em Chamas",          moeda:"ambar",  preco:80 },
-  { id:"ti_lenda",     tipo:"titulo", nome:"Destaque do Modus",     moeda:"ambar",  preco:150 }
+  { id:"ti_chamas",    tipo:"titulo", nome:"Em Chamas",          moeda:"ambar",  preco:20 },
+  { id:"ti_lenda",     tipo:"titulo", nome:"Destaque do Modus",     moeda:"ambar",  preco:38 }
 ];}
 
 /* check-in diário: rende uma vez por dia */
@@ -1715,7 +1778,7 @@ async function cadastrarNuvem({nome,email,senha,cursoId}){
   const uid=cred.user.uid;
   const c=(CACHE&&CACHE.cursos)?CACHE.cursos[cursoId]:null;
   const u={ id:uid, role:"aluno", nome, email, cursoId:cursoId||null, status:"pendente",
-    acesso:c?c.materias.slice():[], foto:null,
+    acesso:c?c.materias.slice():[], foto:null, tema:"vitral",
     brasas:0, ambar:0, inv:[], equip:{moldura:null,flair:null,titulo:null,nome:null,aura:null},
     lastCheckin:null, vidaDia:null, heartsAt:null,
     proAte:null, err:{}, introVista:{}, estudoVisto:{},
@@ -1981,21 +2044,45 @@ function entrar(uid){
   if(!me) return goAuth();
   if(me.status!=="aprovado") return telaEspera(me);
   $("#auth").classList.add("hide"); $("#app").classList.add("on");
+  aplicarTema(me.tema||"vitral");
   CORE.tickStreak(me); CORE.regenVidas(me); CORE.save(db); CORE.checarMeritos(db,me);
   setTimeout(avisosPedidos,600);
   if(!window.__vidaTick) window.__vidaTick=setInterval(()=>{
     if(!me) return;
     const b=me.hearts; CORE.regenVidas(me);
-    if(me.hearts!==b) CORE.save(db);
-    try{ if($("#cHp")) hud(); }catch(e){}
-  },30000);
+    if(me.hearts!==b){ CORE.save(db); try{hud();}catch(e){} }
+    else { try{tickContadorVida();}catch(e){} }
+  },1000);
   const mats=CORE.materiasDe(db,me);
   matAtual = mats.length ? mats[0].id : null;
   tab="trilha"; navs(); hud(); paint();
 }
 
+/* ============ TEMA ============ */
+function aplicarTema(t){
+  document.documentElement.setAttribute("data-tema", t==="amanhecer"?"amanhecer":"vitral");
+  const tc=document.querySelector('meta[name="theme-color"]');
+  if(tc) tc.setAttribute("content", t==="amanhecer"?"#FBF3E9":"#14132A");
+  // repinta o fundo da trilha se estiver visível
+  try{ const c=document.querySelector(".trilha-bg canvas"); if(c) pintaFundoTrilha(c); }catch(e){}
+}
+
 /* ============ HUD ============ */
-function fmtMs(ms){ const mm=Math.ceil(ms/6e4); return mm>=60?Math.floor(mm/60)+"h"+String(mm%60).padStart(2,"0"):mm+"min"; }
+function tickContadorVida(){
+  const h=$("#cHp"); if(!h) return;
+  const ms=CORE.proximaVidaEm(me);
+  let cd=h.querySelector(".hcd");
+  if(ms==null){ if(cd) cd.remove(); return; }
+  if(!cd){ try{hud();}catch(e){} return; }
+  cd.textContent=fmtMs(ms);
+}
+
+function fmtMs(ms){
+  const sec=Math.max(0,Math.ceil(ms/1000));
+  const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),ss=sec%60;
+  if(h>0) return h+"h"+String(m).padStart(2,"0");
+  return String(m).padStart(2,"0")+":"+String(ss).padStart(2,"0");
+}
 function hud(){
   CORE.regenVidas(me);
   $("#vXp").textContent=me.xp; $("#vSt").textContent=me.streak;
@@ -2092,44 +2179,92 @@ function vTrilha(){
     alvoWrap.appendChild(band);
     if(!conteudo.length) return;
 
-    const path=el("div","path");
-    conteudo.forEach(l=>{
+    // ===== serpentina bela: posiciona os nós numa curva SVG =====
+    const map=el("div","map");
+    const XS=[50,73,48,27,52];          // x% alternando (serpentina)
+    const STEP=145, PAD=60;             // espaçamento vertical e margem
+    const itens=conteudo.map((l,i)=>{
       const done=!!me.done[l.id];
-      const ehPro = l.plano==="pro" && !CORE.isPro(me);
-      const bloq = ehPro || (!done && !liberado);
-      const cur = !done && !bloq && liberado;
-      if(!done && !bloq) liberado=false;
-
-      const w=el("div","node-wrap"+(done?" done":"")+(cur?" cur":""));
-      w.style.transform="translateX("+OFF[gi%OFF.length]+"px)"; gi++;
-      if(cur) w.appendChild(el("div","start-bub","COMEÇAR"));
-      const n=el("button","node"+(done?" done":cur?" cur":ehPro?" pro":"")+(bloq?" lock":""));
-      n.innerHTML = done ? '<svg class="mark"><use href="#m"/></svg>'
-        : (ehPro||bloq) ? ICO_LOCK : ICO_STAR;
-      if(l.plano==="pro") n.appendChild(el("div","pro-tag","PRO"));
-      if(ehPro) n.onclick=()=>modalPro(l);
-      else if(!bloq) n.onclick=()=>comIntro(u,l);
-      w.appendChild(n);
-      const lab=el("div","node-lab",esc(l.titulo));
+      const ehPro=l.plano==="pro"&&!CORE.isPro(me);
+      const bloq=ehPro||(!done&&!liberado);
+      const cur=!done&&!bloq&&liberado;
+      if(!done&&!bloq) liberado=false;
+      return {l,done,ehPro,bloq,cur,x:XS[(gi+i)%XS.length],y:PAD+i*STEP};
+    });
+    gi+=itens.length;
+    const H=PAD+(itens.length-1)*STEP+PAD;
+    map.style.height=H+"px";
+    // ícones vetoriais (SVG do modus-fx) por estado
+    const fx=window.MODUSFX;
+    const icoDone = fx&&fx.SVG.estrela ? fx.SVG.estrela : ICO_STAR;
+    const icoLock = fx&&fx.SVG.torre ? fx.SVG.torre : ICO_LOCK;
+    const icoCur  = fx&&fx.SVG.livro_arvore ? fx.SVG.livro_arvore : ICO_STAR;
+    // curva SVG passando pelos nós; trecho vencido aceso
+    const idxCur=itens.findIndex(o=>o.cur);
+    const upto=idxCur>=0?idxCur:(itens.every(o=>o.done)?itens.length-1:0);
+    setTimeout(()=>{
+      const W=map.clientWidth||360;
+      const pts=itens.map(o=>({x:o.x/100*W,y:o.y}));
+      const dPath=a=>{if(a.length<2)return a.length?`M ${a[0].x} ${a[0].y}`:"";
+        let d=`M ${a[0].x} ${a[0].y}`;
+        for(let i=0;i<a.length-1;i++){const p=a[i],q=a[i+1],my=(p.y+q.y)/2;d+=` C ${p.x} ${my} ${q.x} ${my} ${q.x} ${q.y}`;}
+        return d;};
+      const full=dPath(pts), done=dPath(pts.slice(0,upto+1));
+      const svg=`<svg class="road" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+        <defs><linearGradient id="lit" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--road-lit-a)"/><stop offset="1" stop-color="var(--road-lit-b)"/></linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        <path d="${full}" fill="none" stroke="var(--road-base)" stroke-width="14" stroke-linecap="round"/>
+        <path d="${full}" fill="none" stroke="var(--road-base2)" stroke-width="10" stroke-linecap="round"/>
+        <path d="${full}" fill="none" stroke="var(--road-dot)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 16"/>
+        <path d="${done}" fill="none" stroke="url(#lit)" stroke-width="9" stroke-linecap="round" filter="url(#glow)"/>
+        <path d="${done}" fill="none" stroke="var(--road-lit-b)" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
+      </svg>`;
+      map.insertAdjacentHTML("afterbegin",svg);
+      // faíscas subindo do nó atual
+      if(idxCur>=0){
+        const cx=itens[idxCur].x/100*W, cy=itens[idxCur].y;
+        for(let i=0;i<7;i++){
+          const sp=el("div","tspark"); const sz=2+Math.random()*3;
+          sp.style.width=sz+"px";sp.style.height=sz+"px";
+          sp.style.left=(cx+(Math.random()-.5)*50)+"px";sp.style.top=cy+"px";
+          sp.animate([{transform:"translateY(0)",opacity:.7},{transform:"translateY(-60px)",opacity:0}],
+            {duration:1800+Math.random()*1400,iterations:Infinity,delay:Math.random()*2000,easing:"ease-out"});
+          map.appendChild(sp);
+        }
+      }
+    },20);
+    // os nós
+    itens.forEach(o=>{
+      const {l,done,ehPro,bloq,cur}=o;
+      const nd=el("div","tnode "+(done?"done":cur?"cur":"lock"));
+      nd.style.left=o.x+"%"; nd.style.top=o.y+"px";
+      let inner="";
+      if(cur) inner+='<span class="tbub">COMEÇAR</span>';
+      inner+='<div class="orb">';
+      if(cur) inner+='<span class="halo"></span><span class="spin"></span>';
+      if(done) inner+='<span class="ring"></span>';
+      inner+='</div>';
+      nd.innerHTML=inner;
+      const orb=nd.querySelector(".orb");
+      const face=el("button","face");
+      face.innerHTML = done ? icoDone : bloq ? icoLock : icoCur;
+      if(l.plano==="pro") face.appendChild(el("div","pro-tag","PRO"));
+      if(ehPro) face.onclick=()=>modalPro(l);
+      else if(!bloq) face.onclick=()=>comIntro(u,l);
+      orb.appendChild(face);
+      nd.appendChild(el("div","tlab",esc(l.titulo)));
+      nd.appendChild(el("div","tsub",done?"Concluído":cur?"Você está aqui":"Bloqueado"));
       if(l.estudo&&l.estudo.length&&!bloq){
         const es=el("button","study-chip","📖 Estudar");
         es.onclick=ev=>{ ev.stopPropagation(); abrirRoteiro(l.estudo,{ctx:"estudo",id:l.id,cta:"Fechar",fim:()=>{}}); };
-        lab.appendChild(es);
+        nd.appendChild(es);
       }
-      w.appendChild(lab);
-      path.appendChild(w);
+      map.appendChild(nd);
     });
-    alvoWrap.appendChild(path);
+    alvoWrap.appendChild(map);
   });
-  // Lume ao lado do primeiro nó atual (o "COMEÇAR")
-  setTimeout(()=>{
-    const cur=alvoWrap.querySelector(".node-wrap.cur");
-    if(cur&&window.MODUSFX!==undefined){
-      const lm=document.createElement("div"); lm.className="map-lume";
-      lm.innerHTML=LUME("feliz"); cur.appendChild(lm);
-    }
-    pintaFundoTrilha(alvoWrap.querySelector(".trilha-bg canvas"));
-  },30);
+  setTimeout(()=>{ pintaFundoTrilha(alvoWrap.querySelector(".trilha-bg canvas")); },30);
   rail();
 }
 
@@ -2273,10 +2408,13 @@ function pintaFundoTrilha(canvas){
   const ctx=canvas.getContext("2d"); ctx.scale(dpr,dpr);
   const reduz = matchMedia("(prefers-reduced-motion:reduce)").matches;
   const N=Math.min(46,Math.round(W*H/9000));
+  const cs=getComputedStyle(document.documentElement);
+  const warm=(cs.getPropertyValue("--star-warm")||"224,150,90").trim();
+  const cool=(cs.getPropertyValue("--star-cool")||"150,120,255").trim();
   const st=Array.from({length:N},()=>({
     x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.4+0.3,
     a:Math.random()*0.5+0.15, ph:Math.random()*6.28, sp:0.4+Math.random()*0.6,
-    dep:Math.random()  // profundidade: fundo move menos
+    dep:Math.random(), c:Math.random()>0.5?warm:cool  // profundidade + cor
   }));
   let raf;
   function draw(t){
@@ -2285,7 +2423,7 @@ function pintaFundoTrilha(canvas){
       const tw = reduz?1:(Math.sin(t*0.001*s.sp+s.ph)*0.4+0.6);
       const yy = reduz? s.y : (s.y + Math.sin(t*0.0002*(0.4+s.dep))*6*s.dep);
       ctx.beginPath(); ctx.arc(s.x,yy,s.r,0,6.28);
-      ctx.fillStyle=`rgba(224,150,90,${(s.a*tw).toFixed(3)})`;
+      ctx.fillStyle=`rgba(${s.c},${(s.a*tw).toFixed(3)})`;
       ctx.fill();
     });
     if(!reduz) raf=requestAnimationFrame(draw);
@@ -2670,6 +2808,16 @@ function vPerfil(){
       <input type="file" id="fotoIn" accept="image/*" class="hide">
     </div>
     <div class="card"><h3>Matérias liberadas</h3><div id="accs"></div></div>
+    <div class="card"><h3>Tema do app</h3>
+      <div class="tema-row">
+        <div class="tema-opt" data-tema="vitral" id="temaVitral">
+          <div class="sw" style="background:linear-gradient(135deg,#221F4A,#7C5CFF 60%,#FFC46B)"></div>
+          <b>Vitral</b><small>Índigo mágico</small></div>
+        <div class="tema-opt" data-tema="amanhecer" id="temaAmanhecer">
+          <div class="sw" style="background:linear-gradient(135deg,#FDF6EC,#F0932E)"></div>
+          <b>Amanhecer</b><small>Claro e quente</small></div>
+      </div>
+    </div>
     <button class="btn ghost" id="bOut2">Sair da conta</button>`;
   const a=$("#accs");
   if(!mats.length) a.innerHTML='<div style="color:var(--muted);font-size:13px">Nenhuma matéria liberada.</div>';
@@ -2699,6 +2847,16 @@ function vPerfil(){
     img.src=URL.createObjectURL(f);
   };
   if(me.foto&&$("#bFotoDel")) $("#bFotoDel").onclick=()=>{ me.foto=null; CORE.save(db); vPerfil(); };
+  // seletor de tema
+  const temaAtual=me.tema||"vitral";
+  ["vitral","amanhecer"].forEach(t=>{
+    const b=$("#tema"+t.charAt(0).toUpperCase()+t.slice(1));
+    if(!b) return;
+    b.classList.toggle("sel",temaAtual===t);
+    b.onclick=()=>{ me.tema=t; CORE.save(db); aplicarTema(t);
+      $("#temaVitral").classList.toggle("sel",t==="vitral");
+      $("#temaAmanhecer").classList.toggle("sel",t==="amanhecer"); };
+  });
   $("#bOut2").onclick=()=>modal("Sair da conta?","Você vai precisar entrar de novo.",
     [{t:"Sair",c:"warn",f:()=>{closeModal();CORE.logout();}},{t:"Cancelar",c:"ghost",f:closeModal}]);
   rail();
